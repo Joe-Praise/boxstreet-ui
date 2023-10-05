@@ -1,3 +1,72 @@
+*{
+    margin: 0;
+    padding-left: 0;
+    box-sizing: border-box;
+}
+
+header{
+    width: 100%;
+    background-color: transparent;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+
 .navigation{
-    width: 100;
+    width: 90%;
+    margin: 0 auto;
+    height: 5rem;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    align-items: center;
+    font-size: 0.8125rem;
+    font-weight: bold;
+    font-family: "Cerebri Sans",sans-serif;
+}
+
+.logo{
+    width: 8.4375rem;
+}
+
+.navlinks{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 3.5rem;
+    cursor: pointer;
+}
+
+.navlinks li{
+    font-size: 0.9rem;
+    cursor: pointer;
+    line-height: 1.2;
+    margin: 0.3em 0;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-repeat: no-repeat;
+    transition: all 1s ease-in-out;
+}
+
+.from-left-and-back{
+    background-image: linear-gradient(to right, #FFD429 45%, #FFFFFF 55%);
+    background-size: 220% 100%;
+    background-position: 100% 50%;
+}
+
+.from-left-and-back:hover{
+    background-position: 0% 50%;
+}
+
+.navlinks :hover{
+    background-clip: text;
+    transition:all ease-in-out .5s;
+}
+
+.bsColour{
+    background:-webkit-linear-gradient(#ed892b, #631498);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }

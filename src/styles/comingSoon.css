@@ -1,0 +1,26 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.comingSoon{
+    width: 100%;
+    display: block;
+}
+
+.comingSoonWidth{
+    width: 91%;
+    margin: 0 auto;
+}
+
+.comingSoonHeader{
+    display: flex;
+    justify-content: space-between;
+}
+
+.comingSoonHeader h2{
+    font-size: 1.8rem;
+    color: #FFFFFF;
+    opacity: 1;
+}

@@ -1,0 +1,16 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.CarouselSlider{
+    width: 100%;
+    margin-top: 1.5625rem;
+}
+
+.carousel-item img{
+    width: 100%;
+    object-fit: cover;
+    height: 350px;
+}

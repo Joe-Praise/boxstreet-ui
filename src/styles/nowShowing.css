@@ -1,0 +1,46 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.nowShowing{
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    margin-top: 86vh;
+}
+
+.nowShowingWidth{
+    width: 91%;
+    margin: 0 auto;
+}
+
+.nowShowingHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nowShowingHeader h2{
+    font-size: 1.6rem;
+    color: #FFFFFF;
+    opacity: 1;
+}
+
+.showVenueDates{
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+}
+
+select {
+    outline: 0;
+    font-size: 0.8rem;
+    color: #FFFFFF;
+    font-weight: bold;
+    background: transparent;
+    border: 1px solid #FFFFFF;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
