@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import './App.css';
+// import './App.css';
+import '../../styles/signUp.css'
+import { FaFacebook } from "react-icons/fa";
+import { FaGooglePlus } from "react-icons/fa";
+import { FaInvision } from "react-icons/fa";
 
-function App() {
+function SignUp() {
     const [isSignUp, setIsSignUp] = useState(false);
   
     const toggleForm = () => {
@@ -19,7 +23,9 @@ function App() {
         </div>
         <div className="overlay-container">
           <div className="overlay">
+          <h3>Boxstreet</h3>
             <div className="overlay-panel overlay-left">
+            {/* <h3>Boxstreet</h3> */}
               <h1>Welcome Back!</h1>
               <p>To keep connected with us, please login with your personal info</p>
               <button className="ghost" onClick={toggleForm}>Sign In</button>
@@ -40,15 +46,19 @@ function App() {
       <form>
         <h1>Create Account</h1>
         <div className="social-container">
-          <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
-          <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
-          <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
+          <a href="#" className="social"><i className='fb'><FaFacebook/></i></a>
+          <a href="#" className="social"><i className='gmail'><FaGooglePlus/></i></a>
+          <a href="#" className="social"><i className='linked'><FaInvision/></i></a>
         </div>
-        <span>or use your email for registration</span>
-        <input type="text" placeholder="Name" />
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+        <span>Or use your email for registration</span>
+        <label>Full Name</label>
+        <input type="text" placeholder="John Doe" />
+        <label>Email</label>
+        <input type="email" placeholder="johndoe@gmail.com" />
+        <label>Password</label>
+        <input type="password" placeholder="********" />
         <button>Sign Up</button>
+        <h6>By clicking "SIGN UP" I agree to Boxstreet Terms of Service and Privacy Policy</h6>
       </form>
     );
   }
@@ -56,18 +66,27 @@ function App() {
   function SignInForm() {
     return (
       <form>
-        <h1>Sign in</h1>
+        <h3>Sign In to Boxstreet</h3>
         <div className="social-container">
-          <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
-          <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
-          <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
+          <a href="#" className="social"><i className='fb'><FaFacebook/></i></a>
+          <a href="#" className="social"><i className='gmail'><FaGooglePlus/></i></a>
+          <a href="#" className="social"><i className='linked'><FaInvision/></i></a>
         </div>
-        <span>or use your account</span>
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-        <a href="#">Forgot your password?</a>
-        <button>Sign In</button>
+        <span>Or use your email account:</span>
+        <label>Email</label>
+        <input type="email" placeholder="johndoe@gmail.com" />
+     
+        <label>Password</label>
+        
+        <input type="password" placeholder="********" />
+
+        <a className='forget' href="#">Forgot your password?</a>
+
+        <button >Sign In</button>
+
       </form>
     );
   }
+
+  export default SignUp;
   
