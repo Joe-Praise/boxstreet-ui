@@ -17,18 +17,3 @@ main {
     display: flex;
     gap: 10px
 }
-
-input{
-    width: 20%;
-    padding: 10px;
-    outline: none;
-    text-align: center;
-}
-
-:focus{
-    border: 2px solid red
-}
-
-button{
-    padding: 10px;
-}
