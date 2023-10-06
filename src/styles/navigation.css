@@ -66,7 +66,7 @@ header{
 }
 
 .bsColour{
-    background:-webkit-linear-gradient(#ed892b, #631498);
+    background:goldenrod;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }

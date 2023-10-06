@@ -65,7 +65,7 @@
 .bannerBtns p{
     font-size: 25px;
     font-weight: bold;
-    background:-webkit-linear-gradient(#ed892b, #631498);
+    background:goldenrod;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -86,13 +86,14 @@
     border-radius: 100px;
     font-size: 0.725rem;
     font-weight: bold;
-    color: #979797;
+    color: #eee;
+    cursor: pointer;
     background-color: transparent;
-    border: 1px solid #979797;
-    padding: 0.5rem 1.5625rem;
+    border: 1px solid goldenrod;
+    padding: 0.60rem 1.5625rem;
 }
 
 .btnWatchTrailer:hover{
-    border: 1px solid #FFFFFF;
-    color: #000000;
+    background-color: goldenrod;
+    color: #eee;
 }

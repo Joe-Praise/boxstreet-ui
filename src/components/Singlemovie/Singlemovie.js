@@ -4,7 +4,7 @@ import johnsnow from './images/johnsnow.jpeg'
 import denareesa from './images/denareesa-.jpeg'
 import pedropascal from './images/pedro pascal.jpeg'
 
-function Singlemovie() {
+function SingleMovie() {
   return (
     <div>
         <div className="singlemovcont ">
@@ -47,4 +47,4 @@ function Singlemovie() {
   )
 }
 
-export default Singlemovie
+export default SingleMovie

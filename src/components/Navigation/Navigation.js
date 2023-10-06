@@ -38,8 +38,8 @@ function Navigation() {
             </div>
             <div>
                 <ul className='navlinks'>
-                    <li className="from-left-and-back">CART</li>
-                    <li className="from-left-and-back">SIGN IN</li>
+                    <Link to="/movie" className="from-left-and-back">CART</Link>
+                    <Link to="/register" className="from-left-and-back">SIGN IN</Link>
                 </ul>
             </div>
         </nav>
