@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../../styles/signUp.css";
-import { FaFacebook } from "react-icons/fa";
-import { FaGooglePlus } from "react-icons/fa";
-import { FaInvision } from "react-icons/fa";
+import { FaFacebook, FaGooglePlus, FaInvision } from "react-icons/fa";
 import axios from "axios";
 
 function SignUp({ history }) {
@@ -12,7 +10,19 @@ function SignUp({ history }) {
     name: "",
     email: "",
     password: "",
+    cinema_id: "",
   });
+
+  const [cinemaData, setCinemaData] = useState([]);
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_CINEMA_BASE_URL + "/cinemas")
+      .then((response) => response.json())
+      .then((data) => setCinemaData(data))
+      .catch((error) => console.error("Error fetching cinema data:", error));
+  }, []);
+
+  console.log(cinemaData);
 
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
@@ -20,14 +30,17 @@ function SignUp({ history }) {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const response = await axios.post(process.env.REACT_APP_AUTH_REQUEST_URL + "/signup", formData); 
-      
+      const response = await axios.post(
+        process.env.REACT_APP_AUTH_REQUEST_URL + "/signup",
+        formData
+      );
+
       console.log(response.data);
       history.push("/verify");
     } catch (error) {
-      console.error(error);
+      console.error("Error signing up:", error.response.data.error);
     }
   };
 
@@ -42,6 +55,7 @@ function SignUp({ history }) {
           formData={formData}
           setFormData={setFormData}
           handleSignUp={handleSignUp}
+          cinemaData={cinemaData}
         />
       </div>
       <div className="form-container sign-in-container">
@@ -74,7 +88,7 @@ function SignUp({ history }) {
   );
 }
 
-function SignUpForm({ formData, setFormData, handleSignUp }) {
+function SignUpForm({ formData, setFormData, handleSignUp, cinemaData }) {
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -121,6 +135,22 @@ function SignUpForm({ formData, setFormData, handleSignUp }) {
         placeholder="johndoe@gmail.com"
         required
       />
+      <label>Cinema</label>
+      <select
+        name="cinema_id"
+        value={formData.cinema_id}
+        onChange={handleChange}
+        placeholder="Select cinema here"
+        required
+      >
+        <option value="">Select a cinema</option>
+        {/* {cinemaData.map((cinema) => (
+    <option key={cinema.id} value={cinema.id}>
+      {cinema.name}
+    </option>
+  ))} */}
+      </select>
+
       <label>Password</label>
       <input
         type="password"
@@ -130,6 +160,7 @@ function SignUpForm({ formData, setFormData, handleSignUp }) {
         placeholder="********"
         required
       />
+
       <button type="submit" className="reg-button">
         Sign Up
       </button>
@@ -181,4 +212,3 @@ function SignInForm() {
 }
 
 export default SignUp;
-
