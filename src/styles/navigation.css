@@ -19,8 +19,9 @@
     font-family: "Cerebri Sans",sans-serif;
 }
 
-.navlogo{
+.logo{
     width: 8.4375rem;
+    border: none;
 }
 
 .navlinks{
@@ -44,13 +45,15 @@
     transition: all 1s ease-in-out;
 }
 
-.navfrom-left-and-back{
+.from-left-and-back{
     background-image: linear-gradient(to right, #FFD429 45%, #FFFFFF 55%);
     background-size: 220% 100%;
     background-position: 100% 50%;
+    font-weight: 500;
+    font-size: 0.9rem;
 }
 
-.navfrom-left-and-back:hover{
+.from-left-and-back:hover{
     background-position: 0% 50%;
 }
 
@@ -59,8 +62,9 @@
     transition:all ease-in-out .5s;
 }
 
-.navbsColour{
-    background:-webkit-linear-gradient(#ed892b, #631498);
+.bsColour{
+    background:goldenrod;
     background-clip: text;
+    text-decoration: none;
     -webkit-text-fill-color: transparent;
 }

@@ -1,14 +1,28 @@
-main {
+.verify-users {
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, .2), 0 10px 10px rgba(0, 0, 0, .2);
     position: relative;
+    transform:translateY(50px);
     overflow: hidden;
-    width: 768px;
+    width: 600px;
     max-width: 100%;
     min-height: 480px;
     text-align: center;
+    margin: 0 auto;
+    padding: auto; 
 
+}
+
+.verify-intro{
+   margin-top: 100px;
+   margin-bottom: 30px;
+    
+}
+.verify-update{
+    color: grey;
+    margin-bottom: 40px;
+    /* font-size: 15px; */
 }
 
 .otp{
@@ -18,17 +32,36 @@ main {
     gap: 10px
 }
 
-input{
-    width: 20%;
+.verify-input{
+    width: 70px;
+    height: 50px;
     padding: 10px;
     outline: none;
     text-align: center;
+    border-radius: 5px;
+    border: 3px solid #eee;
+    margin-right: auto;
+}:focus{
+    border: 2px solid red;
 }
 
-:focus{
-    border: 2px solid red
+.verify-btn{
+    width: 90%;
+    height: 50px;
+    color: #fff;
+    background-color: goldenrod;
+    border: none;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    margin-top: 30px;
 }
 
-button{
-    padding: 10px;
+.verify-footer{
+    font-size: 15px;
+    margin-left: 30px;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
 }
