@@ -18,7 +18,7 @@ function Navigation() {
       };
     }, []);
   return (
-    <header style={{
+    <header className="navHead" style={{
         backgroundColor: navColor,
         height: navSize,
         transition: "all ease-in 1s"

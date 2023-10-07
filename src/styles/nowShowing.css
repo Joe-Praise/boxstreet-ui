@@ -1,8 +1,3 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
 .nowShowing{
     width: 100%;
@@ -34,7 +29,7 @@
     align-items: center;
 }
 
-select {
+.select {
     outline: 0;
     font-size: 0.8rem;
     color: #FFFFFF;

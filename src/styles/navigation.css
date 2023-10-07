@@ -1,10 +1,5 @@
-*{
-    margin: 0;
-    padding-left: 0;
-    box-sizing: border-box;
-}
 
-header{
+.navHead{
     width: 100%;
     background-color: transparent;
     position: fixed;
