@@ -49,6 +49,9 @@
     background-image: linear-gradient(to right, #FFD429 45%, #FFFFFF 55%);
     background-size: 220% 100%;
     background-position: 100% 50%;
+    background: transparent;
+    font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .from-left-and-back:hover{
