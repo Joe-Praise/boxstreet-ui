@@ -1,93 +1,214 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import '../../styles/signUp.css'
-import { FaFacebook } from "react-icons/fa";
-import { FaGooglePlus } from "react-icons/fa";
-import { FaInvision } from "react-icons/fa";
+import "../../styles/signUp.css";
+import { FaFacebook, FaGooglePlus, FaInvision } from "react-icons/fa";
+import axios from "axios";
 
-function SignUp() {
-    const [isSignUp, setIsSignUp] = useState(false);
-  
-    const toggleForm = () => {
-      setIsSignUp(!isSignUp);
-    };
-  
-    return (
-      <div className={`container ${isSignUp ? 'right-panel-active' : ''}`}>
-        <div className="form-container sign-up-container">
-          <SignUpForm />
-        </div>
-        <div className="form-container sign-in-container">
-          <SignInForm />
-        </div>
-        <div className="overlay-container">
-          <div className="overlay">
-          <h3>Boxstreet</h3>
-            <div className="overlay-panel overlay-left">
-            {/* <h3>Boxstreet</h3> */}
-              <h1>Welcome Back!</h1>
-              <p>To keep connected with us, please login with your personal info</p>
-              <button className="ghost" onClick={toggleForm}>Sign In</button>
-            </div>
-            <div className="overlay-panel overlay-right">
-              <h1>Hello, Friend!</h1>
-              <p>Enter your personal details and start your journey with us</p>
-              <button className="ghost" onClick={toggleForm}>Sign Up</button>
-            </div>
+function SignUp({ history }) {
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    cinema_id: "",
+  });
+
+  const [cinemaData, setCinemaData] = useState([]);
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_CINEMA_BASE_URL + "/cinemas")
+      .then((response) => response.json())
+      .then((data) => setCinemaData(data))
+      .catch((error) => console.error("Error fetching cinema data:", error));
+  }, []);
+
+  console.log(cinemaData);
+
+  const toggleForm = () => {
+    setIsSignUp(!isSignUp);
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_AUTH_REQUEST_URL + "/signup",
+        formData
+      );
+
+      console.log(response.data);
+      history.push("/verify");
+    } catch (error) {
+      console.error("Error signing up:", error.response.data.error);
+    }
+  };
+
+  useEffect(() => {
+    document.body.classList.add("registration");
+  }, []);
+
+  return (
+    <div className={`container ${isSignUp ? "right-panel-active" : ""}`}>
+      <div className="form-container sign-up-container">
+        <SignUpForm
+          formData={formData}
+          setFormData={setFormData}
+          handleSignUp={handleSignUp}
+          cinemaData={cinemaData}
+        />
+      </div>
+      <div className="form-container sign-in-container">
+        <SignInForm />
+      </div>
+      <div className="overlay-container">
+        <div className="overlay">
+          <h3 className="reg-action">Boxstreet</h3>
+          <div className="overlay-panel overlay-left">
+            <h1 className="reg-text">Welcome Back!</h1>
+            <p className="reg-sub-text">
+              To keep connected with us, please login with your personal info
+            </p>
+            <button className="reg-button ghost" onClick={toggleForm}>
+              Sign In
+            </button>
+          </div>
+          <div className="overlay-panel overlay-right">
+            <h1 className="reg-text">Hello, Friend!</h1>
+            <p className="reg-sub-text">
+              Enter your personal details and start your journey with us
+            </p>
+            <button className="reg-button ghost" onClick={toggleForm}>
+              Sign Up
+            </button>
           </div>
         </div>
       </div>
-    );
-  }
-  
-  function SignUpForm() {
-    return (
-      <form>
-        <h1>Create Account</h1>
-        <div className="social-container">
-          <Link className="social"><i className='fb'><FaFacebook/></i></Link>
-          <Link className="social"><i className='gmail'><FaGooglePlus/></i></Link>
-          <Link className="social"><i className='linked'><FaInvision/></i></Link>
-        </div>
-        <span>Or use your email for registration</span>
-        <label>Full Name</label>
-        <input type="text" placeholder="John Doe" />
-        <label>Email</label>
-        <input type="email" placeholder="johndoe@gmail.com" />
+    </div>
+  );
+}
+
+function SignUpForm({ formData, setFormData, handleSignUp, cinemaData }) {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  return (
+    <form onSubmit={handleSignUp}>
+      <h1 className="reg-text">Create Account</h1>
+      <div className="social-container">
+        <Link className="social">
+          <i className="fb">
+            <FaFacebook />
+          </i>
+        </Link>
+        <Link className="social">
+          <i className="gmail">
+            <FaGooglePlus />
+          </i>
+        </Link>
+        <Link className="social">
+          <i className="linked">
+            <FaInvision />
+          </i>
+        </Link>
+      </div>
+      <span className="reg-title">Or use your email for registration</span>
+      <label>Full Name</label>
+      <input
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="John Doe"
+        required
+      />
+      <label>Email</label>
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="johndoe@gmail.com"
+        required
+      />
+      <label>Cinema</label>
+      <select
+        name="cinema_id"
+        value={formData.cinema_id}
+        onChange={handleChange}
+        placeholder="Select cinema here"
+        required
+      >
+        <option value="">Select a cinema</option>
+        {/* {cinemaData.map((cinema) => (
+    <option key={cinema.id} value={cinema.id}>
+      {cinema.name}
+    </option>
+  ))} */}
+      </select>
+
+      <label>Password</label>
+      <input
+        type="password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+        placeholder="********"
+        required
+      />
+
+      <button type="submit" className="reg-button">
+        Sign Up
+      </button>
+      <h5 className="reg-term-condition">
+        By clicking "SIGN UP" I agree to Boxstreet Terms of Service and Privacy
+        Policy
+      </h5>
+    </form>
+  );
+}
+
+function SignInForm() {
+  return (
+    <form>
+      <h1 className="reg-text">Sign In to Boxstreet</h1>
+      <div className="social-container">
+        <Link className="social">
+          <i className="fb">
+            <FaFacebook />
+          </i>
+        </Link>
+        <Link className="social">
+          <i className="gmail">
+            <FaGooglePlus />
+          </i>
+        </Link>
+        <Link className="social">
+          <i className="linked">
+            <FaInvision />
+          </i>
+        </Link>
+      </div>
+      <span className="reg-title">Or use your email account:</span>
+      <label>Your Email</label>
+      <input type="email" placeholder="johndoe@gmail.com" required />
+
+      <div className="pswd">
         <label>Password</label>
-        <input type="password" placeholder="********" />
-        <button>Sign Up</button>
-        <h5>By clicking "SIGN UP" I agree to Boxstreet Terms of Service and Privacy Policy</h5>
-      </form>
-    );
-  }
-  
-  function SignInForm() {
-    return (
-      <form>
-        <h1>Sign In to Boxstreet</h1>
-        <div className="social-container">
-          <Link className="social"><i className='fb'><FaFacebook/></i></Link>
-          <Link className="social"><i className='gmail'><FaGooglePlus/></i></Link>
-          <Link className="social"><i className='linked'><FaInvision/></i></Link>
-        </div>
-        <span>Or use your email account:</span>
-        <label>Your Email</label>
-        <input type="email" placeholder="johndoe@gmail.com" />
-     
-        <div className='pswd'>
-            <label>Password</label>
-        <Link className='forget' href="#">Forgot your password?</Link></div>
-        
-        <input type="password" placeholder="********" />
+        <Link className="forget" href="#">
+          Forgot your password?
+        </Link>
+      </div>
 
-       
+      <input type="password" placeholder="********" required />
 
-        <button >Sign In</button>
+      <button className="reg-button">Sign In</button>
+    </form>
+  );
+}
 
-      </form>
-    );
-  }
-
-  export default SignUp;
-  
+export default SignUp;
