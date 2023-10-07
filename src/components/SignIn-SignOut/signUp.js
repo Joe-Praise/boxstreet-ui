@@ -1,24 +1,48 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import "../../styles/signUp.css";
 import { FaFacebook } from "react-icons/fa";
 import { FaGooglePlus } from "react-icons/fa";
 import { FaInvision } from "react-icons/fa";
+import axios from "axios";
 
-function SignUp() {
+function SignUp({ history }) {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
   };
 
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const response = await axios.post(process.env.REACT_APP_AUTH_REQUEST_URL + "/signup", formData); 
+      
+      console.log(response.data);
+      history.push("/verify");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     document.body.classList.add("registration");
   }, []);
+
   return (
     <div className={`container ${isSignUp ? "right-panel-active" : ""}`}>
       <div className="form-container sign-up-container">
-        <SignUpForm />
+        <SignUpForm
+          formData={formData}
+          setFormData={setFormData}
+          handleSignUp={handleSignUp}
+        />
       </div>
       <div className="form-container sign-in-container">
         <SignInForm />
@@ -27,7 +51,6 @@ function SignUp() {
         <div className="overlay">
           <h3 className="reg-action">Boxstreet</h3>
           <div className="overlay-panel overlay-left">
-            {/* <h3>Boxstreet</h3> */}
             <h1 className="reg-text">Welcome Back!</h1>
             <p className="reg-sub-text">
               To keep connected with us, please login with your personal info
@@ -51,9 +74,16 @@ function SignUp() {
   );
 }
 
-function SignUpForm() {
+function SignUpForm({ formData, setFormData, handleSignUp }) {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSignUp}>
       <h1 className="reg-text">Create Account</h1>
       <div className="social-container">
         <Link className="social">
@@ -74,12 +104,35 @@ function SignUpForm() {
       </div>
       <span className="reg-title">Or use your email for registration</span>
       <label>Full Name</label>
-      <input type="text" placeholder="John Doe" />
+      <input
+        type="text"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder="John Doe"
+        required
+      />
       <label>Email</label>
-      <input type="email" placeholder="johndoe@gmail.com" />
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="johndoe@gmail.com"
+        required
+      />
       <label>Password</label>
-      <input type="password" placeholder="********" />
-      <button className="reg-button">Sign Up</button>
+      <input
+        type="password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+        placeholder="********"
+        required
+      />
+      <button type="submit" className="reg-button">
+        Sign Up
+      </button>
       <h5 className="reg-term-condition">
         By clicking "SIGN UP" I agree to Boxstreet Terms of Service and Privacy
         Policy
@@ -111,7 +164,7 @@ function SignInForm() {
       </div>
       <span className="reg-title">Or use your email account:</span>
       <label>Your Email</label>
-      <input type="email" placeholder="johndoe@gmail.com" />
+      <input type="email" placeholder="johndoe@gmail.com" required />
 
       <div className="pswd">
         <label>Password</label>
@@ -120,7 +173,7 @@ function SignInForm() {
         </Link>
       </div>
 
-      <input type="password" placeholder="********" />
+      <input type="password" placeholder="********" required />
 
       <button className="reg-button">Sign In</button>
     </form>
@@ -128,3 +181,4 @@ function SignInForm() {
 }
 
 export default SignUp;
+

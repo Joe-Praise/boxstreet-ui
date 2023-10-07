@@ -17,6 +17,7 @@ function Navigation() {
         window.removeEventListener("scroll", listenScrollEvent);
       };
     }, []);
+    
   return (
     <header style={{
         backgroundColor: navColor,
