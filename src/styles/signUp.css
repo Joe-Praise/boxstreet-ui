@@ -17,6 +17,7 @@ body {
 h1 {
     font-weight: bold;
     margin: 0;
+    /* font-size: 55px; */
 }
 
 h3{
@@ -24,13 +25,13 @@ h3{
   padding: 10px 10px 10px;
 }
 
-h6{
-  font-size: 7px;
+h5{
+  color: grey;
   margin-bottom: 40px;
 }
 
 p {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 100;
     line-height: 20px;
     letter-spacing: .5px;
@@ -40,40 +41,45 @@ p {
 span {
     font-size: 15px;
     padding-bottom: 20px;
+    font-weight: bold;
+    color: grey;
 }
 
 a {
-    color: #333;
-    font-size: 14px;
+    color: #eee;
+    font-size: 23px;
     text-decoration: none;
     margin: 15px 0;
 }
 
 .container {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, .2), 0 10px 10px rgba(0, 0, 0, .2);
+    /* background: #fff; */
+    /* border-radius: 10px; */
+    /* box-shadow: 0 14px 28px rgba(0, 0, 0, .2), 0 10px 10px rgba(0, 0, 0, .2); */
     /* position: relative; */
-    overflow: hidden;
-    width: 768px;
-    max-width: 100%;
-    min-height: 480px;
+    /* overflow: hidden; */
+    /* width: 900px; */
+    /* max-width: 100%; */
+    /* min-height: 480px; */
 }
 
+
 .form-container form {
-    background: #fff;
+    /* background: #fff; */
     display: flex;
     flex-direction: column;
     padding:  0 50px;
     height: 100%;
-    margin-top: 15px;
+    /* margin-top: 15px; */
+    margin: auto;
     justify-content: center;
+    width: 70%;
     /* align-items: center; */
     text-align: center;
 }
 
 .social-container {
-    margin: 20px 0;
+    margin: 30px 0;
 }
 
 .social-container a {
@@ -83,45 +89,53 @@ a {
     justify-content: center;
     align-items: center;
     margin: 0 5px;
-    height: 40px;
-    width: 40px;
+    height: 50px;
+    width: 50px;
     background-color: rgb(182, 60, 60);
 }
 
 
 .form-container input {
-    background: #eee;
-    border: none;
+    /* background: #eee; */
+    border: 1px solid rgb(206, 203, 203);
+    border-radius: 5px;
+    height: 50px;
     padding: 12px 15px;
     margin: 8px 0;
     width: 100%;
 }
 
 .form-container label {
-  margin: 4px 0;
-  /* display: flex; */
-  /* justify-content: flex-end; */
+  margin: 10px 0;
+  font-weight: bold;
   text-align: start;
 }
 
-.forget, a{
+.pswd{
   display: flex;
-  justify-content: flex-end;
-  font-size: 12px;
+  justify-content: space-between;
+}
+
+.forget {
+  color: gray;
+  font-size: 10px;
+  font-weight: bold;
 }
 
 button {
-    border-radius: 5px;
+    border-radius: 7px;
     border: 1px solid rgb(228, 216, 187);
     background: rgb(94, 87, 70);
     color: #fff;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: bold;
-    padding: 12px 45px;
+    /* padding: 12px 45px; */
     letter-spacing: 1px;
     margin-top: 20px;
-    width: 55%;
+    width: 25%;
+    height: 45px;
     display: flex;
+    align-items: center;
     justify-content: center;
     text-transform: uppercase;
     transition: transform 80ms ease-in;
@@ -139,6 +153,9 @@ button:focus {
 button.ghost {
     background: transparent;
     border-color: #fff;
+    width: 30%;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .form-container {
@@ -164,8 +181,8 @@ button.ghost {
 .overlay-container {
     position: absolute;
     top: 0;
-    left: 50%;
-    width: 50%;
+    left: 45%;
+    width: 55%;
     height: 100%;
     overflow: hidden;
     transition: transform .6s ease-in-out;
@@ -242,10 +259,10 @@ button.ghost {
     transform: translateY(20%);
 }
 
-.footer {
+/* .footer {
 	margin-top: 25px;
 	text-align: center;
-}
+} */
 
 
 .icons {
@@ -255,3 +272,4 @@ button.ghost {
 	letter-spacing: 15px;
 	align-items: center;
 }
+

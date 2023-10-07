@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import LandingPage from './components/Landing Page/LandingPage';
-import Counter from './components/Counter/Counter'
 import Singlemovie from './components/Singlemovie/Singlemovie';
-import CounterBooking from './components/Counter/CounterBooking';
+import SignUp from './components/SignIn-SignOut/signUp';
+import VerifyUser from './components/SignIn-SignOut/verifyUser';
 
 function App() {
   return (
@@ -12,8 +12,8 @@ function App() {
         <Routes>
           <Route path='/' element={<LandingPage/>} />
           <Route path='/movie' element={<Singlemovie/>} />
-          <Route path='/counter' element={<Counter />} />
-          <Route path='/counter/movie/:id' element={<CounterBooking />} />
+          <Route path='/reg' element={<SignUp/>} />
+          <Route path='/verify' element={<VerifyUser/>} />
         </Routes>
       </BrowserRouter>
     </div>
