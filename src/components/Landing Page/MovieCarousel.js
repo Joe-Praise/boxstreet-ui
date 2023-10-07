@@ -61,7 +61,7 @@ const sliderImageUrl = [
 
 function MovieCarousel() {
   return (
-    <div className="">
+    <div className="parent">
       <Carousel
         responsive={responsive}
         swipeable={true}
@@ -71,7 +71,7 @@ function MovieCarousel() {
       >
         {sliderImageUrl.map((imageUrl, index) => {
           return (
-            <div className="slider" key={index}>
+            <div className="csslider" key={index}>
               <img src={imageUrl.url} alt="movieposter" />
             </div>
           );

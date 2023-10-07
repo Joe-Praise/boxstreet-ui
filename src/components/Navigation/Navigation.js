@@ -26,20 +26,20 @@ function Navigation() {
         <nav className='navigation'>
             <div>
                 <Link to='/'>
-                    <img className='logo' src={logo} alt="web logo" />
+                    <img className='navlogo' src={logo} alt="web logo" />
                 </Link>
             </div>
             <div>
                 <ul className='navlinks'>
-                    <li className="from-left-and-back">FOOD & DRINKS</li>
-                    <li className="from-left-and-back">BOOKINGS</li>
-                    <li className='bsColour'>JOIN OUR CLUB</li>
+                    <li className="navfrom-left-and-back">FOOD & DRINKS</li>
+                    <li className="navfrom-left-and-back">BOOKINGS</li>
+                    <li className='navbsColour'>JOIN OUR CLUB</li>
                 </ul>
             </div>
             <div>
                 <ul className='navlinks'>
-                    <li className="from-left-and-back">CART</li>
-                    <li className="from-left-and-back">SIGN IN</li>
+                    <li className="navfrom-left-and-back">CART</li>
+                    <li className="navfrom-left-and-back">SIGN IN</li>
                 </ul>
             </div>
         </nav>

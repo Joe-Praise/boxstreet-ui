@@ -1,16 +1,15 @@
-
-.slider {
+.csslider {
     width: 100%;
     overflow: "hidden";
     padding: 2.5rem 0;
 }
 
-.slider img {
+.csslider img {
     width: 12.5rem;
     border-radius: 10px;
 }
 
-.slider img :hover{
+.csslider img :hover{
     object-fit: cover;
     transform: scale(1);
     transition: all 0.5s ease-in-out;
