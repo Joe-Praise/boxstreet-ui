@@ -12,7 +12,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/movie" element={<Singlemovie />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/verify" element={<VerifyUser />} />
           <Route path="/movie" element={<SingleMovie />} />
