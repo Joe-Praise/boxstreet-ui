@@ -363,7 +363,7 @@ function SignInForm() {
 
 {isSignUpSuccess ? (
         <div className="success-message">
-          Welcome to
+          Welcome togit
         </div>
       ) : (
         <div>
