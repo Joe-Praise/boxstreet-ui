@@ -14,7 +14,7 @@ function NowShowing() {
                     <h2>Now Showing</h2>
                 </div>
                 <div className='showVenueDates'>
-                    <select className='select' name="location">
+                    <select className='landingselect' name="location">
                         <option value="Jabi">Jabi</option>
                         <option value="Maitama">Maitama</option>
                         <option value="Asokoro">Asokoro</option>
@@ -22,13 +22,13 @@ function NowShowing() {
                         <option value="Apo">Apo</option>
                     </select>
 
-                    <select className='select' name="theater">
+                    <select className='landingselect' name="theater">
                         <option value="Theater1">Theater 1</option>
                         <option value="Theater2">Theater 2</option>
                         <option value="Theater3">Theater 3</option>
                     </select>
 
-                    <select className='select' name="viewDays">
+                    <select className='landingselect' name="viewDays">
                         <option value="today">Today</option>
                         <option value="tomorrow">Oct 6th</option>
                         <option value="saturday">Oct 7th</option>

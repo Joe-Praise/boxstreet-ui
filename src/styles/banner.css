@@ -1,4 +1,4 @@
-.banner{
+.landingbanner{
     width: 100%;
     background-image: url(../components/uploads/expendables.webp);
     height: 100vh;
@@ -9,12 +9,12 @@
     position: absolute;
 }
 
-.bannerContent{
+.landingbannerContent{
     width: 91%;
     margin: 0 auto;
 }
 
-.bannerSlideDescription ul{
+.landingbannerSlideDescription ul{
     list-style: none;
     display: flex;
     gap: 0.625rem;
@@ -22,22 +22,22 @@
     font-family: "Cerebri Sans";
 }
 
-.bannerSlideDescription ul li{
+.landingbannerSlideDescription ul li{
     font-size: 1rem;
     font-weight: bold;
     color: #FFFFFF;
     opacity: 0.7;
 }
 
-.blueDot{
+.landingblueDot{
     width: 0.3125rem;
     height: 0.3125rem;
-    background: rgb(96, 206, 209);
+    background: goldenrod;
     border-radius: 50%;
-    fill: rgb(96, 206, 209);
+    fill: goldenrod;
 }
 
-.bannerSlideDescription h1{
+.landingbannerSlideDescription h1{
     font-size: 3.5rem;
     line-height: 4.4375rem;
     letter-spacing: -0.04em;
@@ -46,7 +46,7 @@
     font-weight: bold;
 }
 
-.bannerSlideDescription p{
+.landingbannerSlideDescription p{
     font-size: 1rem;
     font-weight: bold;
     letter-spacing: 1px;
@@ -55,14 +55,14 @@
     width: 37.5rem;
 }
 
-.bannerBtns{
+.landingbannerBtns{
     margin-top: 1.875rem;
     display: flex;
     gap: 1.25rem;
     align-items: center;
 }
 
-.bannerBtns p{
+.landingbannerBtns p{
     font-size: 25px;
     font-weight: bold;
     background:goldenrod;
@@ -70,7 +70,7 @@
     -webkit-text-fill-color: transparent;
 }
 
-.btnBuyTickets{
+.landingbtnBuyTickets{
     width: 7.8125rem;
     font-size: 0.725rem;
     color: black;
@@ -81,7 +81,7 @@
     font-weight: 600;
 }
 
-.btnWatchTrailer{
+.landingbtnWatchTrailer{
     width: 8.125rem;
     border-radius: 100px;
     font-size: 0.725rem;

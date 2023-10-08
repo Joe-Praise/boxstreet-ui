@@ -65,14 +65,14 @@ function ComingsoonCarousel() {
     <div className="parent">
       <Carousel
         responsive={responsive}
-        swipeable={false}
+        swipeable={true}
         draggable={true}
         infinite={true}
         partialVisible={false}
       >
         {sliderImageUrl.map((imageUrl, index) => {
           return (
-            <div className="slider" key={index}>
+            <div className="csslider" key={index}>
               <img src={imageUrl.url} alt="movie" />
             </div>
           );

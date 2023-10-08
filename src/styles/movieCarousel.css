@@ -1,17 +1,77 @@
-
-.slider {
-    width: 100%;
-    overflow: "hidden";
-    padding: 2.5rem 0;
+.csslider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 2.5rem 0;
 }
 
-.slider img {
-    width: 12.5rem;
-    border-radius: 10px;
+.csslider img {
+  width: 13rem;
+  height: 18.75rem;
+  border-radius: 10px;
+  transition: transform 0.5s ease-in-out;
+  z-index: -5;
 }
 
-.slider img :hover{
-    object-fit: cover;
-    transform: scale(1);
-    transition: all 0.5s ease-in-out;
+.csCards {
+  width: 13rem;
+  height: 18.75rem;
+  height: auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.csmovieInfo {
+  width: 13rem;
+  height: 18.75rem;
+  top: 0;
+  right: -100%;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  border-radius: 10px;
+  background: #05080938;
+  backdrop-filter: blur(5px);
+  display: flex;
+  border-radius: 10px;
+  flex-direction: column;
+  justify-content: center;
+  transition:all ease-in-out 1s;
+}
+
+.csCards:hover .csmovieInfo {
+  right: 0;
+}
+
+.csslider:hover .csslider img {
+  object-fit: cover;
+  transform: scale(1);
+}
+
+.csslider:hover .csmovieInfo {
+  opacity: 1;
+  bottom: 0;
+}
+
+.csmovieInfo h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.csmovieInfo span {
+  display: block;
+  font-size: 0.75rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.csmovieInfo p {
+  font-size: 0.9rem;
+  color: #fff;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
