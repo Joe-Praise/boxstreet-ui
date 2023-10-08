@@ -2,6 +2,7 @@ import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "../../styles/movieCarousel.css";
+import { Link } from "react-router-dom";
 
 const responsive = {
     desktop: {
@@ -57,7 +58,7 @@ const sliderImageUrl = [
         url:
         "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-movies-for-kids-2020-sonic-the-hedgehog-1571173983.jpg?crop=0.9871668311944719xw:1xh;center,top&resize=480:*"
     },
-];
+];  
 
 function MovieCarousel() {
   return (
@@ -69,10 +70,13 @@ function MovieCarousel() {
         infinite={true}
         partialVisible={false}
       >
+        
         {sliderImageUrl.map((imageUrl, index) => {
           return (
             <div className="csslider" key={index}>
-              <img src={imageUrl.url} alt="movieposter" />
+              <Link to='/movie'>
+                <img src={imageUrl.url} alt="movieposter" />
+              </Link>
             </div>
           );
         })}

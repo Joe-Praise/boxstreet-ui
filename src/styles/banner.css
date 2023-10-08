@@ -32,9 +32,9 @@
 .landingblueDot{
     width: 0.3125rem;
     height: 0.3125rem;
-    background: rgb(96, 206, 209);
+    background: goldenrod;
     border-radius: 50%;
-    fill: rgb(96, 206, 209);
+    fill: goldenrod;
 }
 
 .landingbannerSlideDescription h1{
