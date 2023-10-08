@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../styles/signUp.css";
 import { FaFacebook, FaGooglePlus, FaInvision } from "react-icons/fa";
 import axios from "axios";
+import config from "../../config";
 
-function SignUp({ history }) {
+function SignUp() {
+  let navigate = useNavigate();
+
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -14,35 +17,72 @@ function SignUp({ history }) {
   });
 
   const [cinemaData, setCinemaData] = useState([]);
-
-  useEffect(() => {
-    fetch(process.env.REACT_APP_CINEMA_BASE_URL + "/cinemas")
-      .then((response) => response.json())
-      .then((data) => setCinemaData(data))
-      .catch((error) => console.error("Error fetching cinema data:", error));
-  }, []);
-
-  console.log(cinemaData);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
+  const [formErrorMessage, setFormErrorMessage] = useState('');
 
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
+  };
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.name.trim()) {
+      errors.name = 'Full Name is required';
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) {
+      errors.email = 'Invalid email address';
+    }
+
+    if (!formData.cinema_id) {
+      errors.cinema_id = 'Please select a cinema';
+    }
+
+    if (!formData.password.trim()) {
+      errors.password = 'Password is required';
+    } else if (formData.password.length <= 8) {
+      errors.password = 'Password must be at least 8 characters long';
+    }
+
+    setFormErrors(errors);
+
+    return Object.keys(errors).length === 0;
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        process.env.REACT_APP_AUTH_REQUEST_URL + "/signup",
-        formData
-      );
+      const isFormValid = validateForm();
 
-      console.log(response.data);
-      history.push("/verify");
+      if (isFormValid) {
+        const response = await axios.post(
+          config.AUTH_REQUEST_URL + "/signup",
+          formData
+        );
+
+        if (response?.data.status === "success") {
+          navigate("/verify");
+          setIsSignUpSuccess(true);
+          setFormErrorMessage('');
+        }
+      } else {
+        setFormErrorMessage('Please fill in all required fields and correct any validation errors.');
+      }
     } catch (error) {
-      console.error("Error signing up:", error.response.data.error);
+      console.error("Error signing up:", error);
     }
   };
+
+  useEffect(() => {
+    axios(config.CINEMA_BASE_URL).then((result) => {
+      setCinemaData(result.data);
+    });
+  }, []);
 
   useEffect(() => {
     document.body.classList.add("registration");
@@ -56,6 +96,9 @@ function SignUp({ history }) {
           setFormData={setFormData}
           handleSignUp={handleSignUp}
           cinemaData={cinemaData}
+          formErrors={formErrors}
+          isSignUpSuccess={isSignUpSuccess}
+          formErrorMessage={formErrorMessage}
         />
       </div>
       <div className="form-container sign-in-container">
@@ -88,7 +131,15 @@ function SignUp({ history }) {
   );
 }
 
-function SignUpForm({ formData, setFormData, handleSignUp, cinemaData }) {
+function SignUpForm({
+  formData,
+  setFormData,
+  handleSignUp,
+  cinemaData,
+  formErrors,
+  isSignUpSuccess,
+  formErrorMessage,
+}) {
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -124,8 +175,9 @@ function SignUpForm({ formData, setFormData, handleSignUp, cinemaData }) {
         value={formData.name}
         onChange={handleChange}
         placeholder="John Doe"
-        required
       />
+      {formErrors.name && <p className="error-message">{formErrors.name}</p>}
+
       <label>Email</label>
       <input
         type="email"
@@ -133,23 +185,25 @@ function SignUpForm({ formData, setFormData, handleSignUp, cinemaData }) {
         value={formData.email}
         onChange={handleChange}
         placeholder="johndoe@gmail.com"
-        required
       />
+      {formErrors.email && <p className="error-message">{formErrors.email}</p>}
+
       <label>Cinema</label>
       <select
         name="cinema_id"
         value={formData.cinema_id}
         onChange={handleChange}
-        placeholder="Select cinema here"
-        required
       >
-        <option value="">Select a cinema</option>
-        {/* {cinemaData.map((cinema) => (
-    <option key={cinema.id} value={cinema.id}>
-      {cinema.name}
-    </option>
-  ))} */}
+        <option value="">Select cinema here</option>
+        {cinemaData?.map((cinema) => (
+          <option key={cinema._id} value={cinema._id}>
+            {cinema.name}
+          </option>
+        ))}
       </select>
+      {formErrors.cinema_id && (
+        <p className="error-message">{formErrors.cinema_id}</p>
+      )}
 
       <label>Password</label>
       <input
@@ -158,12 +212,26 @@ function SignUpForm({ formData, setFormData, handleSignUp, cinemaData }) {
         value={formData.password}
         onChange={handleChange}
         placeholder="********"
-        required
       />
+      {formErrors.password && (
+        <p className="error-message">{formErrors.password}</p>
+      )}
 
-      <button type="submit" className="reg-button">
-        Sign Up
-      </button>
+      {isSignUpSuccess ? (
+        <div className="success-message">
+          Registration successful! You can now log in.
+        </div>
+      ) : (
+        <div>
+          {formErrorMessage && (
+            <p className="error-message">{formErrorMessage}</p>
+          )}
+          <button type="submit" className="reg-button">
+            Sign Up
+          </button>
+        </div>
+      )}
+
       <h5 className="reg-term-condition">
         By clicking "SIGN UP" I agree to Boxstreet Terms of Service and Privacy
         Policy
@@ -172,9 +240,75 @@ function SignUpForm({ formData, setFormData, handleSignUp, cinemaData }) {
   );
 }
 
+
 function SignInForm() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [formErrors, setFormErrors] = useState({});
+  const [formErrorMessage, setFormErrorMessage] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+        formData.email
+      )
+    ) {
+      errors.email = "Invalid email address";
+    }
+
+    if (!formData.password.trim()) {
+      errors.password = 'Password is required';
+    } else if (formData.password.length <= 8) {
+      errors.password = 'Invaild Password';
+    }
+
+    setFormErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+
+    try {
+      const isFormValid = validateForm();
+
+      if (isFormValid) {
+        const response = await axios.post(
+          config.AUTH_REQUEST_URL + "/login",
+          formData
+        );
+
+        if (response?.data.status === "success") {
+          setIsSignUpSuccess(true);
+          setFormErrorMessage('');
+        }
+      } else {
+        setFormErrorMessage(
+          "Please fill in all required fields and correct any validation errors."
+        );
+      }
+    } catch (error) {
+      console.error("Error signing in:", error);
+    }
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSignIn}>
       <h1 className="reg-text">Sign In to Boxstreet</h1>
       <div className="social-container">
         <Link className="social">
@@ -195,20 +329,55 @@ function SignInForm() {
       </div>
       <span className="reg-title">Or use your email account:</span>
       <label>Your Email</label>
-      <input type="email" placeholder="johndoe@gmail.com" required />
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="johndoe@gmail.com"
+      />
+      {formErrors.email && (
+        <p className="error-message">{formErrors.email}</p>
+      )}
 
       <div className="pswd">
         <label>Password</label>
-        <Link className="forget" href="#">
+        <Link className="forget" to="#">
           Forgot your password?
         </Link>
       </div>
+      <input
+        type="password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+        placeholder="********"
+      />
+      {formErrors.password && (
+        <p className="error-message">{formErrors.password}</p>
+      )}
 
-      <input type="password" placeholder="********" required />
+      {formErrorMessage && (
+        <p className="error-message">{formErrorMessage}</p>
+      )}
 
-      <button className="reg-button">Sign In</button>
+{isSignUpSuccess ? (
+        <div className="success-message">
+          Welcome to
+        </div>
+      ) : (
+        <div>
+          {formErrorMessage && (
+            <p className="error-message">{formErrorMessage}</p>
+          )}
+          <button type="submit" className="reg-button">
+            Sign Up
+          </button>
+        </div>
+      )}
     </form>
   );
 }
+
 
 export default SignUp;
