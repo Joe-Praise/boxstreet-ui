@@ -5,7 +5,7 @@ import Singlemovie from "./components/Singlemovie/Singlemovie";
 import SignUp from "./components/SignIn-SignOut/signUp";
 import VerifyUser from "./components/SignIn-SignOut/verifyUser";
 import SingleMovie from "./components/Singlemovie/Singlemovie";
-
+import Booking from "./components/Booking/Booking";
 function App() {
   return (
     <div className="App">
@@ -15,6 +15,7 @@ function App() {
           <Route path="/register" element={<SignUp />} />
           <Route path="/verify" element={<VerifyUser />} />
           <Route path="/movie" element={<SingleMovie />} />
+          <Route path="/booking" element={<Booking />} />
         </Routes>
       </BrowserRouter>
     </div>
