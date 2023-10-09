@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../styles/verifyUser.css'
 import { Link } from "react-router-dom";
 import Footer from '../Footer';
@@ -17,6 +17,10 @@ function VerifyUser() {
 
   }
 
+  useEffect(()=>{
+    document.body.classList.remove("registration")
+  },[])
+
   return (
     <div>
         <main className='verify-users'>
@@ -24,7 +28,9 @@ function VerifyUser() {
             <h4 className='verify-update'>We have sent a code to your Email</h4>
             <div className="otp">
               {  otp.map((data, indx)=>{
-                  return <input className='verify-input' type="text" 
+                  return <input 
+                  key={indx}
+                  className='verify-input' type="text" 
                   value={data}
                   maxLength={1}
                   onChange={(e)=>handleChange(e, indx)} />
