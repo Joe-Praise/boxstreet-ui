@@ -21,6 +21,7 @@ const responsive = {
     slidesToSlide: 1,
   },
 };
+
 const sliderImageUrl = [
   {
     id: 1,
