@@ -1,17 +1,21 @@
 .landingbanner{
     width: 100%;
-    background-image: url(../components/uploads/expendables.webp);
     height: 100vh;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    padding-top: 45vh;
-    position: absolute;
+    position: relative;
+}
+
+.landingbanner img{
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
 }
 
 .landingbannerContent{
     width: 91%;
-    margin: 0 auto;
+    margin: -450px auto;
 }
 
 .landingbannerSlideDescription ul{
