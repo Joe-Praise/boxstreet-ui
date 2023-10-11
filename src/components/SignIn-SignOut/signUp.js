@@ -48,7 +48,7 @@ function SignUp() {
 
     if (!formData.password.trim()) {
       errors.password = "Password is required";
-    } else if (formData.password.length < 8) { // Changed to "<" instead of "<="
+    } else if (formData.password.length < 8) { 
       errors.password = "Password must be at least 8 characters long";
     }
 
@@ -85,7 +85,7 @@ function SignUp() {
   };
 
   useEffect(() => {
-    axios.get(config.CINEMA_BASE_URL).then((result) => { // Changed to "axios.get" instead of "axios"
+    axios.get(config.CINEMA_BASE_URL).then((result) => { 
       setCinemaData(result.data);
     });
   }, []);
@@ -267,6 +267,9 @@ function SignInForm({
   setIsSignUpSuccess,
   setFormErrorMessage,
 }) {
+
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -289,7 +292,7 @@ function SignInForm({
 
     if (!formData.password.trim()) {
       errors.password = "Password is required";
-    } else if (formData.password.length < 8) { // Changed to "<" instead of "<="
+    } else if (formData.password.length < 8) { 
       errors.password = "Invalid Password";
     }
 
@@ -308,7 +311,7 @@ function SignInForm({
       );
       console.log("Response:", response);
       if (response?.data.status === "success") {
-        // Handle successful sign-in
+        navigate("/history")
       } else {
         console.log("Sign-in failed. Server response:", response);
         setFormErrorMessage("Sign-in failed. Please try again.");
