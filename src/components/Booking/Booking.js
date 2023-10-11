@@ -62,6 +62,7 @@ function Booking() {
                                                         arr.map((c, i2) => (
                                                             <p className="col1p" key={i2} onClick={(e)=>setActive(e)}>
                                                                 <span></span>
+                                                                <i className="vip"></i>
                                                             </p>
                                                         ))
                                                     }
