@@ -24,7 +24,7 @@ function VerifyUser() {
   return (
     <div>
         <main className='verify-users'>
-            <h1 className='verify-intro'>User Verification</h1>
+            <h2 className='verify-intro'>User Verification</h2>
             <h4 className='verify-update'>We have sent a code to your Email</h4>
             <div className="otp">
               {  otp.map((data, indx)=>{

@@ -6,6 +6,8 @@ import SignUp from "./components/SignIn-SignOut/signUp";
 import VerifyUser from "./components/SignIn-SignOut/verifyUser";
 import SingleMovie from "./components/Singlemovie/Singlemovie";
 import Booking from "./components/Booking/Booking";
+import ForgotPswd from "./components/SignIn-SignOut/forgotpswd";
+import ResetPassword from "./components/SignIn-SignOut/resetPassword";
 function App() {
   return (
     <div className="App">
@@ -14,6 +16,8 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/verify" element={<VerifyUser />} />
+          <Route path="/forgot" element={<ForgotPswd/>} />
+          <Route path="/reset" element={<ResetPassword/>} />
           <Route path="/movie" element={<SingleMovie />} />
           <Route path="/booking" element={<Booking />} />
         </Routes>

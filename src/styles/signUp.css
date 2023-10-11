@@ -265,6 +265,7 @@ a {
 .error-message {
   color: red;
   font-size: 14px;
+  margin-top: 12px;
 }
 
 .success-message {
@@ -273,3 +274,15 @@ a {
   margin-top: 10px;
 }
 
+
+/* Forgot Password */
+.pswd-input {
+  /* background: #eee; */
+  border: 1px solid rgb(206, 203, 203);
+  border-radius: 5px;
+  height: 50px;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 90%;
+  /* margin-bottom: 40px; */
+}

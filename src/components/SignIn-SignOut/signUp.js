@@ -6,7 +6,7 @@ import axios from "axios";
 import config from "../../config";
 
 function SignUp() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ function SignUp() {
   const [cinemaData, setCinemaData] = useState([]);
   const [formErrors, setFormErrors] = useState({});
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
-  const [formErrorMessage, setFormErrorMessage] = useState('');
+  const [formErrorMessage, setFormErrorMessage] = useState("");
 
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
@@ -29,23 +29,27 @@ function SignUp() {
     const errors = {};
 
     if (!formData.name.trim()) {
-      errors.name = 'Full Name is required';
+      errors.name = "Full Name is required";
     }
 
     if (!formData.email.trim()) {
-      errors.email = 'Email is required';
-    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) {
-      errors.email = 'Invalid email address';
+      errors.email = "Email is required";
+    } else if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+        formData.email
+      )
+    ) {
+      errors.email = "Invalid email address";
     }
 
     if (!formData.cinema_id) {
-      errors.cinema_id = 'Please select a cinema';
+      errors.cinema_id = "Please select a cinema";
     }
 
     if (!formData.password.trim()) {
-      errors.password = 'Password is required';
-    } else if (formData.password.length <= 8) {
-      errors.password = 'Password must be at least 8 characters long';
+      errors.password = "Password is required";
+    } else if (formData.password.length < 8) { // Changed to "<" instead of "<="
+      errors.password = "Password must be at least 8 characters long";
     }
 
     setFormErrors(errors);
@@ -68,10 +72,12 @@ function SignUp() {
         if (response?.data.status === "success") {
           navigate("/verify");
           setIsSignUpSuccess(true);
-          setFormErrorMessage('');
+          setFormErrorMessage("");
         }
       } else {
-        setFormErrorMessage('Please fill in all required fields and correct any validation errors.');
+        setFormErrorMessage(
+          "Please fill in all required fields and correct any validation errors."
+        );
       }
     } catch (error) {
       console.error("Error signing up:", error);
@@ -79,7 +85,7 @@ function SignUp() {
   };
 
   useEffect(() => {
-    axios(config.CINEMA_BASE_URL).then((result) => {
+    axios.get(config.CINEMA_BASE_URL).then((result) => { // Changed to "axios.get" instead of "axios"
       setCinemaData(result.data);
     });
   }, []);
@@ -97,12 +103,24 @@ function SignUp() {
           handleSignUp={handleSignUp}
           cinemaData={cinemaData}
           formErrors={formErrors}
+          setFormErrors={setFormErrors}
           isSignUpSuccess={isSignUpSuccess}
+          setIsSignUpSuccess={setIsSignUpSuccess}
           formErrorMessage={formErrorMessage}
+          setFormErrorMessage={setFormErrorMessage}
         />
       </div>
       <div className="form-container sign-in-container">
-        <SignInForm />
+        <SignInForm
+          formData={formData}
+          setFormData={setFormData}
+          isSignUpSuccess={isSignUpSuccess}
+          formErrorMessage={formErrorMessage}
+          formErrors={formErrors}
+          setFormErrors={setFormErrors}
+          setIsSignUpSuccess={setIsSignUpSuccess}
+          setFormErrorMessage={setFormErrorMessage}
+        />
       </div>
       <div className="overlay-container">
         <div className="overlay">
@@ -137,8 +155,11 @@ function SignUpForm({
   handleSignUp,
   cinemaData,
   formErrors,
+  setFormErrors,
   isSignUpSuccess,
+  setIsSignUpSuccess,
   formErrorMessage,
+  setFormErrorMessage,
 }) {
   const handleChange = (e) => {
     setFormData({
@@ -189,11 +210,7 @@ function SignUpForm({
       {formErrors.email && <p className="error-message">{formErrors.email}</p>}
 
       <label>Cinema</label>
-      <select
-        name="cinema_id"
-        value={formData.cinema_id}
-        onChange={handleChange}
-      >
+      <select name="cinema_id" value={formData.cinema_id} onChange={handleChange}>
         <option value="">Select cinema here</option>
         {cinemaData?.map((cinema) => (
           <option key={cinema._id} value={cinema._id}>
@@ -240,20 +257,20 @@ function SignUpForm({
   );
 }
 
-
-function SignInForm() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [formErrors, setFormErrors] = useState({});
-  const [formErrorMessage, setFormErrorMessage] = useState("");
-
+function SignInForm({
+  formData,
+  setFormData,
+  isSignUpSuccess,
+  formErrorMessage,
+  formErrors,
+  setFormErrors,
+  setIsSignUpSuccess,
+  setFormErrorMessage,
+}) {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -271,9 +288,9 @@ function SignInForm() {
     }
 
     if (!formData.password.trim()) {
-      errors.password = 'Password is required';
-    } else if (formData.password.length <= 8) {
-      errors.password = 'Invaild Password';
+      errors.password = "Password is required";
+    } else if (formData.password.length < 8) { // Changed to "<" instead of "<="
+      errors.password = "Invalid Password";
     }
 
     setFormErrors(errors);
@@ -285,26 +302,22 @@ function SignInForm() {
     e.preventDefault();
 
     try {
-      const isFormValid = validateForm();
-
-      if (isFormValid) {
-        const response = await axios.post(
-          config.AUTH_REQUEST_URL + "/login",
-          formData
-        );
-
-        if (response?.data.status === "success") {
-          setIsSignUpSuccess(true);
-          setFormErrorMessage('');
-        }
+      const response = await axios.post(
+        config.AUTH_REQUEST_URL + "/login",
+        formData
+      );
+      console.log("Response:", response);
+      if (response?.data.status === "success") {
+        // Handle successful sign-in
       } else {
-        setFormErrorMessage(
-          "Please fill in all required fields and correct any validation errors."
-        );
+        console.log("Sign-in failed. Server response:", response);
+        setFormErrorMessage("Sign-in failed. Please try again.");
       }
     } catch (error) {
       console.error("Error signing in:", error);
+      setFormErrorMessage("An error occurred while signing in.");
     }
+    
   };
 
   return (
@@ -342,7 +355,7 @@ function SignInForm() {
 
       <div className="pswd">
         <label>Password</label>
-        <Link className="forget" to="#">
+        <Link to="/forgot" className="forget" >
           Forgot your password?
         </Link>
       </div>
@@ -361,17 +374,15 @@ function SignInForm() {
         <p className="error-message">{formErrorMessage}</p>
       )}
 
-{isSignUpSuccess ? (
-        <div className="success-message">
-          Welcome togit
-        </div>
+      {isSignUpSuccess ? (
+        <div className="success-message">Welcome to Boxstreet</div>
       ) : (
         <div>
           {formErrorMessage && (
             <p className="error-message">{formErrorMessage}</p>
           )}
           <button type="submit" className="reg-button">
-            Sign Up
+            Sign In
           </button>
         </div>
       )}
@@ -379,5 +390,6 @@ function SignInForm() {
   );
 }
 
-
 export default SignUp;
+
+
