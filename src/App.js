@@ -7,6 +7,7 @@ import SingleMovie from "./components/Singlemovie/Singlemovie";
 import BookingHistory from "./components/Profile/BookingHistory";
 import Booking from "./components/Booking/Booking";
 import Profile from "./components/Profile/Profile";
+import ChangePass from "./components/Profile/ChangePass";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/history"element={<BookingHistory />}/>
           <Route path="/booking" element={<Booking />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/change-password" element={<ChangePass />} />
         </Routes>
       </BrowserRouter>
     </div>
