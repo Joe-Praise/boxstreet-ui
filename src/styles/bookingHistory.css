@@ -3,9 +3,17 @@
     margin: 150px auto;
 }
 
+.bhBack{
+  color: #fff;
+  display: flex;
+  gap: 5px;
+  margin-top: -50px;
+  margin-bottom: 35px;
+}
+
 .bookinghistory h2{
     color: #fff;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .bhCards{

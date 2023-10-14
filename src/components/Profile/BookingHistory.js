@@ -3,6 +3,10 @@ import "../../styles/bookingHistory.css";
 import Navigation from "../Navigation/Navigation";
 import { Link } from "react-router-dom";
 import {GoCheckCircleFill} from 'react-icons/go'
+import { FaBackward } from "react-icons/fa";
+import { BsBack } from "react-icons/bs";
+import { MdSkipPrevious } from "react-icons/md";
+import { RiArrowGoBackFill } from "react-icons/ri";
 
 function BookingHistory() {
   const sliderImageUrl = [
@@ -91,6 +95,11 @@ function BookingHistory() {
     <div>
       <Navigation />
       <div className="bookinghistory">
+        <div className="bhBack">
+            <RiArrowGoBackFill />   
+            <p>Back to Profile</p>
+        </div>
+        
         <h2>Booking History</h2>
 
         {sliderImageUrl.map((movie) => {

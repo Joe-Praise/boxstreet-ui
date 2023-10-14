@@ -1,40 +1,40 @@
-.nowShowing{
-    width: 100%;
-    position: absolute;
-    z-index: 1;
-    margin-top: -110px;
+.nowShowing {
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  margin-top: -110px;
 }
 
-.nowShowingWidth{
-    width: 91%;
-    margin: 0 auto;
+.nowShowingWidth {
+  width: 91%;
+  margin: 0 auto;
 }
 
-.nowShowingHeader{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.nowShowingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.nowShowingHeader h2{
-    font-size: 1.6rem;
-    color: #FFFFFF;
-    opacity: 1;
+.nowShowingHeader h2 {
+  font-size: 1.6rem;
+  color: #ffffff;
+  opacity: 1;
 }
 
-.showVenueDates{
-    display: flex;
-    gap: 1.25rem;
-    align-items: center;
+.showVenueDates {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
 }
 
 .landingselect {
-    outline: 0;
-    font-size: 0.8rem;
-    color: #FFFFFF;
-    font-weight: bold;
-    background: transparent;
-    border: 1px solid #FFFFFF;
-    padding: 8px 15px;
-    border-radius: 5px;
+  outline: 0;
+  font-size: 0.8rem;
+  color: #ffffff;
+  font-weight: bold;
+  background: transparent;
+  border: 1px solid #ffffff;
+  padding: 8px 15px;
+  border-radius: 5px;
 }
