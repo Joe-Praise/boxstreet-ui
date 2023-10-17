@@ -4,9 +4,52 @@ import ComingSoon from "./ComingSoon";
 import Promotion from "./Promotion";
 import Footer from "../Footer";
 import Select from "./Select";
-
+import { useCallback, useContext, useEffect, useState } from "react";
+import { AppContext } from "../../utils/UserContext";
+import axios from "../../utils/axios";
 
 function NowShowing() {
+  const ctx = useContext(AppContext);
+  const [initData] = ctx.getInitData;
+  const [filterId, setFilterId] = ctx.getFilterId;
+  //   const [queryData, setQueryData] = ctx.getQueryData;
+  const [branches, setBranches] = useState([]);
+
+  const onGetCinemaHandler = (data) => {
+    setFilterId((prevState) => {
+      return {
+        ...prevState,
+        cinema_id: data._id,
+      };
+    });
+  };
+
+  const onGetBranchHandler = (data) => {
+    // console.log(data);
+    setFilterId((prevState) => {
+      return {
+        ...prevState,
+        branch_id: data.location_id._id,
+      };
+    });
+  };
+
+  const getBranches = useCallback(async () => {
+    // if cinema selected === "All" get all branches in DB else query for that particular cinema
+    const url =
+      filterId.cinema_id === "1010101010"
+        ? "/branches"
+        : `/branches?cinema=${filterId.cinema_id}`;
+    const response = await axios.get(url);
+    setBranches(response.data);
+  }, [filterId.cinema_id]);
+
+  //   const getMovies = useCallback(async () => {}, []);
+
+  useEffect(() => {
+    getBranches();
+  }, [getBranches]);
+
   return (
     <div className="nowShowing">
       <div className="nowShowingWidth">
@@ -15,20 +58,19 @@ function NowShowing() {
             <h2>Now Showing</h2>
           </div>
           <div className="showVenueDates">
-            <Select />
-
-            <select className="landingselect" name="viewDays">
-              <option value="today">Today</option>
-              <option value="tomorrow">Oct 6th</option>
-              <option value="saturday">Oct 7th</option>
-              <option value="sunday">Oct 8th</option>
-              <option value="monday">Oct 9th</option>
-              <option value="tusday">Oct 10th</option>
-            </select>
+            <Select
+              items={initData.cinemas}
+              onGetHandler={onGetCinemaHandler}
+            />
+            <Select
+              items={branches.length > 0 ? branches : []}
+              onGetHandler={onGetBranchHandler}
+              location={true}
+            />
           </div>
         </div>
         <div>
-          <MovieCarousel />
+          <MovieCarousel doubleMovies={initData.doubleMovies} />
         </div>
       </div>
       <div>

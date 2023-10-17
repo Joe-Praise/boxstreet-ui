@@ -8,6 +8,7 @@
 .csslider img {
   width: 13rem;
   height: 18.75rem;
+  object-fit: cover;
   border-radius: 10px;
   transition: transform 0.5s ease-in-out;
   z-index: -5;
@@ -36,7 +37,7 @@
   border-radius: 10px;
   flex-direction: column;
   justify-content: center;
-  transition:all ease-in-out 1s;
+  transition: all ease-in-out 1s;
 }
 
 .csCards:hover .csmovieInfo {

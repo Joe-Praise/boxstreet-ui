@@ -19,7 +19,7 @@ function SignUp() {
   const [cinemaData, setCinemaData] = useState([]);
   const [formErrors, setFormErrors] = useState({});
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
-  const [formErrorMessage, setFormErrorMessage] = useState('');
+  const [formErrorMessage, setFormErrorMessage] = useState("");
 
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
@@ -29,23 +29,25 @@ function SignUp() {
     const errors = {};
 
     if (!formData.name.trim()) {
-      errors.name = 'Full Name is required';
+      errors.name = "Full Name is required";
     }
 
     if (!formData.email.trim()) {
-      errors.email = 'Email is required';
-    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) {
-      errors.email = 'Invalid email address';
+      errors.email = "Email is required";
+    } else if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
+    ) {
+      errors.email = "Invalid email address";
     }
 
     if (!formData.cinema_id) {
-      errors.cinema_id = 'Please select a cinema';
+      errors.cinema_id = "Please select a cinema";
     }
 
     if (!formData.password.trim()) {
-      errors.password = 'Password is required';
+      errors.password = "Password is required";
     } else if (formData.password.length <= 8) {
-      errors.password = 'Password must be at least 8 characters long';
+      errors.password = "Password must be at least 8 characters long";
     }
 
     setFormErrors(errors);
@@ -68,10 +70,12 @@ function SignUp() {
         if (response?.data.status === "success") {
           navigate("/verify");
           setIsSignUpSuccess(true);
-          setFormErrorMessage('');
+          setFormErrorMessage("");
         }
       } else {
-        setFormErrorMessage('Please fill in all required fields and correct any validation errors.');
+        setFormErrorMessage(
+          "Please fill in all required fields and correct any validation errors."
+        );
       }
     } catch (error) {
       console.error("Error signing up:", error);
@@ -240,7 +244,6 @@ function SignUpForm({
   );
 }
 
-
 function SignInForm() {
   const [formData, setFormData] = useState({
     email: "",
@@ -253,7 +256,7 @@ function SignInForm() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -263,17 +266,15 @@ function SignInForm() {
     if (!formData.email.trim()) {
       errors.email = "Email is required";
     } else if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
-        formData.email
-      )
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
     ) {
       errors.email = "Invalid email address";
     }
 
     if (!formData.password.trim()) {
-      errors.password = 'Password is required';
+      errors.password = "Password is required";
     } else if (formData.password.length <= 8) {
-      errors.password = 'Invaild Password';
+      errors.password = "Invaild Password";
     }
 
     setFormErrors(errors);
@@ -294,8 +295,8 @@ function SignInForm() {
         );
 
         if (response?.data.status === "success") {
-          setIsSignUpSuccess(true);
-          setFormErrorMessage('');
+          // setIsSignUpSuccess(true);
+          setFormErrorMessage("");
         }
       } else {
         setFormErrorMessage(
@@ -336,9 +337,7 @@ function SignInForm() {
         onChange={handleChange}
         placeholder="johndoe@gmail.com"
       />
-      {formErrors.email && (
-        <p className="error-message">{formErrors.email}</p>
-      )}
+      {formErrors.email && <p className="error-message">{formErrors.email}</p>}
 
       <div className="pswd">
         <label>Password</label>
@@ -357,11 +356,9 @@ function SignInForm() {
         <p className="error-message">{formErrors.password}</p>
       )}
 
-      {formErrorMessage && (
-        <p className="error-message">{formErrorMessage}</p>
-      )}
+      {formErrorMessage && <p className="error-message">{formErrorMessage}</p>}
 
-{isSignUpSuccess ? (
+      {/* {isSignUpSuccess ? (
         <div className="success-message">
           Welcome togit
         </div>
@@ -374,10 +371,9 @@ function SignInForm() {
             Sign Up
           </button>
         </div>
-      )}
+      )} */}
     </form>
   );
 }
-
 
 export default SignUp;
