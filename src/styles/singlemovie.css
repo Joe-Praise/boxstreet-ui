@@ -95,6 +95,7 @@
 .castcontainer {
   letter-spacing: 1px;
   gap: 10px;
+  flex-basis: 48%;
 }
 
 .castcontainer h4 {
@@ -115,6 +116,7 @@
 .movCastInfo img {
   width: 60px;
   height: 60px;
+  object-fit: cover;
   border-radius: 10px;
 }
 
@@ -141,80 +143,105 @@
   font-size: 15px;
 }
 
-.movCastnBook{
-    width: 100%;
-    height: 220px;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+.movCastnBook {
+  width: 100%;
+  height: 220px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 
 .movShowtimes {
-    display: block;
-    height: 220px;
+  /* display: block; */
+  flex-basis: 48%;
+  height: 220px;
 }
 
 .movShowtimes h4 {
   display: block;
+  margin-bottom: 7px;
 }
 
-.movtimes{
-    text-decoration: none;
-    padding: 10px 10px;
-    border: .5px solid #ffffff;
-    border-radius: 50px;
-    align-items: center;
-    display: flex;
-    transition: all ease-in-out .4s;
+.movtimes {
+  text-decoration: none;
+  padding: 10px 10px;
+  border: 0.5px solid #ffffff;
+  border-radius: 50px;
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  transition: all ease-in-out 0.4s;
 }
 
-.movtimes:hover{
-    fill: #ffffff;
-    background-color: #ffffff;
-    color: #040609;
+.movtimes:hover,
+.bookMovieBtn a:hover,
+.movtimes.active {
+  fill: #ffffff;
+  background-color: #ffffff;
+  color: #040609;
+  cursor: pointer;
 }
 
-.movShowflex{
-    display: flex;
-    gap: 10px;
-    align-items: center;
+.movShowflex {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  flex-flow: row wrap;
+  justify-content: space-between;
 }
 
-.movtimes span{
-    font-size: 14px;
-    font-weight: 500;
+.movtimes span,
+.bookMovieBtn a {
+  font-size: 11px;
+  font-weight: 500;
 }
 
-.movAlsoShow{
-    width: 91%;
-    margin: 70px auto;
-    margin-bottom: 150px;
+.bookMovieBtn {
+  /* width: 100%; */
+  margin: 1rem auto;
+}
+.bookMovieBtn a {
+  display: block;
+  text-align: center;
+  /* width: 100%; */
+  background-color: transparent;
+  padding: 0.625rem 0.625rem;
+  border: 0.0313rem solid #ffffff;
+  border-radius: 3.125rem;
+  color: white;
 }
 
-.alsoshowingflex{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.movAlsoShow {
+  width: 91%;
+  margin: 70px auto;
+  margin-bottom: 150px;
 }
 
-.alsoshowingflex h2{
-    color: #FFFFFF;
-    font-size: 22px;
+.alsoshowingflex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.allshowVenueDates{
-    display: flex;
-    gap: 1.25rem;
-    align-items: center;
+.alsoshowingflex h2 {
+  color: #ffffff;
+  font-size: 22px;
+}
+
+.allshowVenueDates {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
 }
 
 .smselect {
-    outline: 0;
-    font-size: 0.8rem;
-    color: #FFFFFF;
-    font-weight: bold;
-    background: transparent;
-    border: 1px solid #FFFFFF;
-    padding: 8px 15px;
-    border-radius: 5px;
+  outline: 0;
+  font-size: 0.8rem;
+  color: #ffffff;
+  font-weight: bold;
+  background: transparent;
+  border: 1px solid #ffffff;
+  padding: 8px 15px;
+  border-radius: 5px;
 }

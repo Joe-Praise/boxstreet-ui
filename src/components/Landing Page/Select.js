@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../styles/select.css";
 import { FaChevronRight } from "react-icons/fa";
 
-function Select({ items, onGetHandler, location }) {
+function Select({ items, onGetHandler, location, value }) {
   const [isOpen, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
 
@@ -21,7 +21,7 @@ function Select({ items, onGetHandler, location }) {
             {selectedItem
               ? items.find((item) => item?._id === selectedItem)?.location_id
                   ?.name
-              : "Select location"}
+              : value}
             <i className={`fa fa-chevron-right icon ${isOpen && "open"}`}>
               {" "}
               <FaChevronRight />{" "}
@@ -55,7 +55,7 @@ function Select({ items, onGetHandler, location }) {
           <div className="dropdown-header" onClick={toggleDropdown}>
             {selectedItem
               ? items.find((item) => item._id === selectedItem).name
-              : "Select a cinema"}
+              : value}
             <i className={`fa fa-chevron-right icon ${isOpen && "open"}`}>
               {" "}
               <FaChevronRight />{" "}

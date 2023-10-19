@@ -41,7 +41,7 @@ function Navigation() {
         </div>
         <div>
           <ul className="navlinks">
-            <Link to="/movie">
+            <Link to="/history">
               <li className="from-left-and-back">CART</li>
             </Link>
             <Link to="/register">

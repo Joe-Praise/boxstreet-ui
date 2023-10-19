@@ -7,6 +7,8 @@ import SingleMovie from "./components/Singlemovie/Singlemovie";
 import BookingHistory from "./components/Profile/BookingHistory";
 import Booking from "./components/Booking/Booking";
 import UserContext from "./utils/UserContext";
+import Profile from "./components/Profile/Profile";
+import ChangePass from "./components/Profile/ChangePass";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route path="/movie/:id" element={<SingleMovie />} />
             <Route path="/history" element={<BookingHistory />} />
             <Route path="/booking" element={<Booking />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/changepassword" element={<ChangePass />} />
           </Routes>
         </BrowserRouter>
       </UserContext>

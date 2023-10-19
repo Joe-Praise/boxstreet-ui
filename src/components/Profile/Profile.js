@@ -36,16 +36,15 @@ function Profile() {
               <div className="userProfileDetails">
                 <h3>First Name:</h3> <span>Jacintha</span>
                 <h3>Last Name:</h3> <span>Lodan</span>
-                <h3>Phone Number:</h3> <span>+234 813 220 5569</span>
-                <h3>Address:</h3>{" "}
-                <span>24 I.T. Igbani Street, Jabi 900108, Abuja</span>
+                <h3>Email:</h3> <span>test@email.com</span>
+                <h3>Cinema</h3> <span>Eko cinema</span>
               </div>
-                <Link to='/history'>
-              <div className="pbookhist">
-                    <RiHistoryFill />
-                    <span>Booking History</span>
-              </div>
-                </Link>
+              <Link to="/history">
+                <div className="pbookhist">
+                  <RiHistoryFill />
+                  <span>Booking History</span>
+                </div>
+              </Link>
             </div>
           </div>
         </div>

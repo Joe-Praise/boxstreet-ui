@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "../../styles/movieCarousel.css";
 import { Link } from "react-router-dom";
+import { AppContext } from "../../utils/UserContext";
 
 const responsive = {
   desktop: {
@@ -98,6 +99,7 @@ const responsive = {
 // ];
 
 function MovieCarousel({ doubleMovies }) {
+  const ctx = useContext(AppContext);
   return (
     <div className="parent">
       <Carousel

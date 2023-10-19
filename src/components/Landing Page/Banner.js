@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "../../styles/banner.css";
 import Navigation from "../Navigation/Navigation";
 import { GoDotFill } from "react-icons/go";
@@ -30,34 +30,6 @@ function Banner() {
     },
   };
 
-  // const BannerSlide = [
-  //   {
-  //     id: 1,
-  //     title: "Expend4bles",
-  //     genre: "Action, Adventure, Sci-Fi",
-  //     description:
-  //       "Armed with every weapon they can get their hands on and the skills to use them, The Expendables are the world’s last line of defense and the team that gets called when all other options are off the table. But new team members with new styles and tactics are going to give “new blood” a whole new meaning.",
-  //     img: ban1,
-  //     cinema: "Filmhouse Cinema",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "The Excorcist",
-  //     genre: "Horror, Thriller",
-  //     description:
-  //       "When his daughter, Angela, and her friend Katherine, show signs of demonic possession, it unleashes a chain of events that forces single father Victor Fielding to confront the nadir of evil. Terrified and desperate, he seeks out Chris MacNeil, the only person alive who's witnessed anything like it before.",
-  //     img: ban2,
-  //     cinema: "Silverbird Cinema",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "BOXSTREET CINEMA",
-  //     description: "Bringing to you the best cinematic experience you wish for",
-  //     img: ban3,
-  //     cinema: "Boxstreet Cinema",
-  //   },
-  // ];
-
   return (
     <div>
       <Navigation />
@@ -70,7 +42,7 @@ function Banner() {
           autoPlay={true}
           partialVisible={false}
         >
-          {initData.doubleMovies?.slice(0, 5).map((banner) => {
+          {initData.doubleMovies?.slice(0, 5)?.map((banner) => {
             return (
               <div className="landingbanner" key={banner._id}>
                 <img src={banner.image} alt={banner.title} />

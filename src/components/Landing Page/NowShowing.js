@@ -12,7 +12,8 @@ function NowShowing() {
   const ctx = useContext(AppContext);
   const [initData] = ctx.getInitData;
   const [filterId, setFilterId] = ctx.getFilterId;
-  //   const [queryData, setQueryData] = ctx.getQueryData;
+  const [initialized, setInitialized] = ctx.getInitialized;
+  const [queryData, setQueryData] = ctx.getQueryData;
   const [branches, setBranches] = useState([]);
 
   const onGetCinemaHandler = (data) => {
@@ -25,11 +26,10 @@ function NowShowing() {
   };
 
   const onGetBranchHandler = (data) => {
-    // console.log(data);
     setFilterId((prevState) => {
       return {
         ...prevState,
-        branch_id: data.location_id._id,
+        branch_id: data._id,
       };
     });
   };
@@ -61,16 +61,18 @@ function NowShowing() {
             <Select
               items={initData.cinemas}
               onGetHandler={onGetCinemaHandler}
+              value={"Select cinema"}
             />
             <Select
               items={branches.length > 0 ? branches : []}
               onGetHandler={onGetBranchHandler}
               location={true}
+              value={"Select location"}
             />
           </div>
         </div>
         <div>
-          <MovieCarousel doubleMovies={initData.doubleMovies} />
+          <MovieCarousel doubleMovies={queryData.movies} />
         </div>
       </div>
       <div>

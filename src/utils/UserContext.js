@@ -6,15 +6,15 @@ export const AppContext = createContext();
 const UserContext = ({ children }) => {
   const [initData, setInitData] = useState({
     cinemas: [{ _id: "1010101010", name: "All" }],
+    cache_cinemas: [],
     doubleMovies: [],
-    // movies: [],
-    // comingSoon: [],
   });
 
+  const [initailized, setInitialized] = useState(false);
   const [queryData, setQueryData] = useState({
     movies: [],
     comingSoon: [],
-    // branches: [],
+    movieSchedule: [],
   });
 
   const [filterId, setFilterId] = useState({
@@ -22,22 +22,15 @@ const UserContext = ({ children }) => {
     branch_id: "",
   });
 
-  // const getBranches = useCallback(async () => {
-  //   // if cinema selected === "All" get all branches in DB else query for that particular cinema
-  //   const url =
-  //     filterId.cinema_id === "1010101010"
-  //       ? "/branches"
-  //       : `/branches?cinema_id=${filterId.cinema_id}`;
-  //   return axios.get(url);
-  // }, [filterId.cinema_id]);
-
   const condition =
     filterId.cinema_id.length < 0 || filterId.cinema_id === "1010101010";
   const getNowShowing = useCallback(async () => {
     // if cinema || branch is selected query all movies froom that cinema || branch
     const url = condition
       ? "/movies/doublemovie"
-      : `/movies/doublemovie?cinema_id=${filterId.cinema_id}&branch_id=${filterId.branch_id}`;
+      : `/movies/doublemovie?cinema_id=${
+          filterId.cinema_id.length > 0 ? filterId.cinema_id : ""
+        }&branch_id=${filterId.branch_id.length > 0 ? filterId.branch_id : ""}`;
     return axios.get(url);
   }, []);
 
@@ -46,6 +39,7 @@ const UserContext = ({ children }) => {
     const url = condition
       ? "/movies"
       : `/movies?cinema_id=${filterId.cinema_id}&branch_id=${filterId.branch_id}`;
+    // console.log(url);
     return axios.get(url);
   }, [filterId.cinema_id, filterId.branch_id, condition]);
 
@@ -53,12 +47,11 @@ const UserContext = ({ children }) => {
     return axios.get("/cinemas");
   }, []);
 
-  const InitTransformData = (double, movies, query) => {
-    let search = double;
-    if (query) search = movies;
+  const InitTransformData = (double, movies) => {
     const data = [];
     const comingSoonData = [];
-    for (const key of search) {
+
+    for (const key of double) {
       // console.log(key);
       if (key.coming_soon !== true) {
         const obj = {
@@ -78,13 +71,6 @@ const UserContext = ({ children }) => {
           pg_rating: key.pg_rating,
           release_date: key.release_date,
           coming_soon: key.coming_soon,
-          // cinema_name: key.cinema_id.name,
-          // cinema_email: key.cinema_id.email,
-          // cinema_phone: key.cinema_id.phone,
-          // cinema_image: key.cinema_id.image,
-          // branch_openingTime: key.branch_id.opening,
-          // branch_closing_time: key.branch_id.closing,
-          // branch_phones: key.branch_id.phone,
         };
         data.push(obj);
       }
@@ -109,21 +95,16 @@ const UserContext = ({ children }) => {
           pg_rating: key.pg_rating,
           release_date: key.release_date,
           coming_soon: key.coming_soon,
-          // cinema_name: key.cinema_id.name,
-          // cinema_email: key.cinema_id.email,
-          // cinema_phone: key.cinema_id.phone,
-          // cinema_image: key.cinema_id.image,
-          // branch_openingTime: key.branch_id.opening,
-          // branch_closing_time: key.branch_id.closing,
-          // branch_phones: key.branch_id.phone,
         };
         comingSoonData.push(comingSoon);
       }
     }
 
+    // console.log("2", movies);
     setInitData((prevState) => {
       return {
         ...prevState,
+        cinemas: prevState.cache_cinemas,
         doubleMovies: data,
       };
     });
@@ -132,7 +113,7 @@ const UserContext = ({ children }) => {
       return {
         ...prevState,
         comingSoon: comingSoonData,
-        movies: queryData.movies.length < 1 ? data : queryData.movies,
+        movies: data,
       };
     });
   };
@@ -144,6 +125,7 @@ const UserContext = ({ children }) => {
           setInitData({
             cinemas: [...initData.cinemas, ...results[0].data],
             doubleMovies: results[1].data,
+            cache_cinemas: [...initData.cinemas, ...results[0].data],
           });
           InitTransformData(results[1].data, results[2].data.data);
         })
@@ -164,12 +146,10 @@ const UserContext = ({ children }) => {
             console.log("Error", error.message);
           }
         });
-    }
-
-    if (isInitialized) {
-      Promise.all([getNowShowing(), getMovies()])
+    } else {
+      Promise.all([getCinemas(), getNowShowing(), getMovies()])
         .then(function (results) {
-          InitTransformData(results[0].data, results[1].data.data, true);
+          InitTransformData(results[1].data, results[2].data.data);
         })
         .catch(function (error) {
           if (error.response) {
@@ -183,35 +163,34 @@ const UserContext = ({ children }) => {
             // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
             // http.ClientRequest in node.js
             console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", error.message);
           }
         });
+      setInitialized(true);
     }
 
     return () => {
       isInitialized = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    getNowShowing,
-    getCinemas,
+    // getNowShowing,
+    // getCinemas,
     getMovies,
-    filterId.branch_id,
     filterId.cinema_id,
-    initData.cinemas,
+    filterId.branch_id,
   ]);
 
+  // console.log(initailized);
+
   // console.log(initData.doubleMovies);
-
-  // useEffect(() => {}, [filterId.cinema, filterId.cinema]);
-
   const data = {
+    getInitialized: [initailized, setInitialized],
     getInitData: [initData, setInitData],
     getQueryData: [queryData, setQueryData],
     getFilterId: [filterId, setFilterId],
   };
 
+  // console.log(queryData.movies);
   return <AppContext.Provider value={data}>{children}</AppContext.Provider>;
 };
 

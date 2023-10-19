@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "../../styles/bookingHistory.css";
 import Navigation from "../Navigation/Navigation";
 import { Link } from "react-router-dom";
-import {GoCheckCircleFill} from 'react-icons/go'
+import { GoCheckCircleFill } from "react-icons/go";
 import { FaBackward } from "react-icons/fa";
 import { BsBack } from "react-icons/bs";
 import { MdSkipPrevious } from "react-icons/md";
 import { RiArrowGoBackFill } from "react-icons/ri";
+import axios from "../../utils/axios";
 
 function BookingHistory() {
   const sliderImageUrl = [
@@ -91,47 +92,71 @@ function BookingHistory() {
       url: "https://images.unsplash.com/photo-1611165946687-896e3845d3a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZmFzdCUyMGFuZCUyMGZ1cmlvdXN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
     },
   ];
+
+  const [history, setHistory] = useState([]);
+  const getUser = JSON.parse(localStorage.getItem("UserData"));
+
+  const getBookingHistory = useCallback(async () => {
+    const response = await axios.get(`bookings/users/${getUser.user_id}`);
+    // console.log(response.data);
+    setHistory(response.data);
+  }, []);
+
+  useEffect(() => {
+    getBookingHistory();
+  }, []);
   return (
     <div>
       <Navigation />
       <div className="bookinghistory">
         <div className="bhBack">
-            <RiArrowGoBackFill />   
-            <p>Back to Profile</p>
+          <RiArrowGoBackFill />
+          <p>Back to Profile</p>
         </div>
-        
-        <h2>Booking History</h2>
 
-        {sliderImageUrl.map((movie) => {
-          return (
-            <div className="bh" key={movie.id}>
-              <Link to="/history">
-                <div className="bhCards">
-                  <div className="bhdate">
-                    <span>{movie.date}</span>
-                  </div>
-                  <div>
-                    <img src={movie.url} alt="movieposter" />
-                  </div>
-                  <div className="bhmovieInfo">
-                    <p className="bhshowtime">{movie.showingtime}</p>
-                    <div className="bhMovietext">
-                      <h3>{movie.title}</h3>
-                      <span>{movie.genre}</span>
-                      <p>{movie.description}</p>
+        <h2>Booking History</h2>
+        {!history.length ? (
+          <>
+            <h1 className="noBooking">No Booking has been made...</h1>
+          </>
+        ) : (
+          history.map((movie) => {
+            return (
+              <div className="bh" key={movie.id}>
+                <Link to="/history">
+                  <div className="bhCards">
+                    <div className="bhdate">
+                      {/* <span>{movie.date}</span> */}
+                    </div>
+                    <div>
+                      <img src={movie?.movie_id?.image} alt="movieposter" />
+                    </div>
+                    <div className="bhmovieInfo">
+                      <p className="bhshowtime">{movie?.show_time}</p>
+                      <div className="bhMovietext">
+                        <h3>{movie?.movie_id?.name}</h3>
+                        <span>{movie?.movie_id?.genre}</span>
+                        <p>{movie?.movie_id.description}</p>
+                      </div>
+                    </div>
+                    <div className="iconstyle">
+                      {movie?.movie_id?.is_checked === true ? (
+                        <i>
+                          <GoCheckCircleFill className="checkIcon" />
+                          <span>Watched</span>
+                        </i>
+                      ) : (
+                        <i>
+                          <span>Pending...</span>
+                        </i>
+                      )}
                     </div>
                   </div>
-                  <div className="iconstyle">
-                    <i>
-                        <GoCheckCircleFill className="checkIcon"/>
-                        <span>Watched</span>
-                    </i>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          );
-        })}
+                </Link>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );

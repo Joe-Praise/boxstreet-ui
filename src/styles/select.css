@@ -1,7 +1,7 @@
 .dropdown {
-    width: 200px;
-  border-radius: 5px;
-  font-size: 0.8rem; 
+  width: 310px;
+  border-radius: 25px;
+  font-size: 0.8rem;
   color: #fff;
   font-weight: bold;
   border: 1px solid #fff;
@@ -9,7 +9,7 @@
 }
 
 .dropdown-header {
-    padding: 8px 15px;
+  padding: 8px 15px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -24,11 +24,11 @@
 
 .dropdown-body.open {
   display: block;
-    position: absolute;
-    background-color: black;
-    color: white;
-    width: 200px;
-    z-index: 2 ;
+  position: absolute;
+  background-color: black;
+  color: white;
+  width: 200px;
+  z-index: 2;
 }
 
 .dropdown-item {

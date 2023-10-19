@@ -14,9 +14,12 @@ function SignUp() {
     email: "",
     password: "",
     cinema_id: "",
+    branch_id: "",
   });
 
   const [cinemaData, setCinemaData] = useState([]);
+  const [branchData, setBranchData] = useState([]);
+
   const [formErrors, setFormErrors] = useState({});
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState("");
@@ -42,6 +45,10 @@ function SignUp() {
 
     if (!formData.cinema_id) {
       errors.cinema_id = "Please select a cinema";
+    }
+
+    if (!formData.branch_id) {
+      errors.branch_id = "Please select a branch";
     }
 
     if (!formData.password.trim()) {
@@ -83,8 +90,12 @@ function SignUp() {
   };
 
   useEffect(() => {
-    axios(config.CINEMA_BASE_URL).then((result) => {
+    axios(config.APP_BASE_URL + "/cinemas").then((result) => {
       setCinemaData(result.data);
+    });
+
+    axios(config.APP_BASE_URL + "/branches").then((result) => {
+      setBranchData(result.data);
     });
   }, []);
 
@@ -100,13 +111,23 @@ function SignUp() {
           setFormData={setFormData}
           handleSignUp={handleSignUp}
           cinemaData={cinemaData}
+          branchData={branchData}
           formErrors={formErrors}
           isSignUpSuccess={isSignUpSuccess}
           formErrorMessage={formErrorMessage}
         />
       </div>
       <div className="form-container sign-in-container">
-        <SignInForm />
+        <SignInForm
+          formData={formData}
+          setFormData={setFormData}
+          isSignUpSuccess={isSignUpSuccess}
+          formErrorMessage={formErrorMessage}
+          formErrors={formErrors}
+          setFormErrors={setFormErrors}
+          setIsSignUpSuccess={setIsSignUpSuccess}
+          setFormErrorMessage={setFormErrorMessage}
+        />
       </div>
       <div className="overlay-container">
         <div className="overlay">
@@ -140,6 +161,7 @@ function SignUpForm({
   setFormData,
   handleSignUp,
   cinemaData,
+  branchData,
   formErrors,
   isSignUpSuccess,
   formErrorMessage,
@@ -192,6 +214,16 @@ function SignUpForm({
       />
       {formErrors.email && <p className="error-message">{formErrors.email}</p>}
 
+      {/* <div>
+    <div className="signUpSelect">
+
+    </div>
+    <div className="signUpSelect">
+      
+    </div>
+
+</div> */}
+
       <label>Cinema</label>
       <select
         name="cinema_id"
@@ -207,6 +239,23 @@ function SignUpForm({
       </select>
       {formErrors.cinema_id && (
         <p className="error-message">{formErrors.cinema_id}</p>
+      )}
+
+      <label>Branch</label>
+      <select
+        name="branch_id"
+        value={formData.branch_id}
+        onChange={handleChange}
+      >
+        <option value="">Select branch here</option>
+        {branchData?.map((branch) => (
+          <option key={branch._id} value={branch._id}>
+            {branch.location_id.name}
+          </option>
+        ))}
+      </select>
+      {formErrors.branch_id && (
+        <p className="error-message">{formErrors.branch_id}</p>
       )}
 
       <label>Password</label>
@@ -244,14 +293,17 @@ function SignUpForm({
   );
 }
 
-function SignInForm() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [formErrors, setFormErrors] = useState({});
-  const [formErrorMessage, setFormErrorMessage] = useState("");
+function SignInForm({
+  formData,
+  setFormData,
+  isSignUpSuccess,
+  formErrorMessage,
+  formErrors,
+  setFormErrors,
+  setIsSignUpSuccess,
+  setFormErrorMessage,
+}) {
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -273,8 +325,8 @@ function SignInForm() {
 
     if (!formData.password.trim()) {
       errors.password = "Password is required";
-    } else if (formData.password.length <= 8) {
-      errors.password = "Invaild Password";
+    } else if (formData.password.length < 8) {
+      errors.password = "Invalid Password";
     }
 
     setFormErrors(errors);
@@ -286,25 +338,38 @@ function SignInForm() {
     e.preventDefault();
 
     try {
-      const isFormValid = validateForm();
+      const getSchedule = JSON.parse(localStorage.getItem("movieSchedule"));
+      const response = await axios.post(
+        config.AUTH_REQUEST_URL + "/login",
+        formData
+      );
+      console.log("Response:", response);
+      if (response?.data.status === "success") {
+        const data = response.data.data.user;
+        const userData = {
+          user_id: data._id,
+          cinema_id: data.cinema_id,
+          branch_id: data.branch_id,
+        };
+        // console.log(data);
 
-      if (isFormValid) {
-        const response = await axios.post(
-          config.AUTH_REQUEST_URL + "/login",
-          formData
-        );
-
-        if (response?.data.status === "success") {
-          // setIsSignUpSuccess(true);
-          setFormErrorMessage("");
+        if (
+          getSchedule.movieSchedule_id.length < 1 ||
+          getSchedule.schedule_date.length < 1 ||
+          getSchedule.theater_id.length < 1
+        ) {
+          localStorage.setItem("UserData", JSON.stringify(userData));
+          navigate("/history");
+        } else {
+          navigate("/booking");
         }
       } else {
-        setFormErrorMessage(
-          "Please fill in all required fields and correct any validation errors."
-        );
+        console.log("Sign-in failed. Server response:", response);
+        setFormErrorMessage("Sign-in failed. Please try again.");
       }
     } catch (error) {
       console.error("Error signing in:", error);
+      setFormErrorMessage("An error occurred while signing in.");
     }
   };
 
@@ -341,7 +406,7 @@ function SignInForm() {
 
       <div className="pswd">
         <label>Password</label>
-        <Link className="forget" to="#">
+        <Link to="/forgot" className="forget">
           Forgot your password?
         </Link>
       </div>
@@ -350,7 +415,7 @@ function SignInForm() {
         name="password"
         value={formData.password}
         onChange={handleChange}
-        placeholder="********"
+        placeholder="****"
       />
       {formErrors.password && (
         <p className="error-message">{formErrors.password}</p>
@@ -358,20 +423,18 @@ function SignInForm() {
 
       {formErrorMessage && <p className="error-message">{formErrorMessage}</p>}
 
-      {/* {isSignUpSuccess ? (
-        <div className="success-message">
-          Welcome togit
-        </div>
+      {isSignUpSuccess ? (
+        <div className="success-message">Welcome to Boxstreet</div>
       ) : (
         <div>
           {formErrorMessage && (
             <p className="error-message">{formErrorMessage}</p>
           )}
           <button type="submit" className="reg-button">
-            Sign Up
+            Sign In
           </button>
         </div>
-      )} */}
+      )}
     </form>
   );
 }
