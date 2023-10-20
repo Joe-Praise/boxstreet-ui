@@ -1,0 +1,61 @@
+.ccPassform {
+  background: transparent;
+  background-size: cover;
+  width: 80%;
+  height: auto;
+  margin: 120px auto;
+  padding: 25px 50px;
+}
+
+.ccPassForm h2{
+    color: #fff;
+}
+
+.ccPassform section {
+  font-size: 10px;
+  color: #999;
+  margin-top: -15px;
+}
+
+.ccPassform-group {
+  width: 100%;
+  margin: 20px 0px;
+  text-decoration: none;
+}
+
+.ccPassform-group label {
+  color: #fff;
+  font-size: 16px;
+}
+
+.ccPassform-group input {
+  width: 50%;
+  display: block;
+  margin-top: 5px;
+  padding: 8px 10px;
+  font-size: 16px;
+  outline: none;
+  color: #fff;
+  background-color: black;
+  border: 0.5px solid #333;
+  border-radius: 5px;
+}
+
+.ccPassform-group span {
+  font-size: 10px;
+  margin-left: 10px;
+  color: red;
+}
+
+.ccPassform-group button {
+  background: goldenrod;
+  color: #fff;
+  border: none;
+  text-decoration: none;
+  padding: 10px 30px;
+  font-size: 18px;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  border-radius: 10px;
+}
