@@ -22,6 +22,7 @@ function SingleMovie() {
   const [isSelected, setIsSelected] = useState(false);
   const { id } = useParams({});
   const navigate = useNavigate();
+  const getUser = JSON.parse(localStorage.getItem("UserData"));
 
   const [schedule, setSchedule] = useState({
     movieSchedule_id: "",
@@ -45,7 +46,7 @@ function SingleMovie() {
         const obj = {
           _id: key._id,
           name: key.movie_id.name,
-          genre: key.movie_id.genre.split(","),
+          genre: key.movie_id.genre_id,
           description: key.movie_id.description,
           trailer: key.movie_id.trailer,
           times_showed: key.movie_id.times_showed,
@@ -80,6 +81,26 @@ function SingleMovie() {
     });
   };
 
+  const getFilterIdFromMovieSchedule = (arr) => {
+    if (!filterId.branch_id.length) {
+      setFilterId((prevState) => {
+        return {
+          ...prevState,
+          branch_id: arr.branch_id._id,
+        };
+      });
+    }
+
+    if (!filterId.cinema_id.length) {
+      setFilterId((prevState) => {
+        return {
+          ...prevState,
+          cinema_id: arr.cinema_id._id,
+        };
+      });
+    }
+  };
+
   const getSingleMovie = useCallback(async () => {
     try {
       const response = await axios.get(`/movieschedule?movie_id=${id}`);
@@ -89,9 +110,13 @@ function SingleMovie() {
       } else if (arr.length > 1) {
         const newArr = arr.at(-1);
         InitTransformData([newArr]);
+        getFilterIdFromMovieSchedule(newArr);
       } else {
         InitTransformData(arr);
+        getFilterIdFromMovieSchedule(arr);
       }
+
+      console.log(arr);
     } catch (error) {
       console.log(error);
     }
@@ -137,8 +162,8 @@ function SingleMovie() {
       return;
     }
     localStorage.setItem("movieSchedule", JSON.stringify(schedule));
-    const getUser = JSON.parse(localStorage.getItem("UserData"));
-    if (getUser.user_id.length > 1) {
+    // const getUser = JSON.parse(localStorage.getItem("UserData"));
+    if (getUser?.user_id.length > 1) {
       navigate("/booking");
     } else {
       navigate("/register");
@@ -166,7 +191,7 @@ function SingleMovie() {
                 <div className="movtextLeft">
                   <div className="movGenre">
                     <ul>
-                      {el.genre.map((el, i, arr) => {
+                      {/* {el.genre.map((el, i, arr) => {
                         return (
                           <li key={i}>
                             {el}
@@ -179,7 +204,7 @@ function SingleMovie() {
                             </span>
                           </li>
                         );
-                      })}
+                      })} */}
                     </ul>
                   </div>
                   <h2 className="movTitle">{el.name}</h2>

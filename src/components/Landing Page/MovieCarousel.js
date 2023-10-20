@@ -118,7 +118,7 @@ function MovieCarousel({ doubleMovies }) {
                   <div className="csmovieInfo">
                     <div>
                       <h3>{movie.name}</h3>
-                      <span>{movie?.genre}</span>
+                      {/* <span>{movie?.genre}</span> */}
                       <p>{movie.description}</p>
                     </div>
                   </div>

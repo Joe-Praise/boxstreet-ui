@@ -4,8 +4,12 @@ import axios from "./axios";
 let isInitialized = false;
 export const AppContext = createContext();
 const UserContext = ({ children }) => {
+  const getUser = JSON.parse(localStorage.getItem("UserData"));
+  const [loginDetails, setLoginDetails] = useState(getUser);
+  // const [cacheCinema, setCacheCinema] = useState([]);
+  const ID = "1010101010";
   const [initData, setInitData] = useState({
-    cinemas: [{ _id: "1010101010", name: "All" }],
+    cinemas: [{ _id: ID, name: "All" }],
     cache_cinemas: [],
     doubleMovies: [],
   });
@@ -22,8 +26,7 @@ const UserContext = ({ children }) => {
     branch_id: "",
   });
 
-  const condition =
-    filterId.cinema_id.length < 0 || filterId.cinema_id === "1010101010";
+  const condition = filterId.cinema_id.length < 0 || filterId.cinema_id === ID;
   const getNowShowing = useCallback(async () => {
     // if cinema || branch is selected query all movies froom that cinema || branch
     const url = condition
@@ -50,29 +53,55 @@ const UserContext = ({ children }) => {
   const InitTransformData = (double, movies) => {
     const data = [];
     const comingSoonData = [];
-
-    for (const key of double) {
-      // console.log(key);
-      if (key.coming_soon !== true) {
-        const obj = {
-          _id: key._id,
-          name: key.name,
-          genre: key.genre.split(","),
-          description: key.description,
-          trailer: key.trailer,
-          times_showed: key.times_showed,
-          image: key.image,
-          cast: key.cast,
-          movie_director: key.movie_director,
-          production_studio: key.production_studio,
-          duration: key.duration,
-          language: key.language,
-          movie_rating: key.movie_rating,
-          pg_rating: key.pg_rating,
-          release_date: key.release_date,
-          coming_soon: key.coming_soon,
-        };
-        data.push(obj);
+    if (isInitialized) {
+      for (const key of movies) {
+        // console.log(key);
+        if (key.coming_soon !== true) {
+          const obj = {
+            _id: key._id,
+            name: key.name,
+            genre: key.genre_id,
+            description: key.description,
+            trailer: key.trailer,
+            times_showed: key.times_showed,
+            image: key.image,
+            cast: key.cast,
+            movie_director: key.movie_director,
+            production_studio: key.production_studio,
+            duration: key.duration,
+            language: key.language,
+            movie_rating: key.movie_rating,
+            pg_rating: key.pg_rating,
+            release_date: key.release_date,
+            coming_soon: key.coming_soon,
+          };
+          data.push(obj);
+        }
+      }
+    } else {
+      for (const key of double) {
+        // console.log(key);
+        if (key.coming_soon !== true) {
+          const obj = {
+            _id: key._id,
+            name: key.name,
+            genre: key.genre_id,
+            description: key.description,
+            trailer: key.trailer,
+            times_showed: key.times_showed,
+            image: key.image,
+            cast: key.cast,
+            movie_director: key.movie_director,
+            production_studio: key.production_studio,
+            duration: key.duration,
+            language: key.language,
+            movie_rating: key.movie_rating,
+            pg_rating: key.pg_rating,
+            release_date: key.release_date,
+            coming_soon: key.coming_soon,
+          };
+          data.push(obj);
+        }
       }
     }
 
@@ -81,7 +110,7 @@ const UserContext = ({ children }) => {
         const comingSoon = {
           _id: key._id,
           name: key.name,
-          genre: key.genre.split(","),
+          genre: key.genre_id,
           description: key.description,
           trailer: key.trailer,
           times_showed: key.times_showed,
@@ -116,6 +145,8 @@ const UserContext = ({ children }) => {
         movies: data,
       };
     });
+    // console.log("data", data);
+    // console.log("coming soon", comingSoonData);
   };
 
   useEffect(() => {
@@ -147,9 +178,9 @@ const UserContext = ({ children }) => {
           }
         });
     } else {
-      Promise.all([getCinemas(), getNowShowing(), getMovies()])
+      Promise.all([getNowShowing(), getMovies()])
         .then(function (results) {
-          InitTransformData(results[1].data, results[2].data.data);
+          InitTransformData(results[0].data, results[1].data.data);
         })
         .catch(function (error) {
           if (error.response) {
@@ -182,12 +213,13 @@ const UserContext = ({ children }) => {
 
   // console.log(initailized);
 
-  // console.log(initData.doubleMovies);
+  // console.log(filterId);
   const data = {
     getInitialized: [initailized, setInitialized],
     getInitData: [initData, setInitData],
     getQueryData: [queryData, setQueryData],
     getFilterId: [filterId, setFilterId],
+    getLoginDetails: [loginDetails, setLoginDetails],
   };
 
   // console.log(queryData.movies);

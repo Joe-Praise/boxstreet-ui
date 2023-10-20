@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import "../../styles/bookingHistory.css";
 import Navigation from "../Navigation/Navigation";
 import { Link } from "react-router-dom";
 import { GoCheckCircleFill } from "react-icons/go";
-import { FaBackward } from "react-icons/fa";
-import { BsBack } from "react-icons/bs";
-import { MdSkipPrevious } from "react-icons/md";
+// import { FaBackward } from "react-icons/fa";
+// import { BsBack } from "react-icons/bs";
+// import { MdSkipPrevious } from "react-icons/md";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import axios from "../../utils/axios";
+// import { AppContext } from "../../utils/UserContext";
 
 function BookingHistory() {
   const sliderImageUrl = [
@@ -92,12 +93,15 @@ function BookingHistory() {
       url: "https://images.unsplash.com/photo-1611165946687-896e3845d3a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZmFzdCUyMGFuZCUyMGZ1cmlvdXN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
     },
   ];
-
+  // const ctx = useContext(AppContext)
+  // const [loginDetails, setLoginDetails] = ctx.getLoginDetails
   const [history, setHistory] = useState([]);
   const getUser = JSON.parse(localStorage.getItem("UserData"));
 
   const getBookingHistory = useCallback(async () => {
-    const response = await axios.get(`bookings/users/${getUser.user_id}`);
+    const response = await axios.get(
+      `/bookings?cinema_id=${getUser.cinema_id}&email=${getUser.user_email}`
+    );
     // console.log(response.data);
     setHistory(response.data);
   }, []);
@@ -109,10 +113,10 @@ function BookingHistory() {
     <div>
       <Navigation />
       <div className="bookinghistory">
-        <div className="bhBack">
+        <Link to="/profile" className="bhBack">
           <RiArrowGoBackFill />
           <p>Back to Profile</p>
-        </div>
+        </Link>
 
         <h2>Booking History</h2>
         {!history.length ? (
@@ -120,7 +124,7 @@ function BookingHistory() {
             <h1 className="noBooking">No Booking has been made...</h1>
           </>
         ) : (
-          history.map((movie) => {
+          history?.map((movie) => {
             return (
               <div className="bh" key={movie.id}>
                 <Link to="/history">
