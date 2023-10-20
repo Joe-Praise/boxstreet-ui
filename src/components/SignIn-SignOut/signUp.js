@@ -304,6 +304,7 @@ function SignInForm({
   setFormErrorMessage,
 }) {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -334,35 +335,42 @@ function SignInForm({
     return Object.keys(errors).length === 0;
   };
 
+  const setUserInfoInLocalStorage = function (userData) {
+    localStorage.setItem("UserData", JSON.stringify(userData));
+  };
+
   const handleSignIn = async (e) => {
     e.preventDefault();
 
     try {
+      setIsLoading((prevState) => !prevState);
       const getSchedule = JSON.parse(localStorage.getItem("movieSchedule"));
       const response = await axios.post(
         config.AUTH_REQUEST_URL + "/login",
         formData
       );
-      console.log("Response:", response);
+      // console.log("Response:", response);
       if (response?.data.status === "success") {
         const data = response.data.data.user;
         const userData = {
           user_id: data._id,
           cinema_id: data.cinema_id,
           branch_id: data.branch_id,
+          user_email: data.email,
         };
-        // console.log(data);
 
         if (
-          getSchedule.movieSchedule_id.length < 1 ||
-          getSchedule.schedule_date.length < 1 ||
-          getSchedule.theater_id.length < 1
+          getSchedule?.movieSchedule_id?.length ||
+          getSchedule?.schedule_date?.length ||
+          getSchedule?.theater_id?.length
         ) {
-          localStorage.setItem("UserData", JSON.stringify(userData));
-          navigate("/history");
-        } else {
           navigate("/booking");
+          setUserInfoInLocalStorage(userData);
+        } else {
+          setUserInfoInLocalStorage(userData);
+          navigate("/");
         }
+        setIsLoading((prevState) => !prevState);
       } else {
         console.log("Sign-in failed. Server response:", response);
         setFormErrorMessage("Sign-in failed. Please try again.");
@@ -431,7 +439,7 @@ function SignInForm({
             <p className="error-message">{formErrorMessage}</p>
           )}
           <button type="submit" className="reg-button">
-            Sign In
+            {isLoading ? <span className="loader">🚀</span> : "Sign In"}
           </button>
         </div>
       )}

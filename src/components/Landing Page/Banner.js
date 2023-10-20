@@ -49,7 +49,7 @@ function Banner() {
                 <div className="landingbannerContent">
                   <div className="landingbannerSlideDescription">
                     <ul>
-                      {banner.genre?.map((el, i, arr) => {
+                      {/* {banner?.genre?.map((el, i, arr) => {
                         return (
                           <li key={i}>
                             {el}
@@ -62,7 +62,7 @@ function Banner() {
                             </span>
                           </li>
                         );
-                      })}
+                      })} */}
                     </ul>
                     <h1>{banner.name}</h1>
                     <p>{banner.description}</p>

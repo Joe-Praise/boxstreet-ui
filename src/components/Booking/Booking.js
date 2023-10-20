@@ -9,7 +9,7 @@ import {
 } from "react-icons/io5";
 import { MdLockClock } from "react-icons/md";
 import { useState, useEffect } from "react";
-import img1 from "../uploads/booking-movie6.jpg";
+// import img1 from "../uploads/booking-movie6.jpg";
 import Navigation from "../Navigation/Navigation";
 import Footer from "../Footer";
 import axios from "axios";
@@ -33,17 +33,17 @@ function Booking() {
     [{}, {}],
   ]);
 
-  const getSchedule = JSON.parse(localStorage.getItem("movieSchedule"));
-  const getUser = JSON.parse(localStorage.getItem("UserData"));
+  const ctx = useContext(AppContext);
+  //   const [filterId, setFilterId] = ctx.getFilterId;
+  const [userInfo] = ctx.getLoginDetails;
 
-  const theater_id = "652aa9066de9462d02533530";
-  const schedule_id = "652abeaddf67b509b49acd0b";
+  const getSchedule = JSON.parse(localStorage.getItem("movieSchedule"));
+  //   const getUser = JSON.parse(localStorage.getItem("UserData"));
+
+  //   const theater_id = "652aa9066de9462d02533530";
+  //   const schedule_id = "652abeaddf67b509b49acd0b";
   const [seats, setSeat] = useState([]);
   const [scheduleInfo, setScheduleInfo] = useState(getSchedule);
-  const [userInfo, setUserInfo] = useState(getUser);
-
-  const ctx = useContext(AppContext);
-  const [filterId, setFilterId] = ctx.getFilterId;
 
   const [booking, setBooking] = useState({
     full_name: "",
@@ -51,13 +51,13 @@ function Booking() {
     email: "",
     phone: "",
     show_time: new Date(),
-    theater_id: scheduleInfo.theater_id,
-    cinema_id: scheduleInfo.cinema_id,
-    branch_id: scheduleInfo.branch_id,
-    user_id: userInfo.user_id,
+    theater_id: scheduleInfo?.theater_id,
+    cinema_id: scheduleInfo?.cinema_id,
+    branch_id: scheduleInfo?.branch_id,
+    user_id: userInfo?.user_id,
     movie_id: "",
     movie_price: "",
-    schedule_id: scheduleInfo.movieSchedule_id,
+    schedule_id: scheduleInfo?.movieSchedule_id,
     seats: seats,
   });
   let [amount, setAmount] = useState(0);
@@ -122,7 +122,7 @@ function Booking() {
   const handlePayment = async (e) => {
     e.preventDefault();
 
-    let email = booking.email;
+    let email = booking?.email;
 
     try {
       const payment_url = BASE_URL + "/api/v1/payments/initiate-payment";
@@ -140,6 +140,7 @@ function Booking() {
           response?.data.data.paymentLink.data.authorization_url,
           "_blank"
         );
+        localStorage.removeItem("movieSchedule");
       }
     } catch (error) {
       setFormErrorMessage("An error occurred in payment transaction.");
@@ -150,9 +151,9 @@ function Booking() {
     let left_seats = {};
     let right_seats = {};
 
-    let seat_url = `${BASE_URL}/api/v1/theaters/${booking.theater_id}/seats-summary`;
-    let movie_schedule_url = `${BASE_URL}/api/v1/movieschedule/${booking.schedule_id}`;
-    let user_url = `${BASE_URL}/api/v1/users/${userInfo.user_id}`;
+    let seat_url = `${BASE_URL}/api/v1/theaters/${booking?.theater_id}/seats-summary`;
+    let movie_schedule_url = `${BASE_URL}/api/v1/movieschedule/${booking?.schedule_id}`;
+    let user_url = `${BASE_URL}/api/v1/users/${userInfo?.user_id}`;
 
     axios.get(movie_schedule_url).then((res) => {
       let data = res.data?.data;
@@ -163,10 +164,10 @@ function Booking() {
         return {
           ...prevState,
           show_time: new Date(scheduleInfo?.schedule_date),
-          theater_id: getSchedule.theater_id,
+          theater_id: getSchedule?.theater_id,
           movie_id: data.movie_id._id,
           movie_price: data.price,
-          schedule_id: getSchedule.movieSchedule_id,
+          schedule_id: getSchedule?.movieSchedule_id,
           seats: seats,
         };
       });
@@ -210,7 +211,7 @@ function Booking() {
       setColMatrix1(Object.values(left_seats));
       setColMatrix2(Object.values(right_seats));
     });
-  }, [booking.theater_id]);
+  }, [booking?.theater_id]);
 
   return (
     <div>
