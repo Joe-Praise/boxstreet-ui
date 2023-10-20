@@ -35,9 +35,7 @@ function SignUp() {
     if (!formData.email.trim()) {
       errors.email = "Email is required";
     } else if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
-        formData.email
-      )
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
     ) {
       errors.email = "Invalid email address";
     }
@@ -48,7 +46,7 @@ function SignUp() {
 
     if (!formData.password.trim()) {
       errors.password = "Password is required";
-    } else if (formData.password.length < 8) { 
+    } else if (formData.password.length < 8) {
       errors.password = "Password must be at least 8 characters long";
     }
 
@@ -64,10 +62,12 @@ function SignUp() {
       const isFormValid = validateForm();
 
       if (isFormValid) {
+        console.log(formData);
         const response = await axios.post(
           config.AUTH_REQUEST_URL + "/signup",
           formData
         );
+        console.log(response);
 
         if (response?.data.status === "success") {
           navigate("/verify");
@@ -85,10 +85,11 @@ function SignUp() {
   };
 
   useEffect(() => {
-    axios.get(config.CINEMA_BASE_URL).then((result) => { 
+    axios.get(config.CINEMA_BASE_URL).then((result) => {
       setCinemaData(result.data);
     });
   }, []);
+  
 
   useEffect(() => {
     document.body.classList.add("registration");
@@ -210,7 +211,11 @@ function SignUpForm({
       {formErrors.email && <p className="error-message">{formErrors.email}</p>}
 
       <label>Cinema</label>
-      <select name="cinema_id" value={formData.cinema_id} onChange={handleChange}>
+      <select
+        name="cinema_id"
+        value={formData.cinema_id}
+        onChange={handleChange}
+      >
         <option value="">Select cinema here</option>
         {cinemaData?.map((cinema) => (
           <option key={cinema._id} value={cinema._id}>
@@ -267,7 +272,6 @@ function SignInForm({
   setIsSignUpSuccess,
   setFormErrorMessage,
 }) {
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -283,16 +287,14 @@ function SignInForm({
     if (!formData.email.trim()) {
       errors.email = "Email is required";
     } else if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
-        formData.email
-      )
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
     ) {
       errors.email = "Invalid email address";
     }
 
     if (!formData.password.trim()) {
       errors.password = "Password is required";
-    } else if (formData.password.length < 8) { 
+    } else if (formData.password.length < 8) {
       errors.password = "Invalid Password";
     }
 
@@ -311,7 +313,7 @@ function SignInForm({
       );
       console.log("Response:", response);
       if (response?.data.status === "success") {
-        navigate("/history")
+        navigate("/history");
       } else {
         console.log("Sign-in failed. Server response:", response);
         setFormErrorMessage("Sign-in failed. Please try again.");
@@ -320,7 +322,6 @@ function SignInForm({
       console.error("Error signing in:", error);
       setFormErrorMessage("An error occurred while signing in.");
     }
-    
   };
 
   return (
@@ -352,13 +353,11 @@ function SignInForm({
         onChange={handleChange}
         placeholder="johndoe@gmail.com"
       />
-      {formErrors.email && (
-        <p className="error-message">{formErrors.email}</p>
-      )}
+      {formErrors.email && <p className="error-message">{formErrors.email}</p>}
 
       <div className="pswd">
         <label>Password</label>
-        <Link to="/forgot" className="forget" >
+        <Link to="/forgot" className="forget">
           Forgot your password?
         </Link>
       </div>
@@ -373,9 +372,7 @@ function SignInForm({
         <p className="error-message">{formErrors.password}</p>
       )}
 
-      {formErrorMessage && (
-        <p className="error-message">{formErrorMessage}</p>
-      )}
+      {formErrorMessage && <p className="error-message">{formErrorMessage}</p>}
 
       {isSignUpSuccess ? (
         <div className="success-message">Welcome to Boxstreet</div>
@@ -394,5 +391,3 @@ function SignInForm({
 }
 
 export default SignUp;
-
-
