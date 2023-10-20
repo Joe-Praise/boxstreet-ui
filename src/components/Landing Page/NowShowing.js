@@ -1,58 +1,91 @@
-import React from 'react'
-import '../../styles/nowShowing.css'
-import MovieCarousel from './MovieCarousel'
-import ComingSoon from './ComingSoon'
-import Promotion from './Promotion'
-import Footer from '../Footer'
+import "../../styles/nowShowing.css";
+import MovieCarousel from "./MovieCarousel";
+import ComingSoon from "./ComingSoon";
+import Promotion from "./Promotion";
+import Footer from "../Footer";
+import Select from "./Select";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { AppContext } from "../../utils/UserContext";
+import axios from "../../utils/axios";
 
 function NowShowing() {
+  const ctx = useContext(AppContext);
+  const [initData] = ctx.getInitData;
+  const [filterId, setFilterId] = ctx.getFilterId;
+  const [initialized, setInitialized] = ctx.getInitialized;
+  const [queryData, setQueryData] = ctx.getQueryData;
+  const [branches, setBranches] = useState([]);
+
+  const onGetCinemaHandler = (data) => {
+    setFilterId((prevState) => {
+      return {
+        ...prevState,
+        cinema_id: data._id,
+      };
+    });
+  };
+
+  const onGetBranchHandler = (data) => {
+    setFilterId((prevState) => {
+      return {
+        ...prevState,
+        branch_id: data._id,
+      };
+    });
+  };
+
+  const getBranches = useCallback(async () => {
+    // if cinema selected === "All" get all branches in DB else query for that particular cinema
+    const url =
+      filterId.cinema_id === "1010101010"
+        ? "/branches"
+        : `/branches?cinema=${filterId.cinema_id}`;
+    const response = await axios.get(url);
+    setBranches(response.data);
+  }, [filterId.cinema_id]);
+
+  //   const getMovies = useCallback(async () => {}, []);
+
+  useEffect(() => {
+    getBranches();
+  }, [getBranches]);
+
   return (
-    <div className='nowShowing'>
-        <div className='nowShowingWidth'>
-            <div className='nowShowingHeader'>
-                <div>
-                    <h2>Now Showing</h2>
-                </div>
-                <div className='showVenueDates'>
-                    <select className='landingselect' name="location">
-                        <option value="Jabi">Jabi</option>
-                        <option value="Maitama">Maitama</option>
-                        <option value="Asokoro">Asokoro</option>
-                        <option value="Lugbe">Lugbe</option>
-                        <option value="Apo">Apo</option>
-                    </select>
-
-                    <select className='landingselect' name="theater">
-                        <option value="Theater1">Theater 1</option>
-                        <option value="Theater2">Theater 2</option>
-                        <option value="Theater3">Theater 3</option>
-                    </select>
-
-                    <select className='landingselect' name="viewDays">
-                        <option value="today">Today</option>
-                        <option value="tomorrow">Oct 6th</option>
-                        <option value="saturday">Oct 7th</option>
-                        <option value="sunday">Oct 8th</option>
-                        <option value="monday">Oct 9th</option>
-                        <option value="tusday">Oct 10th</option>
-                    </select>
-                </div>
-            </div>
-            <div>
-                <MovieCarousel />
-            </div>
+    <div className="nowShowing">
+      <div className="nowShowingWidth">
+        <div className="nowShowingHeader">
+          <div>
+            <h2>Now Showing</h2>
+          </div>
+          <div className="showVenueDates">
+            <Select
+              items={initData.cinemas}
+              onGetHandler={onGetCinemaHandler}
+              value={"Select cinema"}
+            />
+            <Select
+              items={branches.length > 0 ? branches : []}
+              onGetHandler={onGetBranchHandler}
+              location={true}
+              value={"Select location"}
+            />
+          </div>
         </div>
         <div>
-            <ComingSoon />
+          <MovieCarousel doubleMovies={queryData.movies} />
         </div>
-        <div>
-            <Promotion />
-        </div>
-        <div>
-            <Footer />
-        </div>
+      </div>
+      <div>
+        <ComingSoon />
+      </div>
+      <div>
+        <Promotion />
+      </div>
+      <div>
+        <Footer />
+      </div>
     </div>
-  )
+  );
 }
 
-export default NowShowing
+export default NowShowing;

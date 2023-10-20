@@ -14,9 +14,12 @@ function SignUp() {
     email: "",
     password: "",
     cinema_id: "",
+    branch_id: "",
   });
 
   const [cinemaData, setCinemaData] = useState([]);
+  const [branchData, setBranchData] = useState([]);
+
   const [formErrors, setFormErrors] = useState({});
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
   const [formErrorMessage, setFormErrorMessage] = useState("");
@@ -44,9 +47,13 @@ function SignUp() {
       errors.cinema_id = "Please select a cinema";
     }
 
+    if (!formData.branch_id) {
+      errors.branch_id = "Please select a branch";
+    }
+
     if (!formData.password.trim()) {
       errors.password = "Password is required";
-    } else if (formData.password.length < 8) {
+    } else if (formData.password.length <= 8) {
       errors.password = "Password must be at least 8 characters long";
     }
 
@@ -85,8 +92,12 @@ function SignUp() {
   };
 
   useEffect(() => {
-    axios.get(config.CINEMA_BASE_URL).then((result) => {
+    axios(config.APP_BASE_URL + "/cinemas").then((result) => {
       setCinemaData(result.data);
+    });
+
+    axios(config.APP_BASE_URL + "/branches").then((result) => {
+      setBranchData(result.data);
     });
   }, []);
   
@@ -103,6 +114,7 @@ function SignUp() {
           setFormData={setFormData}
           handleSignUp={handleSignUp}
           cinemaData={cinemaData}
+          branchData={branchData}
           formErrors={formErrors}
           setFormErrors={setFormErrors}
           isSignUpSuccess={isSignUpSuccess}
@@ -155,6 +167,7 @@ function SignUpForm({
   setFormData,
   handleSignUp,
   cinemaData,
+  branchData,
   formErrors,
   setFormErrors,
   isSignUpSuccess,
@@ -210,6 +223,16 @@ function SignUpForm({
       />
       {formErrors.email && <p className="error-message">{formErrors.email}</p>}
 
+      {/* <div>
+    <div className="signUpSelect">
+
+    </div>
+    <div className="signUpSelect">
+      
+    </div>
+
+</div> */}
+
       <label>Cinema</label>
       <select
         name="cinema_id"
@@ -225,6 +248,23 @@ function SignUpForm({
       </select>
       {formErrors.cinema_id && (
         <p className="error-message">{formErrors.cinema_id}</p>
+      )}
+
+      <label>Branch</label>
+      <select
+        name="branch_id"
+        value={formData.branch_id}
+        onChange={handleChange}
+      >
+        <option value="">Select branch here</option>
+        {branchData?.map((branch) => (
+          <option key={branch._id} value={branch._id}>
+            {branch.location_id.name}
+          </option>
+        ))}
+      </select>
+      {formErrors.branch_id && (
+        <p className="error-message">{formErrors.branch_id}</p>
       )}
 
       <label>Password</label>
@@ -273,6 +313,7 @@ function SignInForm({
   setFormErrorMessage,
 }) {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -303,17 +344,42 @@ function SignInForm({
     return Object.keys(errors).length === 0;
   };
 
+  const setUserInfoInLocalStorage = function (userData) {
+    localStorage.setItem("UserData", JSON.stringify(userData));
+  };
+
   const handleSignIn = async (e) => {
     e.preventDefault();
 
     try {
+      setIsLoading((prevState) => !prevState);
+      const getSchedule = JSON.parse(localStorage.getItem("movieSchedule"));
       const response = await axios.post(
         config.AUTH_REQUEST_URL + "/login",
         formData
       );
-      console.log("Response:", response);
+      // console.log("Response:", response);
       if (response?.data.status === "success") {
-        navigate("/history");
+        const data = response.data.data.user;
+        const userData = {
+          user_id: data._id,
+          cinema_id: data.cinema_id,
+          branch_id: data.branch_id,
+          user_email: data.email,
+        };
+
+        if (
+          getSchedule?.movieSchedule_id?.length ||
+          getSchedule?.schedule_date?.length ||
+          getSchedule?.theater_id?.length
+        ) {
+          navigate("/booking");
+          setUserInfoInLocalStorage(userData);
+        } else {
+          setUserInfoInLocalStorage(userData);
+          navigate("/");
+        }
+        setIsLoading((prevState) => !prevState);
       } else {
         console.log("Sign-in failed. Server response:", response);
         setFormErrorMessage("Sign-in failed. Please try again.");
@@ -366,7 +432,7 @@ function SignInForm({
         name="password"
         value={formData.password}
         onChange={handleChange}
-        placeholder="********"
+        placeholder="****"
       />
       {formErrors.password && (
         <p className="error-message">{formErrors.password}</p>
@@ -382,7 +448,7 @@ function SignInForm({
             <p className="error-message">{formErrorMessage}</p>
           )}
           <button type="submit" className="reg-button">
-            Sign In
+            {isLoading ? <span className="loader">🚀</span> : "Sign In"}
           </button>
         </div>
       )}

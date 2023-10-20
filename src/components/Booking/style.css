@@ -1,0 +1,69 @@
+/* .VIP {
+  border: 2px solid #00d0ff !important;
+}
+
+.VVIP {
+  border: 2px solid #ffff00 !important;
+}
+
+.REGULAR {
+  border: 2px solid #fff !important;
+} */
+
+p.col1p.booked span {
+  background: #333;
+  width: 40px;
+  height: 40px;
+  display: block;
+  position: relative;
+  left: 3px;
+  top: 3px;
+  border-radius: 50px;
+}
+
+.VIP {
+  border: 2px solid #00d0ff !important;
+  background: #169bb9;
+}
+
+.VVIP {
+  border: 2px solid #ffff00 !important;
+  background: #d3d318;
+}
+
+.REGULAR {
+  border: 2px solid #fff !important;
+  background: #d3d3d3;
+}
+
+.select-box:after {
+  content: "";
+  display: block;
+  width: 15px;
+  height: 15px;
+  position: relative;
+  top: -17px;
+  left: -16px;
+  border-radius: 20px;
+}
+
+.book-box:after {
+  content: "";
+  display: block;
+  width: 15px;
+  height: 15px;
+  position: relative;
+  top: -17px;
+  left: -16px;
+  border-radius: 20px;
+}
+
+.book-box:after,
+.booked-seat {
+  background-color: rgba(255, 166, 0, 0.665);
+}
+
+.select-box:after,
+.selected-seat {
+  background-color: rgba(255, 0, 0, 0.495);
+}

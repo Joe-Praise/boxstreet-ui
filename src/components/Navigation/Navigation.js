@@ -1,15 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../../styles/navigation.css";
 import { Link } from "react-router-dom";
 import logo from "../uploads/FHC LOGO.png";
+import { AppContext } from "../../utils/UserContext";
 
 function Navigation() {
+  // const ctx = useContext(AppContext);
   const [navSize, setnavSize] = useState("20rem");
   const [navColor, setnavColor] = useState("transparent");
+  const getUser = JSON.parse(localStorage.getItem("UserData"));
+  const [loginDetails] = useState(getUser);
+
   const listenScrollEvent = () => {
     window.scrollY > 20 ? setnavColor("#0B0B0D") : setnavColor("transparent");
     window.scrollY > 20 ? setnavSize("5rem") : setnavSize("5rem");
   };
+
+  const logoutHandler = (e) => {
+    e.stopPropagation();
+    localStorage.removeItem("UserData");
+    localStorage.removeItem("movieSchedule");
+  };
+
   useEffect(() => {
     window.addEventListener("scroll", listenScrollEvent);
     return () => {
@@ -41,11 +53,32 @@ function Navigation() {
         </div>
         <div>
           <ul className="navlinks">
-            <Link to="/movie">
+            <Link to="/history">
               <li className="from-left-and-back">CART</li>
             </Link>
+
+            {loginDetails?.user_id?.length &&
+            loginDetails?.cinema_id?.length &&
+            loginDetails?.branch_id?.length &&
+            loginDetails?.user_email?.length ? (
+              <Link to="/profile">
+                <li className="from-left-and-back">PROFILE</li>
+              </Link>
+            ) : (
+              ""
+            )}
+
             <Link to="/register">
-              <li className="from-left-and-back">SIGN IN</li>
+              {loginDetails?.user_id?.length &&
+              loginDetails?.cinema_id?.length &&
+              loginDetails?.branch_id?.length &&
+              loginDetails?.user_email?.length ? (
+                <li className="from-left-and-back" onClick={logoutHandler}>
+                  LOG OUT
+                </li>
+              ) : (
+                <li className="from-left-and-back">SIGN IN</li>
+              )}
             </Link>
           </ul>
         </div>

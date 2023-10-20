@@ -274,15 +274,21 @@ a {
   margin-top: 10px;
 }
 
+.loader {
+  font-size: 1rem;
+  /* position: absolute;
+  top: 60%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px; */
+  animation: rotate 1.5s infinite linear;
+}
 
-/* Forgot Password */
-.pswd-input {
-  /* background: #eee; */
-  border: 1px solid rgb(206, 203, 203);
-  border-radius: 5px;
-  height: 50px;
-  padding: 12px 15px;
-  margin: 8px 0;
-  width: 90%;
-  /* margin-bottom: 40px; */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
