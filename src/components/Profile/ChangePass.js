@@ -12,17 +12,17 @@ function ChangePass() {
           <div className="ccPassform-group">
             <label for="">Email:</label>
             <span></span>
-            <input type="email" name="name" className="inputs" required />
+            <input type="" name="name" placeholder="Enter your email" className="inputs" required />
           </div>
           <div className="ccPassform-group">
             <label for="">Current Password:</label>
             <span></span>
-            <input type="password" name="name" className="inputs" required />
+            <input type="" placeholder="Input current password" name="name" className="inputs" required />
           </div>
           <div className="ccPassform-group">
             <label for="">New Password:</label>
             <span></span>
-            <input type="password" name="name" className="inputs" required />
+            <input type="password" name="name" placeholder="Enter new password" className="inputs" required />
           </div>
           <section>*NOTE: Password should be at least 8 characters</section>
           <div className="ccPassform-group">
