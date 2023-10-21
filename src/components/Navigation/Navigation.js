@@ -6,7 +6,7 @@ import { AppContext } from "../../utils/UserContext";
 
 function Navigation() {
   // const ctx = useContext(AppContext);
-  const [navSize, setnavSize] = useState("20rem");
+  const [navSize, setnavSize] = useState("5rem");
   const [navColor, setnavColor] = useState("transparent");
   const getUser = JSON.parse(localStorage.getItem("UserData"));
   const [loginDetails] = useState(getUser);
