@@ -115,8 +115,6 @@ function SingleMovie() {
         InitTransformData(arr);
         getFilterIdFromMovieSchedule(arr);
       }
-
-      console.log(arr);
     } catch (error) {
       console.log(error);
     }
@@ -143,14 +141,32 @@ function SingleMovie() {
   };
 
   const getGetTheater = useCallback(async () => {
-    // if cinema selected === "All" get all branches in DB else query for that particular cinema
-    const url =
-      // filterId.cinema_id === "1010101010"
-      //   ? "/theaters"
-      //   :
-      `/theaters?branch_id=${filterId.branch_id}`;
-    const response = await axios.get(url);
-    setTheaters(response.data);
+    try {
+      // if cinema selected === "All" get all branches in DB else query for that particular cinema
+      const url =
+        // filterId.cinema_id === "1010101010"
+        //   ? "/theaters"
+        //   :
+        `/theaters?branch_id=${filterId.branch_id}`;
+      const response = await axios.get(url);
+      setTheaters(response.data);
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log("Error", error.message);
+      }
+    }
   }, [filterId.branch_id]);
 
   const scheduleInfoHandler = () => {
@@ -162,7 +178,7 @@ function SingleMovie() {
       return;
     }
     localStorage.setItem("movieSchedule", JSON.stringify(schedule));
-    // const getUser = JSON.parse(localStorage.getItem("UserData"));
+
     if (getUser?.user_id.length > 1) {
       navigate("/booking");
     } else {
