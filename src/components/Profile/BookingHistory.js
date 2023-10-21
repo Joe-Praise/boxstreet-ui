@@ -144,37 +144,54 @@ function BookingHistory() {
         ) : (
           history?.map((movie) => {
             return (
-              <div className="bh" key={movie.id}>
-                <Link to="/history">
-                  <div className="bhCards">
-                    <div className="bhdate">
-                      {/* <span>{movie.date}</span> */}
-                    </div>
-                    <div>
-                      <img src={movie?.movie_id?.image} alt="movieposter" />
-                    </div>
-                    <div className="bhmovieInfo">
-                      <p className="bhshowtime">{movie?.show_time}</p>
-                      <div className="bhMovietext">
-                        <h3>{movie?.movie_id?.name}</h3>
-                        <span>{movie?.movie_id?.genre}</span>
-                        <p>{movie?.movie_id.description}</p>
+              <div>
+                <div className="historyCardFlex">
+                  <span className="historycards">
+                    Total Movies Watched
+                    <p>300</p>
+                  </span>
+                  <span className="historycards">
+                    Total Movies Watched
+                    <p>500</p>
+                  </span>
+                  <span className="historycards">
+                    Total Movies Watched
+                    <p>200</p>
+                  </span>
+                </div>
+
+                <div className="bh" key={movie.id}>
+                  <Link to="/history">
+                    <div className="bhCards">
+                      <div className="bhdate">
+                        {/* <span>{movie.date}</span> */}
+                      </div>
+                      <div>
+                        <img src={movie?.movie_id?.image} alt="movieposter" />
+                      </div>
+                      <div className="bhmovieInfo">
+                        <p className="bhshowtime">{movie?.show_time}</p>
+                        <div className="bhMovietext">
+                          <h3>{movie?.movie_id?.name}</h3>
+                          <span>{movie?.movie_id?.genre}</span>
+                          <p>{movie?.movie_id.description}</p>
+                        </div>
+                      </div>
+                      <div className="iconstyle">
+                        {movie?.movie_id?.is_checked === true ? (
+                          <i>
+                            <GoCheckCircleFill className="checkIcon" />
+                            <span>Watched</span>
+                          </i>
+                        ) : (
+                          <i>
+                            <span>Pending...</span>
+                          </i>
+                        )}
                       </div>
                     </div>
-                    <div className="iconstyle">
-                      {movie?.movie_id?.is_checked === true ? (
-                        <i>
-                          <GoCheckCircleFill className="checkIcon" />
-                          <span>Watched</span>
-                        </i>
-                      ) : (
-                        <i>
-                          <span>Pending...</span>
-                        </i>
-                      )}
-                    </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               </div>
             );
           })
