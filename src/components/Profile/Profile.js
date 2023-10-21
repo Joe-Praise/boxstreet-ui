@@ -17,15 +17,35 @@ function Profile() {
   const [userInfo, setUserInfo] = useState([]);
 
   const getUserInfo = useCallback(async () => {
-    const response = await axios.get(`/users/${loginDetails?.user_id}`);
-    const user = response.data.data;
-    setUserInfo(user);
-  }, []);
+    try {
+      if (loginDetails?.user_id) {
+        const response = await axios.get(`/users/${loginDetails?.user_id}`);
+        const user = response.data.data;
+        setUserInfo(user);
+      } else return;
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log("Error", error.message);
+      }
+    }
+  }, [loginDetails?.user_id]);
 
   useEffect(() => {
     getUserInfo();
-  }, []);
-  console.log(userInfo);
+  }, [getUserInfo]);
+  // console.log(userInfo);
   return (
     <div className="userPPage">
       <Navigation />
@@ -40,7 +60,7 @@ function Profile() {
             <div className="userProfileInfo">
               <div className="dppasssignout">
                 <img
-                  src={userInfo?.image ? userInfo.image : dp}
+                  src={userInfo?.image ? userInfo?.image : dp}
                   alt="user avi"
                 />
                 <div className="userUserandPass">
