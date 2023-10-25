@@ -7,13 +7,15 @@ import { BsBookFill, BsBookmarkCheckFill, BsBookshelf } from "react-icons/bs";
 import { MdOutlineBook } from "react-icons/md";
 import { FaHistory } from "react-icons/fa";
 import { RiHistoryFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../../utils/UserContext";
 import axios from "../../utils/axios";
 
 function Profile() {
+  const navigation = useNavigate();
   const ctx = useContext(AppContext);
   const [loginDetails] = ctx.getLoginDetails;
+  const logout = ctx.onLogout;
   const [userInfo, setUserInfo] = useState([]);
 
   const getUserInfo = useCallback(async () => {
@@ -22,6 +24,7 @@ function Profile() {
         const response = await axios.get(`/users/${loginDetails?.user_id}`);
         const user = response.data.data;
         setUserInfo(user);
+        console.log(user);
       } else return;
     } catch (error) {
       if (error.response) {
@@ -43,7 +46,11 @@ function Profile() {
   }, [loginDetails?.user_id]);
 
   useEffect(() => {
-    getUserInfo();
+    if (!loginDetails?.user_id?.length) {
+      navigation("/");
+    } else {
+      getUserInfo();
+    }
   }, [getUserInfo]);
   // console.log(userInfo);
   return (
@@ -66,9 +73,13 @@ function Profile() {
                 <div className="userUserandPass">
                   <div>
                     {/* <span>_jae.lodan</span> */}
-                    <button className="pPass">Change Password</button>
+                    <Link className="pPass" to={"/changepassword"}>
+                      Change Password
+                    </Link>
 
-                    <button className="pSignout">Sign Out</button>
+                    <Link to="/register" className="pSignout">
+                      <p onClick={logout}>Sign Out</p>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -78,7 +89,8 @@ function Profile() {
                 <h3>Last Name:</h3> <span>{userInfo?.name?.split(" ")[1]}</span>
                 <h3>Email:</h3> <span>{userInfo?.email}</span>
                 <h3>Cinema:</h3> <span>{userInfo?.cinema_id?.name}</span>
-                <h3>Branch:</h3> <span>{userInfo?.branch_id?.name}</span>
+                <h3>Branch:</h3>{" "}
+                <span>{userInfo?.branch_id?.location_id?.name}</span>
               </div>
               <Link to="/history">
                 <div className="pbookhist">

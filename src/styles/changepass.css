@@ -7,8 +7,8 @@
   padding: 25px 50px;
 }
 
-.ccPassform h2{
-    color: #fff;
+.ccPassform h2 {
+  color: #fff;
 }
 
 .ccPassform section {
@@ -28,7 +28,8 @@
   font-size: 16px;
 }
 
-.ccPassform-group input {
+.ccPassform-group input,
+.select {
   width: 50%;
   display: block;
   margin-top: 5px;

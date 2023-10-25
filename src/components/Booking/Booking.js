@@ -15,8 +15,10 @@ import Footer from "../Footer";
 import axios from "axios";
 import "./style.css";
 import { AppContext } from "../../utils/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function Booking() {
+  const navigate = useNavigate();
   let MODE = "PROD";
   let LOCAL = "http://localhost:5000";
   let ONLINE = "https://boxstreet.onrender.com";
@@ -35,7 +37,7 @@ function Booking() {
 
   const ctx = useContext(AppContext);
   //   const [filterId, setFilterId] = ctx.getFilterId;
-  const [userInfo] = ctx.getLoginDetails;
+  const [loginDetails] = ctx.getLoginDetails;
 
   const getSchedule = JSON.parse(localStorage.getItem("movieSchedule"));
   //   const getUser = JSON.parse(localStorage.getItem("UserData"));
@@ -43,18 +45,19 @@ function Booking() {
   //   const theater_id = "652aa9066de9462d02533530";
   //   const schedule_id = "652abeaddf67b509b49acd0b";
   const [seats, setSeat] = useState([]);
-  const [scheduleInfo, setScheduleInfo] = useState(getSchedule);
+  const [scheduleInfo] = useState(getSchedule);
 
   const [booking, setBooking] = useState({
     full_name: "",
     booking_type: "ONLINE",
+    reference: "",
     email: "",
     phone: "",
     show_time: new Date(),
     theater_id: scheduleInfo?.theater_id,
     cinema_id: scheduleInfo?.cinema_id,
     branch_id: scheduleInfo?.branch_id,
-    user_id: userInfo?.user_id,
+    user_id: loginDetails?.user_id,
     movie_id: "",
     movie_price: "",
     schedule_id: scheduleInfo?.movieSchedule_id,
@@ -127,12 +130,20 @@ function Booking() {
     try {
       const payment_url = BASE_URL + "/api/v1/payments/initiate-payment";
       const booking_url = BASE_URL + "/api/v1/bookings";
-      const data = { email, amount };
+      const data = {
+        email,
+        amount,
+        metadata: {
+          cinema_id: booking.cinema_id,
+          branch_id: booking.branch_id,
+        },
+      };
       const response = await axios.post(payment_url, data);
 
-      booking.seats = seats;
-
       if (response?.data.data.paymentLink) {
+        booking.seats = seats;
+        booking.reference = response?.data.data.paymentLink.data.reference;
+
         let book = await axios.post(booking_url, booking);
         console.log(book);
 
@@ -148,69 +159,87 @@ function Booking() {
   };
 
   useEffect(() => {
-    let left_seats = {};
-    let right_seats = {};
+    if (!loginDetails?.user_id?.length) {
+      navigate("/");
+    } else {
+      let left_seats = {};
+      let right_seats = {};
 
-    let seat_url = `${BASE_URL}/api/v1/theaters/${booking?.theater_id}/seats-summary`;
-    let movie_schedule_url = `${BASE_URL}/api/v1/movieschedule/${booking?.schedule_id}`;
-    let user_url = `${BASE_URL}/api/v1/users/${userInfo?.user_id}`;
+      let seat_url = `${BASE_URL}/api/v1/theaters/${booking?.theater_id}/seats-summary`;
+      let movie_schedule_url = `${BASE_URL}/api/v1/movieschedule/${booking?.schedule_id}`;
+      let user_url = `${BASE_URL}/api/v1/users/${loginDetails?.user_id}`;
 
-    axios.get(movie_schedule_url).then((res) => {
-      let data = res.data?.data;
+      axios
+        .get(movie_schedule_url)
+        .then((res) => {
+          let data = res.data?.data;
 
-      setSchedule(data);
-      setAmount(data.price);
-      setBooking((prevState) => {
-        return {
-          ...prevState,
-          show_time: new Date(scheduleInfo?.schedule_date),
-          theater_id: getSchedule?.theater_id,
-          movie_id: data.movie_id._id,
-          movie_price: data.price,
-          schedule_id: getSchedule?.movieSchedule_id,
-          seats: seats,
-        };
-      });
-    });
+          setSchedule(data);
+          setAmount(data.price);
+          setBooking((prevState) => {
+            return {
+              ...prevState,
+              show_time: new Date(scheduleInfo?.schedule_date),
+              theater_id: getSchedule?.theater_id,
+              movie_id: data.movie_id._id,
+              movie_price: data.price,
+              schedule_id: getSchedule?.movieSchedule_id,
+              seats: seats,
+            };
+          });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
 
-    axios.get(user_url).then((res) => {
-      //   console.log(res?.data?.data);
-      let user = res?.data?.data;
-      setBooking((prevState) => {
-        return {
-          ...prevState,
-          full_name: user.name,
-          booking_type: "ONLINE",
-          email: user.email,
-          phone: user.email,
-        };
-      });
-    });
+      axios
+        .get(user_url)
+        .then((res) => {
+          let user = res?.data?.data;
+          setBooking((prevState) => {
+            return {
+              ...prevState,
+              full_name: user.name,
+              booking_type: "ONLINE",
+              email: user.email,
+              phone: user.email,
+            };
+          });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
 
-    axios.get(seat_url).then((res) => {
-      let data = res.data;
+      axios
+        .get(seat_url)
+        .then((res) => {
+          let data = res.data;
 
-      for (let i = 0; i < data.col_matrix_1.length; i++) {
-        let d = data.col_matrix_1[i];
-        if (!left_seats[d.row]) {
-          left_seats[d.row] = [d];
-        } else {
-          left_seats[d.row].push(d);
-        }
-      }
+          for (let i = 0; i < data.col_matrix_1.length; i++) {
+            let d = data.col_matrix_1[i];
+            if (!left_seats[d.row]) {
+              left_seats[d.row] = [d];
+            } else {
+              left_seats[d.row].push(d);
+            }
+          }
 
-      for (let i = 0; i < data.col_matrix_2.length; i++) {
-        let d = data.col_matrix_2[i];
-        if (!right_seats[d.row]) {
-          right_seats[d.row] = [d];
-        } else {
-          right_seats[d.row].push(d);
-        }
-      }
+          for (let i = 0; i < data.col_matrix_2.length; i++) {
+            let d = data.col_matrix_2[i];
+            if (!right_seats[d.row]) {
+              right_seats[d.row] = [d];
+            } else {
+              right_seats[d.row].push(d);
+            }
+          }
 
-      setColMatrix1(Object.values(left_seats));
-      setColMatrix2(Object.values(right_seats));
-    });
+          setColMatrix1(Object.values(left_seats));
+          setColMatrix2(Object.values(right_seats));
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
   }, [booking?.theater_id]);
 
   return (
