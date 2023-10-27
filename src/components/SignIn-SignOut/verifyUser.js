@@ -1,49 +1,106 @@
-import React, { useEffect, useState } from 'react';
-import '../../styles/verifyUser.css'
-import { Link } from "react-router-dom";
-import Footer from '../Footer';
+import React, { useEffect, useState } from "react";
+import "../../styles/verifyUser.css";
+import { Link, useNavigate } from "react-router-dom";
+import Footer from "../Footer";
+import axios from "../../utils/axios";
 
 function VerifyUser() {
-  const [otp, setOtp] = useState(new Array(4).fill(""))
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [otp, setOtp] = useState(new Array(4).fill(""));
 
-  function handleChange(e, index){
-    if(isNaN(e.target.value)) return false;
+  function handleChange(e, index) {
+    if (isNaN(e.target.value)) return false;
 
-    setOtp([...otp.map((data, i)=>(i === index? e.target.value:data))])
+    setOtp([...otp.map((data, i) => (i === index ? e.target.value : data))]);
 
-    if(e.target.value && e.target.nextSibling){
-      e.target.nextSibling.focus()
+    if (e.target.value && e.target.nextSibling) {
+      e.target.nextSibling.focus();
     }
-
   }
 
-  useEffect(()=>{
-    document.body.classList.remove("registration")
-  },[])
+  const handleVerification = async () => {
+    setIsLoading((prevState) => !prevState);
+    try {
+      const signUpEmail = JSON.parse(localStorage.getItem("signUpEmail"));
+      const OTP = otp.join("").toString();
+      const verifyData = {
+        email: signUpEmail.email,
+        code: OTP,
+      };
+      const response = await axios.post("/verifications/verify", verifyData);
+      const data = response.data.msg;
+      if (data === "Verfication successful") {
+        navigate("/register");
+        localStorage.removeItem("signUpEmail");
+      } else {
+        alert("Wrong OTP code provided!");
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+    setIsLoading((prevState) => !prevState);
+  };
+
+  const getNewVerificationCode = async () => {
+    try {
+      const signUpEmail = JSON.parse(localStorage.getItem("signUpEmail"));
+      const verifyData = {
+        cinema_id: signUpEmail.cinema_id,
+        branch_id: signUpEmail.branch_id,
+        email: signUpEmail.email,
+      };
+
+      const response = await axios.post("/verifications/resend", verifyData);
+      const data = response.data;
+
+      if (data) {
+        alert("New verify code sent tp your email");
+      } else {
+        alert("An error occured!");
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    document.body.classList.remove("registration");
+  }, []);
 
   return (
     <div>
-        <main className='verify-users'>
-            <h1 className='verify-intro'>User Verification</h1>
-            <h4 className='verify-update'>We have sent a code to your Email</h4>
-            <div className="otp">
-              {  otp.map((data, indx)=>{
-                  return <input 
-                  key={indx}
-                  className='verify-input' type="text" 
-                  value={data}
-                  maxLength={1}
-                  onChange={(e)=>handleChange(e, indx)} />
-                })}
-            </div>
-            <button onClick={()=>alert(otp.join(""))} className="verify-btn">Verify Account</button> <br />
-            <small>Didn't recieve code?
-            <Link className='verify-footer'>Resend OTP</Link>
-            </small>
-        </main>
-        <Footer/>
+      <main className="verify-users">
+        <h1 className="verify-intro">User Verification</h1>
+        <h4 className="verify-update">We have sent a code to your Email</h4>
+        <div className="otp">
+          {otp.map((data, indx) => {
+            return (
+              <input
+                key={indx}
+                className="verify-input"
+                type="text"
+                value={data}
+                maxLength={1}
+                onChange={(e) => handleChange(e, indx)}
+              />
+            );
+          })}
+        </div>
+        <button onClick={handleVerification} className="verify-btn">
+          Verify Account
+        </button>{" "}
+        <br />
+        <small>
+          Didn't recieve code?
+          <span className="verify-footer" onClick={getNewVerificationCode}>
+            Resend OTP
+          </span>
+        </small>
+      </main>
+      <Footer />
     </div>
-  )
+  );
 }
 
-export default VerifyUser
+export default VerifyUser;

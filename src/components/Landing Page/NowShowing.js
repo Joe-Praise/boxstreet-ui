@@ -12,8 +12,7 @@ function NowShowing() {
   const ctx = useContext(AppContext);
   const [initData] = ctx.getInitData;
   const [filterId, setFilterId] = ctx.getFilterId;
-  const [initialized, setInitialized] = ctx.getInitialized;
-  const [queryData, setQueryData] = ctx.getQueryData;
+  const [queryData] = ctx.getQueryData;
   const [branches, setBranches] = useState([]);
 
   const onGetCinemaHandler = (data) => {
@@ -43,8 +42,6 @@ function NowShowing() {
     const response = await axios.get(url);
     setBranches(response.data);
   }, [filterId.cinema_id]);
-
-  //   const getMovies = useCallback(async () => {}, []);
 
   useEffect(() => {
     getBranches();

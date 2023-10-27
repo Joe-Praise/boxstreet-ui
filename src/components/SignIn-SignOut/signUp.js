@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/signUp.css";
 import { FaFacebook, FaGooglePlus, FaInvision } from "react-icons/fa";
 import axios from "axios";
 import config from "../../config";
+import baseAxios from "../../utils/axios";
 
+let initailized = false;
 function SignUp() {
   let navigate = useNavigate();
 
@@ -53,7 +55,7 @@ function SignUp() {
 
     if (!formData.password.trim()) {
       errors.password = "Password is required";
-    } else if (formData.password.length <= 8) {
+    } else if (formData.password.length < 8) {
       errors.password = "Password must be at least 8 characters long";
     }
 
@@ -70,7 +72,7 @@ function SignUp() {
 
       if (isFormValid) {
         const response = await axios.post(
-          config.AUTH_REQUEST_URL + "/signup",
+          config.APP_BASE_URL + "/auth/signup",
           formData
         );
 
@@ -79,6 +81,14 @@ function SignUp() {
           setIsSignUpSuccess(true);
           setFormErrorMessage("");
         }
+        localStorage.setItem(
+          "signUpEmail",
+          JSON.stringify({
+            email: formData.email,
+            cinema_id: formData.cinema_id,
+            branch_id: formData.branch_id,
+          })
+        );
       } else {
         setFormErrorMessage(
           "Please fill in all required fields and correct any validation errors."
@@ -89,15 +99,39 @@ function SignUp() {
     }
   };
 
-  useEffect(() => {
-    axios(config.APP_BASE_URL + "/cinemas").then((result) => {
-      setCinemaData(result.data);
-    });
+  // useEffect(() => {
+  //   axios(config.APP_BASE_URL + "/cinemas").then((result) => {
+  //     setCinemaData(result.data);
+  //   });
 
-    axios(config.APP_BASE_URL + "/branches").then((result) => {
-      setBranchData(result.data);
-    });
-  }, []);
+  //   axios(config.APP_BASE_URL + "/branches").then((result) => {
+  //     setBranchData(result.data);
+  //   });
+  // }, []);
+
+  const getBranches = useCallback(async () => {
+    // if cinema selected === "All" get all branches in DB else query for that particular cinema
+    const url =
+      formData?.cinema_id.length < 1
+        ? "/branches"
+        : `/branches?cinema=${formData?.cinema_id}`;
+    const response = await baseAxios.get(url);
+    setBranchData(response.data);
+  }, [formData?.cinema_id]);
+
+  useEffect(() => {
+    if (!initailized) {
+      axios(config.APP_BASE_URL + "/cinemas").then((result) => {
+        setCinemaData(result.data);
+      });
+      getBranches();
+    } else {
+      getBranches();
+    }
+    return () => {
+      initailized = true;
+    };
+  }, [getBranches]);
 
   useEffect(() => {
     document.body.classList.add("registration");
@@ -313,27 +347,27 @@ function SignInForm({
     });
   };
 
-  const validateForm = () => {
-    const errors = {};
+  // const validateForm = () => {
+  //   const errors = {};
 
-    if (!formData.email.trim()) {
-      errors.email = "Email is required";
-    } else if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
-    ) {
-      errors.email = "Invalid email address";
-    }
+  //   if (!formData.email.trim()) {
+  //     errors.email = "Email is required";
+  //   } else if (
+  //     !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)
+  //   ) {
+  //     errors.email = "Invalid email address";
+  //   }
 
-    if (!formData.password.trim()) {
-      errors.password = "Password is required";
-    } else if (formData.password.length < 8) {
-      errors.password = "Invalid Password";
-    }
+  //   if (!formData.password.trim()) {
+  //     errors.password = "Password is required";
+  //   } else if (formData.password.length < 8) {
+  //     errors.password = "Invalid Password";
+  //   }
 
-    setFormErrors(errors);
+  //   setFormErrors(errors);
 
-    return Object.keys(errors).length === 0;
-  };
+  //   return Object.keys(errors).length === 0;
+  // };
 
   const setUserInfoInLocalStorage = function (userData) {
     localStorage.setItem("UserData", JSON.stringify(userData));
@@ -343,20 +377,22 @@ function SignInForm({
     e.preventDefault();
 
     try {
+      console.log("form data", formData);
       setIsLoading((prevState) => !prevState);
       const getSchedule = JSON.parse(localStorage.getItem("movieSchedule"));
       const response = await axios.post(
         config.AUTH_REQUEST_URL + "/login",
         formData
       );
-      // console.log("Response:", response);
+      console.log("Response:", response.data);
       if (response?.data.status === "success") {
-        const data = response.data.data.user;
+        const data = response.data.data;
+        console.log(data);
         const userData = {
-          user_id: data._id,
-          cinema_id: data.cinema_id,
-          branch_id: data.branch_id,
-          user_email: data.email,
+          user_id: data?._id,
+          cinema_id: data?.cinema_id,
+          branch_id: data?.branch_id,
+          user_email: data?.email,
         };
 
         if (
@@ -364,13 +400,12 @@ function SignInForm({
           getSchedule?.schedule_date?.length ||
           getSchedule?.theater_id?.length
         ) {
-          navigate("/booking");
           setUserInfoInLocalStorage(userData);
+          navigate("/booking");
         } else {
           setUserInfoInLocalStorage(userData);
           navigate("/");
         }
-        setIsLoading((prevState) => !prevState);
       } else {
         console.log("Sign-in failed. Server response:", response);
         setFormErrorMessage("Sign-in failed. Please try again.");
@@ -379,6 +414,7 @@ function SignInForm({
       console.error("Error signing in:", error);
       setFormErrorMessage("An error occurred while signing in.");
     }
+    setIsLoading((prevState) => !prevState);
   };
 
   return (
@@ -414,7 +450,7 @@ function SignInForm({
 
       <div className="pswd">
         <label>Password</label>
-        <Link to="/forgot" className="forget">
+        <Link to="/forgotpassword" className="forget">
           Forgot your password?
         </Link>
       </div>
