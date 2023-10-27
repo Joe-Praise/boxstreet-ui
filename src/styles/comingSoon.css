@@ -2,6 +2,7 @@
 .comingSoon{
     width: 100%;
     display: block;
+    min-height: 420px;
 }
 
 .comingSoonWidth{
