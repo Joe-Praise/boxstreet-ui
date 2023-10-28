@@ -52,9 +52,9 @@ function Profile() {
       getUserInfo();
     }
   }, [getUserInfo]);
-  // console.log(userInfo);
+  console.log(userInfo);
   return (
-    <div className="userPPage">
+    <div className="profileContainer">
       <Navigation />
       <div className="userProfile">
         <div className="uPbanner">
@@ -89,8 +89,7 @@ function Profile() {
                 <h3>Last Name:</h3> <span>{userInfo?.name?.split(" ")[1]}</span>
                 <h3>Email:</h3> <span>{userInfo?.email}</span>
                 <h3>Cinema:</h3> <span>{userInfo?.cinema_id?.name}</span>
-                <h3>Branch:</h3>{" "}
-                <span>{userInfo?.branch_id?.location_id?.name}</span>
+                <h3>Branch:</h3> <span>{userInfo?.branch_id?.name}</span>
               </div>
               <Link to="/history">
                 <div className="pbookhist">

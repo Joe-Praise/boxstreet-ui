@@ -199,7 +199,7 @@ function SingleMovie() {
 
   console.log(schedule);
   return (
-    <div>
+    <div className="singleMovieContainer">
       {queryData?.movieSchedule?.map((el, i) => {
         return (
           <div className="singlemovcont" key={el + i}>
@@ -285,14 +285,19 @@ function SingleMovie() {
                         })}
                       </ul>
 
-                      <div className="bookMovieBtn">
+                      <div className="">
                         <div className="alsoshowingflex">
                           <Select
                             items={theater}
                             onGetHandler={onSetTheater}
                             value={"Select theater"}
                           />
-                          <div onClick={scheduleInfoHandler}>Book Movie</div>
+                          <div
+                            onClick={scheduleInfoHandler}
+                            className="bookMovieBtn"
+                          >
+                            Book Movie
+                          </div>
                         </div>
                       </div>
                     </div>

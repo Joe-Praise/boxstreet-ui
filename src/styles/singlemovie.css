@@ -1,3 +1,6 @@
+.singleMovieContainer {
+  background-color: #040609;
+}
 .movbanner {
   background-image: linear-gradient(
     360deg,
@@ -174,7 +177,7 @@
 }
 
 .movtimes:hover,
-.bookMovieBtn a:hover,
+.bookMovieBtn:hover,
 .movtimes.active {
   fill: #ffffff;
   background-color: #ffffff;
@@ -196,12 +199,8 @@
   font-size: 11px;
   font-weight: 500;
 }
-
 .bookMovieBtn {
-  /* width: 100%; */
   margin: 1rem auto;
-}
-.bookMovieBtn a {
   display: block;
   text-align: center;
   /* width: 100%; */
@@ -222,6 +221,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 1.5rem 0;
 }
 
 .alsoshowingflex h2 {
@@ -244,4 +244,10 @@
   border: 1px solid #ffffff;
   padding: 8px 15px;
   border-radius: 5px;
+}
+
+.bookMovieBtn {
+  border: 2px solid #ffff;
+  flex-basis: auto;
+  margin: 0;
 }

@@ -10,6 +10,7 @@ import Profile from "./components/Profile/Profile";
 import ChangePass from "./components/Profile/ChangePass";
 import ForgotPassword from "./components/Forgot-Password/ForgotPassword";
 import "./App.css";
+import ResetPassword from "./components/Forgot-Password/ResetPassword";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/changepassword" element={<ChangePass />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/resetpassword" element={<ResetPassword />} />
           </Routes>
         </BrowserRouter>
       </UserContext>

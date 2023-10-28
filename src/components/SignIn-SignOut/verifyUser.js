@@ -31,6 +31,7 @@ function VerifyUser() {
       const response = await axios.post("/verifications/verify", verifyData);
       const data = response.data.msg;
       if (data === "Verfication successful") {
+        alert("Verification successful!");
         navigate("/register");
         localStorage.removeItem("signUpEmail");
       } else {
@@ -69,7 +70,7 @@ function VerifyUser() {
   }, []);
 
   return (
-    <div>
+    <div className="verifyContainer">
       <main className="verify-users">
         <h1 className="verify-intro">User Verification</h1>
         <h4 className="verify-update">We have sent a code to your Email</h4>
