@@ -243,7 +243,7 @@ function Booking() {
   }, [booking?.theater_id]);
 
   return (
-    <div>
+    <div className="bookingContainer">
       <Navigation />
       <div className="booking-page">
         <div className="booking-main">
@@ -344,7 +344,9 @@ function Booking() {
               </div>
               <div className="booking-total">
                 <h3 className="booking-totalh">Total</h3>
-                <p className="booking-totalp">N{amount}</p>
+                <p className="booking-totalp">
+                  N{seats.length > 0 ? `${amount.toLocaleString()}` : "0"}
+                </p>
                 <button onClick={handlePayment}>Pay</button>
               </div>
               <div className="booking-container-col-bottom">

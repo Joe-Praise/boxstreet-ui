@@ -5,6 +5,7 @@ import { FaFacebook, FaGooglePlus, FaInvision } from "react-icons/fa";
 import axios from "axios";
 import config from "../../config";
 import baseAxios from "../../utils/axios";
+import Loading from "../Loading";
 
 let initailized = false;
 function SignUp() {
@@ -18,6 +19,7 @@ function SignUp() {
     cinema_id: "",
     branch_id: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const [cinemaData, setCinemaData] = useState([]);
   const [branchData, setBranchData] = useState([]);
@@ -66,8 +68,8 @@ function SignUp() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
     try {
+      setIsLoading((prevState) => !prevState);
       const isFormValid = validateForm();
 
       if (isFormValid) {
@@ -79,9 +81,9 @@ function SignUp() {
         console.log(response);
 
         if (response?.data.status === "success") {
-          navigate("/verify");
           setIsSignUpSuccess(true);
           setFormErrorMessage("");
+          navigate("/verify");
         }
         localStorage.setItem(
           "signUpEmail",
@@ -91,13 +93,17 @@ function SignUp() {
             branch_id: formData.branch_id,
           })
         );
+
+        setIsLoading((prevState) => !prevState);
       } else {
+        setIsLoading((prevState) => !prevState);
         setFormErrorMessage(
           "Please fill in all required fields and correct any validation errors."
         );
       }
     } catch (error) {
       console.error("Error signing up:", error);
+      setIsLoading((prevState) => !prevState);
     }
   };
 
@@ -153,7 +159,7 @@ function SignUp() {
           isSignUpSuccess={isSignUpSuccess}
           setIsSignUpSuccess={setIsSignUpSuccess}
           formErrorMessage={formErrorMessage}
-          setFormErrorMessage={setFormErrorMessage}
+          isLoading={isLoading}
         />
       </div>
       <div className="form-container sign-in-container">
@@ -206,7 +212,7 @@ function SignUpForm({
   isSignUpSuccess,
   setIsSignUpSuccess,
   formErrorMessage,
-  setFormErrorMessage,
+  isLoading,
 }) {
   const handleChange = (e) => {
     setFormData({
@@ -214,6 +220,7 @@ function SignUpForm({
       [e.target.name]: e.target.value,
     });
   };
+  console.log(formData.branch_id);
 
   return (
     <form onSubmit={handleSignUp}>
@@ -292,7 +299,7 @@ function SignUpForm({
         <option value="">Select branch here</option>
         {branchData?.map((branch) => (
           <option key={branch._id} value={branch._id}>
-            {branch.location_id.name}
+            {branch.location_id.name} {branch.name}
           </option>
         ))}
       </select>
@@ -322,7 +329,7 @@ function SignUpForm({
             <p className="error-message">{formErrorMessage}</p>
           )}
           <button type="submit" className="reg-button">
-            Sign Up
+            {isLoading ? <Loading /> : "Sign Up"}
           </button>
         </div>
       )}
@@ -414,15 +421,17 @@ function SignInForm({
           setUserInfoInLocalStorage(userData);
           navigate("/");
         }
+        setIsLoading((prevState) => !prevState);
       } else {
         console.log("Sign-in failed. Server response:", response);
         setFormErrorMessage("Sign-in failed. Please try again.");
+        setIsLoading((prevState) => !prevState);
       }
     } catch (error) {
       console.error("Error signing in:", error);
       setFormErrorMessage("An error occurred while signing in.");
+      setIsLoading((prevState) => !prevState);
     }
-    setIsLoading((prevState) => !prevState);
   };
 
   return (
@@ -483,7 +492,7 @@ function SignInForm({
             <p className="error-message">{formErrorMessage}</p>
           )}
           <button type="submit" className="reg-button">
-            {isLoading ? <span className="loader">🚀</span> : "Sign In"}
+            {isLoading ? <Loading /> : "Sign In"}
           </button>
         </div>
       )}

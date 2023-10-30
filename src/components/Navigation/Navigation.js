@@ -7,7 +7,8 @@ import { AppContext } from "../../utils/UserContext";
 function Navigation() {
   const ctx = useContext(AppContext);
   const logout = ctx.onLogout;
-  const [loginDetails] = ctx.getLoginDetails;
+  const getUser = JSON.parse(localStorage.getItem("UserData"));
+  const [loginDetails] = useState(getUser);
   const [navSize, setnavSize] = useState("5rem");
   const [navColor, setnavColor] = useState("transparent");
 
@@ -15,12 +16,6 @@ function Navigation() {
     window.scrollY > 20 ? setnavColor("#0B0B0D") : setnavColor("transparent");
     window.scrollY > 20 ? setnavSize("5rem") : setnavSize("5rem");
   };
-
-  // const logoutHandler = (e) => {
-  //   e.stopPropagation();
-  //   localStorage.removeItem("UserData");
-  //   localStorage.removeItem("movieSchedule");
-  // };
 
   useEffect(() => {
     window.addEventListener("scroll", listenScrollEvent);

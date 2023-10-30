@@ -5,6 +5,24 @@
   font-family: "Montserrat", sans-serif;
 }
 
-body {
-  background-color: #0b0b0d;
+/* body{
+  fill: #0b0b0d;
+  background-color:#0b0b0d;
+} */
+
+::-webkit-scrollbar {
+  height: 0.3125rem;
+  width: 0.3125rem; /* Adjust the width of the scroll bar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the scroll bar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333; /* Color of the scroll bar thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6a7c94; /* Color of the scroll bar thumb on hover */
 }

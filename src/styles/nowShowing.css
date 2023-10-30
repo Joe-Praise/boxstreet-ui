@@ -1,8 +1,10 @@
 .nowShowing {
   width: 100%;
   position: absolute;
+  min-height: 420px;
   z-index: 1;
   margin-top: -110px;
+  background-color: black;
 }
 
 .nowShowingWidth {
@@ -11,6 +13,7 @@
 }
 
 .nowShowingHeader {
+  z-index: 5;
   display: flex;
   justify-content: space-between;
   align-items: center;

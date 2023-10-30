@@ -1,17 +1,17 @@
-.historyCardFlex{
+.historyCardFlex {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 3rem;
   align-items: center;
   width: 80%;
-  margin: 150px auto;
+  margin: 50px auto;
 }
 
-.historycards{
+.historycards {
   width: 200px;
   height: auto;
   padding: 10px;
-  border: .5px solid goldenrod;
+  border: 0.5px solid goldenrod;
   border-radius: 10px;
   color: #fff;
   text-align: center;
@@ -46,13 +46,13 @@
 }
 
 .bhCards img {
-  width: 100px;
+  width: 100%;
   height: 130px;
   object-fit: cover;
 }
 
 .bhCards .bhdate {
-  width: 100px;
+  width: 150px;
   display: flex;
   align-items: center;
   color: #999;
@@ -74,6 +74,7 @@
 .bhshowtime {
   min-width: 80px;
   text-align: center;
+  margin: 0 0.5rem;
 }
 
 .bhmovieInfo h3 {
@@ -98,7 +99,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+.ticketNo {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  width: 300px;
+}
+/* .ticket {
+  width: 100%;
+} */
 .iconstyle {
   display: flex;
   align-items: center;

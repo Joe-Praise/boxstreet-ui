@@ -8,6 +8,7 @@ import { GoCheckCircleFill } from "react-icons/go";
 // import { MdSkipPrevious } from "react-icons/md";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import axios from "../../utils/axios";
+import Loading from "../Loading";
 // import { AppContext } from "../../utils/UserContext";
 
 function BookingHistory() {
@@ -96,6 +97,11 @@ function BookingHistory() {
   // const ctx = useContext(AppContext)
   // const [loginDetails, setLoginDetails] = ctx.getLoginDetails
   const [history, setHistory] = useState([]);
+  const [summary, setSummary] = useState({
+    totalAmount: 0,
+    totalMoviesWatched: 0,
+    totalPendingMovies: 0,
+  });
   const getUser = JSON.parse(localStorage.getItem("UserData"));
 
   const getBookingHistory = useCallback(async () => {
@@ -124,6 +130,40 @@ function BookingHistory() {
     // console.log(response.data);
   }, []);
 
+  let totalAmount = 0;
+  let totalMoviesWatched = 0;
+  let totalPendingMovies = 0;
+
+  const historyCopy = history;
+  totalAmount = historyCopy.reduce(function (acc, cur) {
+    return acc + cur.sub_total;
+  }, 0);
+  totalMoviesWatched = historyCopy.reduce(function (acc, cur) {
+    return cur.is_checked === true ? acc + 1 : acc;
+  }, 0);
+  totalPendingMovies = historyCopy.reduce(function (acc, cur) {
+    return cur.is_checked === false ? acc + 1 : acc;
+  }, 0);
+
+  // const getHistoryDetails = (history) => {
+  //   const historyCopy = history;
+  //   totalAmount = historyCopy.reduce(function (acc, cur) {
+  //     return acc + cur.sub_total;
+  //   }, 0);
+  //   totalMoviesWatched = historyCopy.reduce(function (acc, cur) {
+  //     return cur.is_checked === true ? acc + 1 : acc;
+  //   }, 0);
+  //   totalPendingMovies = historyCopy.reduce(function (acc, cur) {
+  //     return cur.is_checked === false ? acc + 1 : acc;
+  //   }, 0);
+
+  //   setSummary({
+  //     totalAmount,
+  //     totalMoviesWatched,
+  //     totalPendingMovies,
+  //   });
+  // };
+
   useEffect(() => {
     getBookingHistory();
   }, []);
@@ -136,46 +176,59 @@ function BookingHistory() {
           <p>Back to Profile</p>
         </Link>
 
+        {history?.length && (
+          <div>
+            <div className="historyCardFlex">
+              <span className="historycards">
+                Total Amount
+                <p>₦{totalAmount.toLocaleString()}</p>
+              </span>
+              <span className="historycards">
+                Total Movies Watched
+                <p>{totalMoviesWatched}</p>
+              </span>
+              <span className="historycards">
+                Total Pending Movies
+                <p>{totalPendingMovies}</p>
+              </span>
+            </div>
+          </div>
+        )}
         <h2>Booking History</h2>
         {!history?.length ? (
           <>
             <h1 className="noBooking">No Booking has been made...</h1>
           </>
         ) : (
-          history?.map((movie) => {
+          history?.map((movie, i) => {
             return (
-              <div>
-                <div className="historyCardFlex">
-                  <span className="historycards">
-                    Total Movies Watched
-                    <p>300</p>
-                  </span>
-                  <span className="historycards">
-                    Total Movies Watched
-                    <p>500</p>
-                  </span>
-                  <span className="historycards">
-                    Total Movies Watched
-                    <p>200</p>
-                  </span>
-                </div>
-
+              <div key={i}>
                 <div className="bh" key={movie.id}>
                   <Link to="/history">
                     <div className="bhCards">
                       <div className="bhdate">
-                        {/* <span>{movie.date}</span> */}
+                        {new Date(movie?.show_time).toDateString()}
                       </div>
                       <div>
                         <img src={movie?.movie_id?.image} alt="movieposter" />
                       </div>
                       <div className="bhmovieInfo">
-                        <p className="bhshowtime">{movie?.show_time}</p>
+                        <p className="bhshowtime">
+                          {new Date(movie?.show_time).toLocaleTimeString()}
+                        </p>
                         <div className="bhMovietext">
                           <h3>{movie?.movie_id?.name}</h3>
                           <span>{movie?.movie_id?.genre}</span>
-                          <p>{movie?.movie_id.description}</p>
+                          <p>
+                            {movie?.movie_id?.description?.length > 250
+                              ? movie?.movie_id?.description?.slice(0, 250) +
+                                "..."
+                              : movie?.movie_id.description}
+                          </p>
                         </div>
+                      </div>
+                      <div className="ticketNo">
+                        Ticket No: {movie?.ticket_no}
                       </div>
                       <div className="iconstyle">
                         {movie?.movie_id?.is_checked === true ? (
@@ -185,6 +238,7 @@ function BookingHistory() {
                           </i>
                         ) : (
                           <i>
+                            <Loading />
                             <span>Pending...</span>
                           </i>
                         )}

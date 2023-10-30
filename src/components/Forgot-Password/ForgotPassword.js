@@ -15,7 +15,7 @@ const ForgotPassword = () => {
     branch: [],
   });
   const ctx = useContext(AppContext);
-  const [loginDetails] = ctx.getLoginDetails;
+  //   const [loginDetails] = ctx.getLoginDetails;
   const [updatePwd, setUpdatePwd] = useState({
     email: "",
     cinema_id: "",
@@ -64,10 +64,17 @@ const ForgotPassword = () => {
       const isFormValid = validateForm();
       if (isFormValid) {
         const response = await axios.post(`/auth/forgot-password`, updatePwd);
-        const data = response.data.status;
-        if (data === "success") {
-          alert("Check your email for the reset password");
-          navigate("/verify");
+        const data = response.data;
+        if (data.status === "success") {
+          //   const userData = {
+          //     user_id: data.user?._id,
+          //     cinema_id: data.user?.cinema_id,
+          //     branch_id: data.user?.branch_id,
+          //     user_email: data.user?.email,
+          //   };
+          //   localStorage.setItem("forgotPwd", JSON.stringify(userData));
+          //   alert("Check your email for the reset password");
+          navigate("/resetpassword");
         } else {
           alert("something went wrong!");
         }
@@ -120,7 +127,7 @@ const ForgotPassword = () => {
           <div className="ccPassform-group">
             <label htmlFor="email">Email:</label>
             <input
-              type=""
+              type="email"
               name="email"
               id="email"
               placeholder="Enter your email"
