@@ -99,11 +99,29 @@ function BookingHistory() {
   const getUser = JSON.parse(localStorage.getItem("UserData"));
 
   const getBookingHistory = useCallback(async () => {
-    const response = await axios.get(
-      `/bookings?cinema_id=${getUser.cinema_id}&email=${getUser.user_email}`
-    );
+    try {
+      const response = await axios.get(
+        `/bookings?cinema_id=${getUser?.cinema_id}&email=${getUser?.user_email}`
+      );
+      setHistory(response.data);
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log("Error", error.message);
+      }
+    }
     // console.log(response.data);
-    setHistory(response.data);
   }, []);
 
   useEffect(() => {
@@ -119,44 +137,61 @@ function BookingHistory() {
         </Link>
 
         <h2>Booking History</h2>
-        {!history.length ? (
+        {!history?.length ? (
           <>
             <h1 className="noBooking">No Booking has been made...</h1>
           </>
         ) : (
           history?.map((movie) => {
             return (
-              <div className="bh" key={movie.id}>
-                <Link to="/history">
-                  <div className="bhCards">
-                    <div className="bhdate">
-                      {/* <span>{movie.date}</span> */}
-                    </div>
-                    <div>
-                      <img src={movie?.movie_id?.image} alt="movieposter" />
-                    </div>
-                    <div className="bhmovieInfo">
-                      <p className="bhshowtime">{movie?.show_time}</p>
-                      <div className="bhMovietext">
-                        <h3>{movie?.movie_id?.name}</h3>
-                        <span>{movie?.movie_id?.genre}</span>
-                        <p>{movie?.movie_id.description}</p>
+              <div>
+                <div className="historyCardFlex">
+                  <span className="historycards">
+                    Total Movies Watched
+                    <p>300</p>
+                  </span>
+                  <span className="historycards">
+                    Total Movies Watched
+                    <p>500</p>
+                  </span>
+                  <span className="historycards">
+                    Total Movies Watched
+                    <p>200</p>
+                  </span>
+                </div>
+
+                <div className="bh" key={movie.id}>
+                  <Link to="/history">
+                    <div className="bhCards">
+                      <div className="bhdate">
+                        {/* <span>{movie.date}</span> */}
+                      </div>
+                      <div>
+                        <img src={movie?.movie_id?.image} alt="movieposter" />
+                      </div>
+                      <div className="bhmovieInfo">
+                        <p className="bhshowtime">{movie?.show_time}</p>
+                        <div className="bhMovietext">
+                          <h3>{movie?.movie_id?.name}</h3>
+                          <span>{movie?.movie_id?.genre}</span>
+                          <p>{movie?.movie_id.description}</p>
+                        </div>
+                      </div>
+                      <div className="iconstyle">
+                        {movie?.movie_id?.is_checked === true ? (
+                          <i>
+                            <GoCheckCircleFill className="checkIcon" />
+                            <span>Watched</span>
+                          </i>
+                        ) : (
+                          <i>
+                            <span>Pending...</span>
+                          </i>
+                        )}
                       </div>
                     </div>
-                    <div className="iconstyle">
-                      {movie?.movie_id?.is_checked === true ? (
-                        <i>
-                          <GoCheckCircleFill className="checkIcon" />
-                          <span>Watched</span>
-                        </i>
-                      ) : (
-                        <i>
-                          <span>Pending...</span>
-                        </i>
-                      )}
-                    </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               </div>
             );
           })

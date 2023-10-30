@@ -1,93 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import '../../styles/verifyUser.css';
-import { Link, useNavigate } from 'react-router-dom';
-import Footer from '../Footer';
-import axios from 'axios';
-import config from "../../config";
+import React, { useEffect, useState } from "react";
+import "../../styles/verifyUser.css";
+import { Link, useNavigate } from "react-router-dom";
+import Footer from "../Footer";
+import axios from "../../utils/axios";
 
 function VerifyUser() {
-  // State for storing OTP and verification status
-  const [otp, setOtp] = useState(new Array(6).fill(''));
-  const [verificationStatus, setVerificationStatus] = useState(null);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [otp, setOtp] = useState(new Array(4).fill(""));
 
-  // Function to handle changes in OTP input fields
   function handleChange(e, index) {
     if (isNaN(e.target.value)) return false;
 
-    // Update the OTP array with the new value
     setOtp([...otp.map((data, i) => (i === index ? e.target.value : data))]);
 
-    // If there's a value in the current input and there's a next input, focus on the next input
     if (e.target.value && e.target.nextSibling) {
       e.target.nextSibling.focus();
     }
   }
 
-  // Function to make an asynchronous request to verify the OTP
-  async function verifyOTP(otp) {
+  const handleVerification = async () => {
+    setIsLoading((prevState) => !prevState);
     try {
-      const response = await axios.post(config.AUTH_REQUEST_URL + "/verify", { otp });
-
-      // Check if the response indicates a successful verification
-      if (response.data.success) {
-        return true;
+      const signUpEmail = JSON.parse(localStorage.getItem("signUpEmail"));
+      const OTP = otp.join("").toString();
+      const verifyData = {
+        email: signUpEmail.email,
+        code: OTP,
+      };
+      const response = await axios.post("/verifications/verify", verifyData);
+      const data = response.data.msg;
+      if (data === "Verfication successful") {
+        navigate("/register");
+        localStorage.removeItem("signUpEmail");
       } else {
-        return false;
+        alert("Wrong OTP code provided!");
       }
-    } catch (error) {
-      console.error('Request failed', error);
-      return false;
+    } catch (err) {
+      console.log(err.message);
     }
-  }
+    setIsLoading((prevState) => !prevState);
+  };
 
-  // Function to handle the verification process
-  const handleVerify = async () => {
-    const enteredCode = otp.join('');
+  const getNewVerificationCode = async () => {
+    try {
+      const signUpEmail = JSON.parse(localStorage.getItem("signUpEmail"));
+      const verifyData = {
+        cinema_id: signUpEmail.cinema_id,
+        branch_id: signUpEmail.branch_id,
+        email: signUpEmail.email,
+      };
 
-    if (await verifyOTP(enteredCode)) {
-      setVerificationStatus('success');
-      navigate('/register');
-    } else {
-      setVerificationStatus('error');
+      const response = await axios.post("/verifications/resend", verifyData);
+      const data = response.data;
+
+      if (data) {
+        alert("New verify code sent tp your email");
+      } else {
+        alert("An error occured!");
+      }
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
-  // Effects to run when the component mounts
   useEffect(() => {
-    // Remove the 'registration' class from the body element
-    document.body.classList.remove('registration');
+    document.body.classList.remove("registration");
   }, []);
-
-  // Hook for navigation
-  const navigate = useNavigate();
 
   return (
     <div>
       <main className="verify-users">
-        <h2 className="verify-intro">User Verification</h2>
+        <h1 className="verify-intro">User Verification</h1>
         <h4 className="verify-update">We have sent a code to your Email</h4>
         <div className="otp">
-          {otp.map((data, indx) => (
-            <input
-              key={indx}
-              className="verify-input"
-              type="text"
-              value={data}
-              maxLength={1}
-              onChange={(e) => handleChange(e, indx)}
-            />
-          ))}
+          {otp.map((data, indx) => {
+            return (
+              <input
+                key={indx}
+                className="verify-input"
+                type="text"
+                value={data}
+                maxLength={1}
+                onChange={(e) => handleChange(e, indx)}
+              />
+            );
+          })}
         </div>
-        {verificationStatus === 'error' && (
-          <p className="error-message">Incorrect code. Please try again.</p>
-        )}
-        <button className="verify-btn" onClick={handleVerify}>
+        <button onClick={handleVerification} className="verify-btn">
           Verify Account
-        </button>
+        </button>{" "}
         <br />
         <small>
-          Didn't receive the code?
-          <Link onClick={handleVerify} className="verify-footer">Resend OTP</Link>
+          Didn't recieve code?
+          <span className="verify-footer" onClick={getNewVerificationCode}>
+            Resend OTP
+          </span>
         </small>
       </main>
       <Footer />
@@ -96,8 +104,3 @@ function VerifyUser() {
 }
 
 export default VerifyUser;
-
-
-
-
-

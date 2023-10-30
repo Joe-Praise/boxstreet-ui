@@ -3,6 +3,7 @@ import axios from "./axios";
 
 let isInitialized = false;
 export const AppContext = createContext();
+
 const UserContext = ({ children }) => {
   const getUser = JSON.parse(localStorage.getItem("UserData"));
   const [loginDetails, setLoginDetails] = useState(getUser);
@@ -26,7 +27,9 @@ const UserContext = ({ children }) => {
     branch_id: "",
   });
 
-  const condition = filterId.cinema_id.length < 0 || filterId.cinema_id === ID;
+  // Movies queries
+  const condition =
+    filterId?.cinema_id?.length < 0 || filterId.cinema_id === ID;
   const getNowShowing = useCallback(async () => {
     // if cinema || branch is selected query all movies froom that cinema || branch
     const url = condition
@@ -214,12 +217,20 @@ const UserContext = ({ children }) => {
   // console.log(initailized);
 
   // console.log(filterId);
+
+  const logoutHandler = (e) => {
+    e.stopPropagation();
+    localStorage.removeItem("UserData");
+    localStorage.removeItem("movieSchedule");
+  };
+
   const data = {
     getInitialized: [initailized, setInitialized],
     getInitData: [initData, setInitData],
     getQueryData: [queryData, setQueryData],
     getFilterId: [filterId, setFilterId],
     getLoginDetails: [loginDetails, setLoginDetails],
+    onLogout: logoutHandler,
   };
 
   // console.log(queryData.movies);

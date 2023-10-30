@@ -5,22 +5,22 @@ import logo from "../uploads/FHC LOGO.png";
 import { AppContext } from "../../utils/UserContext";
 
 function Navigation() {
-  // const ctx = useContext(AppContext);
-  const [navSize, setnavSize] = useState("20rem");
+  const ctx = useContext(AppContext);
+  const logout = ctx.onLogout;
+  const [loginDetails] = ctx.getLoginDetails;
+  const [navSize, setnavSize] = useState("5rem");
   const [navColor, setnavColor] = useState("transparent");
-  const getUser = JSON.parse(localStorage.getItem("UserData"));
-  const [loginDetails] = useState(getUser);
 
   const listenScrollEvent = () => {
     window.scrollY > 20 ? setnavColor("#0B0B0D") : setnavColor("transparent");
     window.scrollY > 20 ? setnavSize("5rem") : setnavSize("5rem");
   };
 
-  const logoutHandler = (e) => {
-    e.stopPropagation();
-    localStorage.removeItem("UserData");
-    localStorage.removeItem("movieSchedule");
-  };
+  // const logoutHandler = (e) => {
+  //   e.stopPropagation();
+  //   localStorage.removeItem("UserData");
+  //   localStorage.removeItem("movieSchedule");
+  // };
 
   useEffect(() => {
     window.addEventListener("scroll", listenScrollEvent);
@@ -73,7 +73,7 @@ function Navigation() {
               loginDetails?.cinema_id?.length &&
               loginDetails?.branch_id?.length &&
               loginDetails?.user_email?.length ? (
-                <li className="from-left-and-back" onClick={logoutHandler}>
+                <li className="from-left-and-back" onClick={logout}>
                   LOG OUT
                 </li>
               ) : (
