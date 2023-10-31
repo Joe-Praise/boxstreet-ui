@@ -3,6 +3,7 @@ import "../../styles/verifyUser.css";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 import axios from "../../utils/axios";
+import Loading from "../Loading";
 
 function VerifyUser() {
   const navigate = useNavigate();
@@ -20,8 +21,8 @@ function VerifyUser() {
   }
 
   const handleVerification = async () => {
-    setIsLoading((prevState) => !prevState);
     try {
+      setIsLoading((prevState) => !prevState);
       const signUpEmail = JSON.parse(localStorage.getItem("signUpEmail"));
       const OTP = otp.join("").toString();
       const verifyData = {
@@ -37,10 +38,11 @@ function VerifyUser() {
       } else {
         alert("Wrong OTP code provided!");
       }
+      setIsLoading((prevState) => !prevState);
     } catch (err) {
+      setIsLoading((prevState) => !prevState);
       console.log(err.message);
     }
-    setIsLoading((prevState) => !prevState);
   };
 
   const getNewVerificationCode = async () => {
@@ -89,7 +91,7 @@ function VerifyUser() {
           })}
         </div>
         <button onClick={handleVerification} className="verify-btn">
-          Verify Account
+          {isLoading ? <Loading /> : "Verify Account"}
         </button>{" "}
         <br />
         <small>

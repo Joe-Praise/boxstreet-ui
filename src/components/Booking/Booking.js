@@ -36,7 +36,6 @@ function Booking() {
   ]);
 
   const ctx = useContext(AppContext);
-  //   const [filterId, setFilterId] = ctx.getFilterId;
   const [loginDetails] = ctx.getLoginDetails;
 
   const getSchedule = JSON.parse(localStorage.getItem("movieSchedule"));
@@ -47,6 +46,7 @@ function Booking() {
   const [seats, setSeat] = useState([]);
   const [scheduleInfo] = useState(getSchedule);
 
+  const [category, setCategory] = useState([]);
   const [booking, setBooking] = useState({
     full_name: "",
     booking_type: "ONLINE",
@@ -58,6 +58,7 @@ function Booking() {
     cinema_id: scheduleInfo?.cinema_id,
     branch_id: scheduleInfo?.branch_id,
     user_id: loginDetails?.user_id,
+    movie_name: scheduleInfo?.movie_name,
     movie_id: "",
     movie_price: "",
     schedule_id: scheduleInfo?.movieSchedule_id,
@@ -124,14 +125,16 @@ function Booking() {
 
   const handlePayment = async (e) => {
     e.preventDefault();
-
-    let email = booking?.email;
+    // console.log(boookingseats)
+    if (!seats.length) {
+      return alert("Seat is required for payment!");
+    }
 
     try {
       const payment_url = BASE_URL + "/api/v1/payments/initiate-payment";
       const booking_url = BASE_URL + "/api/v1/bookings";
       const data = {
-        email,
+        email: booking?.email,
         amount,
         metadata: {
           cinema_id: booking.cinema_id,
@@ -214,6 +217,7 @@ function Booking() {
         .get(seat_url)
         .then((res) => {
           let data = res.data;
+          setCategory(data);
 
           for (let i = 0; i < data.col_matrix_1.length; i++) {
             let d = data.col_matrix_1[i];
@@ -240,15 +244,23 @@ function Booking() {
           console.log(err.message);
         });
     }
-  }, [booking?.theater_id]);
+  }, []);
 
+  // console.log(category);
   return (
     <div className="bookingContainer">
       <Navigation />
-      <div className="booking-page">
+      <div
+        className="booking-page"
+        style={{ backgroundImage: `url(${schedule?.movie_id?.image})` }}
+      >
         <div className="booking-main">
           <div className="booking-container">
             <div className="booking-container-seat">
+              <p className="booking-choose-seat-text">Movie Title</p>
+              <div className="movie-title">
+                <p>{booking?.movie_name}</p>
+              </div>
               <p className="booking-choose-seat-text">Choose Seats</p>
               <div className="booking-seat-side">
                 <span className="booking-seat-vvip"></span>
