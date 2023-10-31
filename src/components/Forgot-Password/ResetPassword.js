@@ -53,6 +53,11 @@ const ResetPassword = () => {
         const response = await axios.patch(`/auth/reset-password`, updatePwd);
         const data = response.data;
         if (data.msg === "Password successfully updated!") {
+          setUpdatePwd({
+            email: "",
+            code: "",
+            password: "",
+          });
           alert("Password updated! Login to have access.");
           navigate("/register");
         } else {

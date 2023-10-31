@@ -32,6 +32,12 @@ function ChangePass() {
       const response = await axios.put(`/auth/update-password`, updatePwd);
       const data = response.data.status;
       if (data === "success") {
+        setUpdatePwd({
+          email: "",
+          password: "",
+          newPassword: "",
+        });
+        alert("Password updated! Login to have access.");
         navigate("/register");
         localStorage.removeItem("UserData");
       } else {

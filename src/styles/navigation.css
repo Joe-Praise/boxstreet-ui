@@ -1,70 +1,70 @@
-.navHead{
-    width: 100%;
-    background-color: transparent;
-    position: fixed;
-    top: 0;
-    z-index: 15;
+.navHead {
+  width: 100%;
+  /* background-color: transparent; */
+  position: fixed;
+  top: 0;
+  z-index: 15;
 }
 
-.navigation{
-    width: 90%;
-    margin: 0 auto;
-    height: 5rem;
-    display: flex;
-    justify-content: space-between;
-    color: white;
-    align-items: center;
-    font-size: 0.8125rem;
-    font-weight: bold;
-    font-family: "Cerebri Sans",sans-serif;
+.navigation {
+  width: 90%;
+  margin: 0 auto;
+  height: 5rem;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  align-items: center;
+  font-size: 0.8125rem;
+  font-weight: bold;
+  font-family: "Cerebri Sans", sans-serif;
 }
 
-.logo{
-    width: 8.4375rem;
-    border: none;
+.logo {
+  width: 8.4375rem;
+  border: none;
 }
 
-.navlinks{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 3.5rem;
-    cursor: pointer;
+.navlinks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 3.5rem;
+  cursor: pointer;
 }
 
-.navlinks li{
-    font-size: 0.9rem;
-    cursor: pointer;
-    line-height: 1.2;
-    margin: 0.3em 0;
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    background-repeat: no-repeat;
-    transition: all 1s ease-in-out;
+.navlinks li {
+  font-size: 0.9rem;
+  cursor: pointer;
+  line-height: 1.2;
+  margin: 0.3em 0;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-repeat: no-repeat;
+  transition: all 1s ease-in-out;
 }
 
-.from-left-and-back{
-    background-image: linear-gradient(to right, #FFD429 45%, #FFFFFF 55%);
-    background-size: 220% 100%;
-    background-position: 100% 50%;
-    font-weight: 500;
-    font-size: 0.9rem;
+.from-left-and-back {
+  background-image: linear-gradient(to right, #ffd429 45%, #ffffff 55%);
+  background-size: 220% 100%;
+  background-position: 100% 50%;
+  font-weight: 500;
+  font-size: 0.9rem;
 }
 
-.from-left-and-back:hover{
-    background-position: 0% 50%;
+.from-left-and-back:hover {
+  background-position: 0% 50%;
 }
 
-.navlinks :hover{
-    background-clip: text;
-    transition:all ease-in-out .5s;
+.navlinks :hover {
+  background-clip: text;
+  transition: all ease-in-out 0.5s;
 }
 
-.bsColour{
-    background:goldenrod;
-    background-clip: text;
-    text-decoration: none;
-    -webkit-text-fill-color: transparent;
+.bsColour {
+  background: goldenrod;
+  background-clip: text;
+  text-decoration: none;
+  -webkit-text-fill-color: transparent;
 }
