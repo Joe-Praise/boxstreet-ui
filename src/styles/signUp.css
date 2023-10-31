@@ -265,6 +265,7 @@ a {
 .error-message {
   color: red;
   font-size: 14px;
+  margin-top: 12px;
 }
 
 .success-message {

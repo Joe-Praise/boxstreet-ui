@@ -9,7 +9,7 @@ import Loading from "../Loading";
 
 let initailized = false;
 function SignUp() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
@@ -73,10 +73,12 @@ function SignUp() {
       const isFormValid = validateForm();
 
       if (isFormValid) {
+        console.log(formData);
         const response = await axios.post(
           config.APP_BASE_URL + "/auth/signup",
           formData
         );
+        console.log(response);
 
         if (response?.data.status === "success") {
           setIsSignUpSuccess(true);
@@ -160,7 +162,9 @@ function SignUp() {
           cinemaData={cinemaData}
           branchData={branchData}
           formErrors={formErrors}
+          setFormErrors={setFormErrors}
           isSignUpSuccess={isSignUpSuccess}
+          setIsSignUpSuccess={setIsSignUpSuccess}
           formErrorMessage={formErrorMessage}
           isLoading={isLoading}
         />
@@ -211,7 +215,9 @@ function SignUpForm({
   cinemaData,
   branchData,
   formErrors,
+  setFormErrors,
   isSignUpSuccess,
+  setIsSignUpSuccess,
   formErrorMessage,
   isLoading,
 }) {
