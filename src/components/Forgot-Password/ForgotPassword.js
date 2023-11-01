@@ -66,14 +66,12 @@ const ForgotPassword = () => {
         const response = await axios.post(`/auth/forgot-password`, updatePwd);
         const data = response.data;
         if (data.status === "success") {
-          //   const userData = {
-          //     user_id: data.user?._id,
-          //     cinema_id: data.user?.cinema_id,
-          //     branch_id: data.user?.branch_id,
-          //     user_email: data.user?.email,
-          //   };
-          //   localStorage.setItem("forgotPwd", JSON.stringify(userData));
-          //   alert("Check your email for the reset password");
+          setUpdatePwd({
+            email: "",
+            cinema_id: "",
+            branch_id: "",
+          });
+          alert("Check your email for the reset password");
           navigate("/resetpassword");
         } else {
           alert("something went wrong!");

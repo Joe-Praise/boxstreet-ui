@@ -95,6 +95,13 @@ function SignUp() {
         );
 
         setIsLoading((prevState) => !prevState);
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          cinema_id: "",
+          branch_id: "",
+        });
       } else {
         setIsLoading((prevState) => !prevState);
         setFormErrorMessage(
@@ -220,7 +227,6 @@ function SignUpForm({
       [e.target.name]: e.target.value,
     });
   };
-  console.log(formData.branch_id);
 
   return (
     <form onSubmit={handleSignUp}>
@@ -315,9 +321,9 @@ function SignUpForm({
         onChange={handleChange}
         placeholder="********"
       />
-      {formErrors.password && (
+      {/* {formErrors.password && (
         <p className="error-message">{formErrors.password}</p>
-      )}
+      )} */}
 
       {isSignUpSuccess ? (
         <div className="success-message">
@@ -427,6 +433,13 @@ function SignInForm({
         setFormErrorMessage("Sign-in failed. Please try again.");
         setIsLoading((prevState) => !prevState);
       }
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        cinema_id: "",
+        branch_id: "",
+      });
     } catch (error) {
       console.error("Error signing in:", error);
       setFormErrorMessage("An error occurred while signing in.");
@@ -482,7 +495,7 @@ function SignInForm({
         <p className="error-message">{formErrors.password}</p>
       )}
 
-      {formErrorMessage && <p className="error-message">{formErrorMessage}</p>}
+      {/* {formErrorMessage && <p className="error-message">{formErrorMessage}</p>} */}
 
       {isSignUpSuccess ? (
         <div className="success-message">Welcome to Boxstreet</div>

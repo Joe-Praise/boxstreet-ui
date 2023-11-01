@@ -1,12 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import "../../styles/singlemovie.css";
-import banner from "../uploads/the-exorcist-film-poster-f69rptkyultqrtnr.webp";
-import johnsnow from "../uploads/johnsnow.jpeg";
-import denareesa from "../uploads/denareesa-.jpeg";
-import pedropascal from "../uploads/pedro pascal.jpeg";
-import { GoDotFill } from "react-icons/go";
+// import banner from "../uploads/the-exorcist-film-poster-f69rptkyultqrtnr.webp";
+// import johnsnow from "../uploads/johnsnow.jpeg";
+// import denareesa from "../uploads/denareesa-.jpeg";
+// import pedropascal from "../uploads/pedro pascal.jpeg";
+// import { GoDotFill } from "react-icons/go";
 import { CiPlay1 } from "react-icons/ci";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MovieCarousel from "../Landing Page/MovieCarousel";
 import Footer from "../Footer";
 import { AppContext } from "../../utils/UserContext";
@@ -30,10 +30,12 @@ function SingleMovie() {
     schedule_date: "",
     cinema_id: "",
     branch_id: "",
+    movie_name: "",
   });
 
   const InitTransformData = (movieSchedule) => {
     let singleMovieSchedule = movieSchedule;
+    console.log("Schedule", singleMovieSchedule);
     const data = [];
     for (const key of singleMovieSchedule) {
       if (key.coming_soon !== true) {
@@ -41,8 +43,10 @@ function SingleMovie() {
           return {
             ...prev,
             movieSchedule_id: key._id,
+            movie_name: key.movie_id.name,
           };
         });
+
         const obj = {
           _id: key._id,
           name: key.movie_id.name,
@@ -62,10 +66,12 @@ function SingleMovie() {
           price: key.price,
           release_date: key.movie_id.release_date,
           coming_soon: key.movie_id.coming_soon,
+          // cinema_id: key.cinema_id._id,
           cinema_name: key.cinema_id.name,
           cinema_email: key.cinema_id.email,
           cinema_phone: key.cinema_id.phone,
           cinema_image: key.cinema_id.image,
+          // branch_id: key.branch_id._id,
           branch_openingTime: key.branch_id.opening,
           branch_closing_time: key.branch_id.closing,
           branch_phones: key.branch_id.phone,
@@ -80,27 +86,26 @@ function SingleMovie() {
         movieSchedule: data,
       };
     });
+
+    console.log("SingleMovie", data);
   };
 
   const getFilterIdFromMovieSchedule = (arr) => {
-    if (!filterId.branch_id.length) {
-      setSchedule((prevState) => {
-        return {
-          ...prevState,
-          branch_id: arr[0]?.branch_id?._id,
-        };
-      });
-    }
+    setSchedule((prevState) => {
+      return {
+        ...prevState,
+        branch_id: arr[0]?.branch_id?._id,
+      };
+    });
 
-    if (!filterId.cinema_id.length) {
-      setSchedule((prevState) => {
-        return {
-          ...prevState,
-          cinema_id: arr[0]?.cinema_id?._id,
-        };
-      });
-    }
+    setSchedule((prevState) => {
+      return {
+        ...prevState,
+        cinema_id: arr[0]?.cinema_id?._id,
+      };
+    });
   };
+  // console.log("filterId", filterId);
 
   const getSingleMovie = useCallback(async () => {
     try {
@@ -114,7 +119,6 @@ function SingleMovie() {
         getFilterIdFromMovieSchedule(newArr);
         InitTransformData([newArr]);
       } else {
-        // console.log("Arr", arr);
         getFilterIdFromMovieSchedule(arr);
         InitTransformData(arr);
       }
@@ -124,15 +128,6 @@ function SingleMovie() {
   }, [id]);
 
   // console.log(queryData.movieSchedule);
-
-  // const onGetCinemaHandler = (data) => {
-  //   setFilterId((prevState) => {
-  //     return {
-  //       ...prevState,
-  //       cinema_id: data._id,
-  //     };
-  //   });
-  // };
 
   const onSetTheater = (data) => {
     setSchedule((prevState) => {
@@ -197,7 +192,6 @@ function SingleMovie() {
     getGetTheater();
   }, [getGetTheater]);
 
-  console.log(schedule);
   return (
     <div className="singleMovieContainer">
       {queryData?.movieSchedule?.map((el, i) => {
@@ -209,24 +203,7 @@ function SingleMovie() {
               </div>
               <div className="movtext">
                 <div className="movtextLeft">
-                  <div className="movGenre">
-                    <ul>
-                      {/* {el.genre.map((el, i, arr) => {
-                        return (
-                          <li key={i}>
-                            {el}
-                            <span>
-                              {i === arr.length - 1 ? (
-                                ""
-                              ) : (
-                                <GoDotFill className="landingblueDot" />
-                              )}
-                            </span>
-                          </li>
-                        );
-                      })} */}
-                    </ul>
-                  </div>
+                  <div className="movGenre"></div>
                   <h2 className="movTitle">{el.name}</h2>
                   <div className="movDescription">
                     <p>{el.description}</p>
@@ -249,8 +226,8 @@ function SingleMovie() {
                         {el.cast?.map((cast, i) => {
                           return (
                             <div className="movCastInfo" key={cast + i}>
-                              <img src={cast.image} alt="" />
-                              <span>{cast.text}</span>
+                              <img src={cast?.image_url} alt="" />
+                              <span>{cast?.name}</span>
                             </div>
                           );
                         })}

@@ -1,3 +1,7 @@
+.bookingHistoryContainer {
+  background-color: #0b0b0d;
+  min-height: 100vh;
+}
 .historyCardFlex {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -19,7 +23,7 @@
 
 .bookinghistory {
   width: 80%;
-  margin: 150px auto;
+  margin: 100px auto;
 }
 
 .bhBack {

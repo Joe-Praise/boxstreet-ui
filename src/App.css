@@ -5,10 +5,10 @@
   font-family: "Montserrat", sans-serif;
 }
 
-/* body{
+body {
   fill: #0b0b0d;
-  background-color:#0b0b0d;
-} */
+  background-color: #0b0b0d;
+}
 
 ::-webkit-scrollbar {
   height: 0.3125rem;
