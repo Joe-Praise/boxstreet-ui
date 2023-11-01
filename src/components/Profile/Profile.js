@@ -46,11 +46,11 @@ function Profile() {
   }, [loginDetails?.user_id]);
 
   useEffect(() => {
-    // if (!loginDetails?.user_id?.length) {
-    //   navigation("/");
-    // } else {
-    getUserInfo();
-    // }
+    if (!loginDetails?.user_id?.length > 0) {
+      navigation("/");
+    } else {
+      getUserInfo();
+    }
   }, [getUserInfo]);
   console.log(userInfo);
   return (
