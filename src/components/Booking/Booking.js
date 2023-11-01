@@ -9,7 +9,6 @@ import {
 } from "react-icons/io5";
 import { MdLockClock } from "react-icons/md";
 import { useState, useEffect } from "react";
-// import img1 from "../uploads/booking-movie6.jpg";
 import Navigation from "../Navigation/Navigation";
 import Footer from "../Footer";
 import axios from "axios";
@@ -36,13 +35,11 @@ function Booking() {
   ]);
 
   const ctx = useContext(AppContext);
+
   const [loginDetails] = ctx.getLoginDetails;
 
   const getSchedule = JSON.parse(localStorage.getItem("movieSchedule"));
-  //   const getUser = JSON.parse(localStorage.getItem("UserData"));
 
-  //   const theater_id = "652aa9066de9462d02533530";
-  //   const schedule_id = "652abeaddf67b509b49acd0b";
   const [seats, setSeat] = useState([]);
   const [scheduleInfo] = useState(getSchedule);
 
@@ -147,8 +144,7 @@ function Booking() {
         booking.seats = seats;
         booking.reference = response?.data.data.paymentLink.data.reference;
 
-        let book = await axios.post(booking_url, booking);
-        console.log(book);
+        await axios.post(booking_url, booking);
 
         window.open(
           response?.data.data.paymentLink.data.authorization_url,
@@ -161,8 +157,22 @@ function Booking() {
     }
   };
 
+  const InitTransformData = (category, value) => {
+    let price = [];
+    for (const key of category) {
+      if (key?.name === value) {
+        const obj = {
+          name: key.name,
+          price: key.price,
+        };
+        price.push(obj.price);
+      }
+    }
+    return price[0]?.toLocaleString();
+  };
+
   useEffect(() => {
-    if (!loginDetails?.user_id?.length) {
+    if (!loginDetails?.user_id?.length > 0) {
       navigate("/");
     } else {
       let left_seats = {};
@@ -171,6 +181,7 @@ function Booking() {
       let seat_url = `${BASE_URL}/api/v1/theaters/${booking?.theater_id}/seats-summary`;
       let movie_schedule_url = `${BASE_URL}/api/v1/movieschedule/${booking?.schedule_id}`;
       let user_url = `${BASE_URL}/api/v1/users/${loginDetails?.user_id}`;
+      let category_url = `${BASE_URL}/api/v1/categories?cinema_id=${scheduleInfo?.cinema_id}`;
 
       axios
         .get(movie_schedule_url)
@@ -190,6 +201,16 @@ function Booking() {
               seats: seats,
             };
           });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+
+      axios
+        .get(category_url)
+        .then((res) => {
+          let data = res.data;
+          setCategory(data);
         })
         .catch((err) => {
           console.log(err.message);
@@ -217,7 +238,6 @@ function Booking() {
         .get(seat_url)
         .then((res) => {
           let data = res.data;
-          setCategory(data);
 
           for (let i = 0; i < data.col_matrix_1.length; i++) {
             let d = data.col_matrix_1[i];
@@ -246,7 +266,7 @@ function Booking() {
     }
   }, []);
 
-  // console.log(category);
+  console.log(category);
   return (
     <div className="bookingContainer">
       <Navigation />
@@ -261,18 +281,41 @@ function Booking() {
               <div className="movie-title">
                 <p>{booking?.movie_name}</p>
               </div>
+
+              <p className="booking-choose-seat-text">Cinema</p>
+              <div className="movie-title">
+                <p>{scheduleInfo?.cinema_name}</p>
+              </div>
+
+              <p className="booking-choose-seat-text">Branch</p>
+              <div className="movie-title">
+                <p>{scheduleInfo?.branch_name}</p>
+              </div>
+
               <p className="booking-choose-seat-text">Choose Seats</p>
               <div className="booking-seat-side">
                 <span className="booking-seat-vvip"></span>
-                <p>VVIP</p>
+                <p>
+                  VVIP{" "}
+                  {category.length > 0 &&
+                    `₦${InitTransformData(category, "VVIP")}`}
+                </p>
               </div>
               <div className="booking-seat-side">
                 <span className="booking-seat-vip"></span>
-                <p>VIP</p>
+                <p>
+                  VIP{" "}
+                  {category.length > 0 &&
+                    `₦${InitTransformData(category, "VIP")}`}
+                </p>
               </div>
               <div className="booking-seat-side">
                 <span className="booking-seat-regular"></span>
-                <p>Regular</p>
+                <p>
+                  Regular{" "}
+                  {category.length > 0 &&
+                    `₦${InitTransformData(category, "REGULAR")}`}
+                </p>
               </div>
             </div>
             <div className="booking-container-col1">
