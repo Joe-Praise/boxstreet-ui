@@ -33,19 +33,6 @@
   gap: 10px;
 }
 
-<<<<<<< HEAD
-.verify-input{
-    width: 50px;
-    height: 50px;
-    padding: 10px;
-    outline: none;
-    text-align: center;
-    border-radius: 5px;
-    border: 3px solid #eee;
-    margin-right: auto;
-}:focus{
-    border: 2px solid red;
-=======
 .verify-input {
   width: 70px;
   height: 50px;
@@ -58,7 +45,6 @@
 }
 :focus {
   border: 2px solid red;
->>>>>>> 53faec298b7b9a6febb6bdb9dcf49163bf9efcc4
 }
 
 .verify-btn {
