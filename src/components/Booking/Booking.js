@@ -172,98 +172,98 @@ function Booking() {
   };
 
   useEffect(() => {
-    if (!loginDetails?.user_id?.length > 0) {
-      navigate("/");
-    } else {
-      let left_seats = {};
-      let right_seats = {};
+    // if (!loginDetails?.user_id?.length > 0) {
+    //   navigate("/");
+    // } else {
+    let left_seats = {};
+    let right_seats = {};
 
-      let seat_url = `${BASE_URL}/api/v1/theaters/${booking?.theater_id}/seats-summary`;
-      let movie_schedule_url = `${BASE_URL}/api/v1/movieschedule/${booking?.schedule_id}`;
-      let user_url = `${BASE_URL}/api/v1/users/${loginDetails?.user_id}`;
-      let category_url = `${BASE_URL}/api/v1/categories?cinema_id=${scheduleInfo?.cinema_id}`;
+    let seat_url = `${BASE_URL}/api/v1/theaters/${booking?.theater_id}/seats-summary`;
+    let movie_schedule_url = `${BASE_URL}/api/v1/movieschedule/${booking?.schedule_id}`;
+    let user_url = `${BASE_URL}/api/v1/users/${loginDetails?.user_id}`;
+    let category_url = `${BASE_URL}/api/v1/categories?cinema_id=${scheduleInfo?.cinema_id}`;
 
-      axios
-        .get(movie_schedule_url)
-        .then((res) => {
-          let data = res.data?.data;
+    axios
+      .get(movie_schedule_url)
+      .then((res) => {
+        let data = res.data?.data;
 
-          setSchedule(data);
-          setAmount(data.price);
-          setBooking((prevState) => {
-            return {
-              ...prevState,
-              show_time: new Date(scheduleInfo?.schedule_date),
-              theater_id: getSchedule?.theater_id,
-              movie_id: data.movie_id._id,
-              movie_price: data.price,
-              schedule_id: getSchedule?.movieSchedule_id,
-              seats: seats,
-            };
-          });
-        })
-        .catch((err) => {
-          console.log(err.message);
+        setSchedule(data);
+        setAmount(data.price);
+        setBooking((prevState) => {
+          return {
+            ...prevState,
+            show_time: new Date(scheduleInfo?.schedule_date),
+            theater_id: getSchedule?.theater_id,
+            movie_id: data.movie_id._id,
+            movie_price: data.price,
+            schedule_id: getSchedule?.movieSchedule_id,
+            seats: seats,
+          };
         });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
 
-      axios
-        .get(category_url)
-        .then((res) => {
-          let data = res.data;
-          setCategory(data);
-        })
-        .catch((err) => {
-          console.log(err.message);
+    axios
+      .get(category_url)
+      .then((res) => {
+        let data = res.data;
+        setCategory(data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+
+    axios
+      .get(user_url)
+      .then((res) => {
+        let user = res?.data?.data;
+        setBooking((prevState) => {
+          return {
+            ...prevState,
+            full_name: user.name,
+            booking_type: "ONLINE",
+            email: user.email,
+            phone: user.email,
+          };
         });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
 
-      axios
-        .get(user_url)
-        .then((res) => {
-          let user = res?.data?.data;
-          setBooking((prevState) => {
-            return {
-              ...prevState,
-              full_name: user.name,
-              booking_type: "ONLINE",
-              email: user.email,
-              phone: user.email,
-            };
-          });
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
+    axios
+      .get(seat_url)
+      .then((res) => {
+        let data = res.data;
 
-      axios
-        .get(seat_url)
-        .then((res) => {
-          let data = res.data;
-
-          for (let i = 0; i < data.col_matrix_1.length; i++) {
-            let d = data.col_matrix_1[i];
-            if (!left_seats[d.row]) {
-              left_seats[d.row] = [d];
-            } else {
-              left_seats[d.row].push(d);
-            }
+        for (let i = 0; i < data.col_matrix_1.length; i++) {
+          let d = data.col_matrix_1[i];
+          if (!left_seats[d.row]) {
+            left_seats[d.row] = [d];
+          } else {
+            left_seats[d.row].push(d);
           }
+        }
 
-          for (let i = 0; i < data.col_matrix_2.length; i++) {
-            let d = data.col_matrix_2[i];
-            if (!right_seats[d.row]) {
-              right_seats[d.row] = [d];
-            } else {
-              right_seats[d.row].push(d);
-            }
+        for (let i = 0; i < data.col_matrix_2.length; i++) {
+          let d = data.col_matrix_2[i];
+          if (!right_seats[d.row]) {
+            right_seats[d.row] = [d];
+          } else {
+            right_seats[d.row].push(d);
           }
+        }
 
-          setColMatrix1(Object.values(left_seats));
-          setColMatrix2(Object.values(right_seats));
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
-    }
+        setColMatrix1(Object.values(left_seats));
+        setColMatrix2(Object.values(right_seats));
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+    // }
   }, []);
 
   console.log(category);
@@ -296,7 +296,7 @@ function Booking() {
               <div className="booking-seat-side">
                 <span className="booking-seat-vvip"></span>
                 <p>
-                  VVIP{" "}
+                  VVIP -{" "}
                   {category.length > 0 &&
                     `₦${InitTransformData(category, "VVIP")}`}
                 </p>
@@ -304,7 +304,7 @@ function Booking() {
               <div className="booking-seat-side">
                 <span className="booking-seat-vip"></span>
                 <p>
-                  VIP{" "}
+                  VIP -{" "}
                   {category.length > 0 &&
                     `₦${InitTransformData(category, "VIP")}`}
                 </p>
@@ -312,7 +312,7 @@ function Booking() {
               <div className="booking-seat-side">
                 <span className="booking-seat-regular"></span>
                 <p>
-                  Regular{" "}
+                  Regular -{" "}
                   {category.length > 0 &&
                     `₦${InitTransformData(category, "REGULAR")}`}
                 </p>
