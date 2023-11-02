@@ -16,7 +16,7 @@ import Select from "../Landing Page/Select";
 function SingleMovie() {
   const ctx = useContext(AppContext);
   const [initData] = ctx.getInitData;
-  const [filterId, setFilterId] = ctx.getFilterId;
+  const [filterId] = ctx.getFilterId;
   const [queryData, setQueryData] = ctx.getQueryData;
   const [theater, setTheaters] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
@@ -31,6 +31,8 @@ function SingleMovie() {
     cinema_id: "",
     branch_id: "",
     movie_name: "",
+    cinema_name: "",
+    branch_name: "",
   });
 
   const InitTransformData = (movieSchedule) => {
@@ -44,6 +46,8 @@ function SingleMovie() {
             ...prev,
             movieSchedule_id: key._id,
             movie_name: key.movie_id.name,
+            cinema_name: key.cinema_id.name,
+            branch_name: key.branch_id.name,
           };
         });
 
@@ -105,7 +109,6 @@ function SingleMovie() {
       };
     });
   };
-  // console.log("filterId", filterId);
 
   const getSingleMovie = useCallback(async () => {
     try {
@@ -126,8 +129,6 @@ function SingleMovie() {
       console.log(error);
     }
   }, [id]);
-
-  // console.log(queryData.movieSchedule);
 
   const onSetTheater = (data) => {
     setSchedule((prevState) => {

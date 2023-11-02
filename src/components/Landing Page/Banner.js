@@ -49,12 +49,12 @@ function Banner() {
                 <div className="landingbannerContent">
                   <div className="landingbannerSlideDescription">
                     <ul>
-                      {/* {banner?.genre?.map((el, i, arr) => {
+                      {banner?.genre?.map((el, i, arr) => {
                         return (
                           <li key={i}>
-                            {el}
+                            {el?.name}
                             <span>
-                              {i === arr.length - 1 ? (
+                              {i === arr?.length - 1 ? (
                                 ""
                               ) : (
                                 <GoDotFill className="landingblueDot" />
@@ -62,17 +62,17 @@ function Banner() {
                             </span>
                           </li>
                         );
-                      })} */}
+                      })}
                     </ul>
-                    <h1>{banner.name}</h1>
-                    <p>{banner.description}</p>
+                    <h1>{banner?.name}</h1>
+                    <p>{banner?.description}</p>
                   </div>
                   <div className="landingbannerBtns">
-                    <button className="landingbtnBuyTickets">
+                    {/* <button className="landingbtnBuyTickets">
                       Buy Tickets
-                    </button>
+                    </button> */}
                     <a
-                      href={`${banner.trailer}`}
+                      href={`${banner?.trailer}`}
                       rel="noreferrer"
                       className="landingbtnWatchTrailer"
                       target="_blank"
@@ -80,7 +80,7 @@ function Banner() {
                       Watch Trailer
                     </a>
                     <GoDotFill className="landingblueDot" />
-                    <p>{banner.cinema}</p>
+                    <p>{banner?.cinema}</p>
                   </div>
                 </div>
               </div>
