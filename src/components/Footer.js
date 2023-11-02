@@ -1,6 +1,6 @@
 import React from 'react'
 import '../styles/footer.css'
-import logo from '../components/uploads/FHC LOGO.png'
+import logo from '../components/uploads/Screenshot__335_-removebg-preview (1).png'
 import playstore from '../components/uploads/google-play.png'
 import appstore from '../components/uploads/app-store.png'
 import {BsYoutube, BsInstagram, BsFacebook} from 'react-icons/bs'
@@ -11,7 +11,7 @@ function Footer() {
   return (
     <div className='footer'>
         <div className='getapp'>
-            <img className='logo' src={logo} alt="" />
+            <img className='logo' style={{width:"50px"}} src={logo} alt="" />
             <span>Get the app</span>
             <div className='apps'>
                 <img src={playstore} alt="playstore" />

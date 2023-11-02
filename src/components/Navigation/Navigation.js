@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import "../../styles/navigation.css";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../uploads/FHC LOGO.png";
+import logo from "../uploads/Screenshot__335_-removebg-preview (1).png";
 import { AppContext } from "../../utils/UserContext";
 
 function Navigation() {
@@ -46,7 +46,7 @@ function Navigation() {
       <nav className="navigation">
         <div>
           <Link to="/">
-            <img className="logo" src={logo} alt="web logo" />
+            <img className="logo" src={logo} style={{width:"50px"}} alt="web logo" />
           </Link>
         </div>
         {/* <div>
