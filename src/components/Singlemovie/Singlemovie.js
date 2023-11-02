@@ -109,7 +109,6 @@ function SingleMovie() {
       };
     });
   };
-  // console.log("filterId", filterId);
 
   const getSingleMovie = useCallback(async () => {
     try {
@@ -130,8 +129,6 @@ function SingleMovie() {
       console.log(error);
     }
   }, [id]);
-
-  // console.log(queryData.movieSchedule);
 
   const onSetTheater = (data) => {
     setSchedule((prevState) => {
