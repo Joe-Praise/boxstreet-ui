@@ -1,5 +1,6 @@
 .dropdown {
-  width: 310px;
+  position: relative;
+  width: 19.375rem;
   border-radius: 25px;
   font-size: 0.8rem;
   color: #fff;
@@ -58,4 +59,15 @@
 
 .icon.open {
   transform: rotate(90deg);
+}
+
+@media (max-width: 26.875rem) {
+  .dropdown {
+    width: 0;
+    flex-basis: 50%;
+  }
+
+  .dropdown-body.open {
+    width: 100%;
+  }
 }

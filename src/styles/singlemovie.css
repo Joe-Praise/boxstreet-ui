@@ -150,14 +150,14 @@
   width: 100%;
   height: 220px;
   display: flex;
+  flex-flow: row wrap;
   justify-content: space-between;
   align-items: baseline;
 }
 
 .movShowtimes {
-  /* display: block; */
   flex-basis: 48%;
-  height: 220px;
+  /* height: 220px; */
 }
 
 .movShowtimes h4 {
@@ -203,7 +203,6 @@
   margin: 1rem auto;
   display: block;
   text-align: center;
-  /* width: 100%; */
   background-color: transparent;
   padding: 0.625rem 0.625rem;
   border: 0.0313rem solid #ffffff;
@@ -213,10 +212,13 @@
 
 .movAlsoShow {
   width: 91%;
-  margin: 70px auto;
+  margin: 9.375rem auto;
   margin-bottom: 150px;
 }
 
+.theaterContainer {
+  flex-basis: 40%;
+}
 .alsoshowingflex {
   display: flex;
   justify-content: space-between;
@@ -250,4 +252,18 @@
   border: 2px solid #ffff;
   flex-basis: auto;
   margin: 0;
+}
+
+@media (max-width: 26.875rem) {
+  .castcontainer,
+  .movShowtimes {
+    flex-basis: 100%;
+  }
+
+  .movShowtimes {
+    margin: 1rem 0;
+  }
+  .alsoshowingflex {
+    margin: 1rem 0;
+  }
 }

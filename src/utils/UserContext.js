@@ -148,7 +148,7 @@ const UserContext = ({ children }) => {
         movies: data,
       };
     });
-    console.log("data", data);
+    // console.log("data", data);
     // console.log("coming soon", comingSoonData);
   };
 

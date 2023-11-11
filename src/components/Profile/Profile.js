@@ -3,15 +3,17 @@ import Navigation from "../Navigation/Navigation";
 import "../../styles/profile.css";
 import dp from "../uploads/african-american-business-woman.jpg";
 import banPic from "../uploads/rows-red-seats-theater_53876-64710.avif";
-import { BsBookFill, BsBookmarkCheckFill, BsBookshelf } from "react-icons/bs";
-import { MdOutlineBook } from "react-icons/md";
-import { FaHistory } from "react-icons/fa";
+// import { BsBookFill, BsBookmarkCheckFill, BsBookshelf } from "react-icons/bs";
+// import { MdOutlineBook } from "react-icons/md";
+// import { FaHistory } from "react-icons/fa";
 import { RiHistoryFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../../utils/UserContext";
 import axios from "../../utils/axios";
+import ScrollToTop from "../../utils/ScrollToTop";
 
 function Profile() {
+  ScrollToTop();
   const navigation = useNavigate();
   const ctx = useContext(AppContext);
   const [loginDetails] = ctx.getLoginDetails;
@@ -52,7 +54,7 @@ function Profile() {
       getUserInfo();
     }
   }, [getUserInfo]);
-  console.log(userInfo);
+
   return (
     <div className="profileContainer">
       <Navigation />
@@ -63,42 +65,47 @@ function Profile() {
         </div>
 
         <div className="upMainPage">
-          <div>
-            <div className="userProfileInfo">
-              <div className="dppasssignout">
-                <img
-                  src={userInfo?.image ? userInfo?.image : dp}
-                  alt="user avi"
-                />
-                <div className="userUserandPass">
-                  <div>
-                    {/* <span>_jae.lodan</span> */}
-                    <Link className="pPass" to={"/changepassword"}>
-                      Change Password
-                    </Link>
+          {/* <div> */}
+          <div className="userProfileInfo">
+            <div className="dppasssignout">
+              <img
+                src={userInfo?.image ? userInfo?.image : dp}
+                alt="user avi"
+              />
+              <div className="userUserandPass desktop">
+                <div>
+                  <Link className="pPass" to={"/changepassword"}>
+                    Change Password
+                  </Link>
 
-                    <Link to="/register" className="pSignout">
-                      <p onClick={logout}>Sign Out</p>
-                    </Link>
-                  </div>
+                  <Link to="/register" className="pSignout">
+                    <p onClick={logout}>Sign Out</p>
+                  </Link>
                 </div>
               </div>
-              <div className="userProfileDetails">
-                <h3>First Name:</h3>{" "}
-                <span>{userInfo?.name?.split(" ")[0]}</span>
-                <h3>Last Name:</h3> <span>{userInfo?.name?.split(" ")[1]}</span>
-                <h3>Email:</h3> <span>{userInfo?.email}</span>
-                <h3>Cinema:</h3> <span>{userInfo?.cinema_id?.name}</span>
-                <h3>Branch:</h3> <span>{userInfo?.branch_id?.name}</span>
-              </div>
-              <Link to="/history">
-                <div className="pbookhist">
-                  <RiHistoryFill />
-                  <span>Booking History</span>
-                </div>
-              </Link>
             </div>
+            <div className="userProfileDetails">
+              <h3>First Name:</h3> <span>{userInfo?.name?.split(" ")[0]}</span>
+              <h3>Last Name:</h3> <span>{userInfo?.name?.split(" ")[1]}</span>
+              <h3>Email:</h3> <span>{userInfo?.email}</span>
+              <h3>Cinema:</h3> <span>{userInfo?.cinema_id?.name}</span>
+              <h3>Branch:</h3> <span>{userInfo?.branch_id?.name}</span>
+            </div>
+            <Link to="/history">
+              <RiHistoryFill />
+              <span>Booking History</span>
+            </Link>
           </div>
+          <div className="userUserandPass mobile">
+            <Link className="pPass" to={"/changepassword"}>
+              Change Password
+            </Link>
+
+            <Link to="/register" className="pSignout">
+              <p onClick={logout}>Sign Out</p>
+            </Link>
+          </div>
+          {/* </div> */}
         </div>
       </div>
     </div>

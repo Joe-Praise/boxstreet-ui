@@ -1,16 +1,17 @@
 .footer {
   width: 91%;
   display: flex;
+  flex-flow: row wrap;
   margin: 7.5rem auto 0 auto;
 }
 
 .getapp {
-  width: 30%;
+  flex-basis: 30%;
   display: block;
 }
 
 .getapp .logo {
-  width: 8.4375rem;
+  flex-basis: 8.4375rem;
   height: auto;
 }
 
@@ -33,7 +34,7 @@
 }
 
 .footer-right {
-  width: 70%;
+  flex-basis: 70%;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
@@ -53,4 +54,23 @@
   color: #ffffff;
   font-size: 0.75rem;
   line-height: 3;
+}
+
+@media (max-width: 26.875rem) {
+  .footer {
+    width: 91%;
+    display: flex;
+    margin: 7.5rem auto 0 auto;
+  }
+  .footer-right {
+    flex-basis: 100%;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer-links {
+    margin: 1rem 0;
+  }
+  .socials ul {
+    display: flex;
+    justify-content: space-between;
+  }
 }

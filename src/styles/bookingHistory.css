@@ -109,9 +109,7 @@
   font-size: 1rem;
   width: 300px;
 }
-/* .ticket {
-  width: 100%;
-} */
+
 .iconstyle {
   display: flex;
   align-items: center;
@@ -127,4 +125,66 @@
   display: block;
   font-size: 1rem;
   color: #999;
+}
+
+@media (max-width: 26.875rem) {
+  .historyCardFlex {
+    width: 100%;
+    overflow-x: auto;
+    gap: 2rem;
+  }
+
+  .bhCards {
+    display: block;
+  }
+
+  .bhCards img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .bhCards .bhdate {
+    width: 90%;
+    justify-content: center;
+    margin: 0.5rem 0;
+  }
+
+  .bhmovieInfo {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0.5rem 0;
+    transition: all ease-in-out 1s;
+  }
+
+  .bhshowtime {
+    min-width: 80px;
+    text-align: left;
+    margin: 0.5rem 0;
+  }
+
+  /* .bhmovieInfo span {
+    display: block;
+    font-size: 0.75rem;
+    color: #999;
+    line-height: 1px;
+    margin-bottom: 10px;
+  } */
+
+  .bhmovieInfo p {
+    line-height: 1.5;
+  }
+  .ticketNo {
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+    width: 300px;
+    margin: 1rem 0;
+  }
+
+  .iconstyle {
+    justify-content: center;
+    margin: 1rem 0;
+  }
 }

@@ -7,18 +7,22 @@ function ComingSoon() {
   const ctx = useContext(AppContext);
   const [queryData] = ctx.getQueryData;
   return (
-    <div className="comingSoon">
-      <div className="comingSoonWidth">
-        <div className="comingSoonHeader">
-          <div>
-            <h2>Coming Soon</h2>
+    <>
+      {queryData?.comingSoon?.length >= 1 && (
+        <div className="comingSoon">
+          <div className="comingSoonWidth">
+            <div className="comingSoonHeader">
+              <div>
+                <h2>Coming Soon</h2>
+              </div>
+            </div>
+            <div>
+              <ComingsoonCarousel comingSoon={queryData.comingSoon} />
+            </div>
           </div>
         </div>
-        <div>
-          <ComingsoonCarousel comingSoon={queryData.comingSoon} />
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

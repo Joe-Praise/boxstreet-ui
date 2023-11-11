@@ -2,6 +2,12 @@
   background-color: black;
   height: 100vh;
 }
+.desktop {
+  display: block;
+}
+.mobile {
+  display: none;
+}
 .userProfile {
   width: 100%;
 }
@@ -35,7 +41,6 @@
   gap: 50px;
   color: #fff;
   position: relative;
-  /* margin: 20px 100px; */
 }
 
 .userProfileInfo img {
@@ -46,8 +51,9 @@
 }
 
 .pSignout {
-  display: block;
-  padding: 10px;
+  display: flex;
+  justify-content: center;
+  /* padding: 10px; */
   color: #fff;
   font-size: 1rem;
   border: none;
@@ -58,6 +64,7 @@
 
 .pSignout p {
   text-align: center;
+  font-size: 1rem;
 }
 
 .userProfileDetails {
@@ -84,8 +91,6 @@
   width: 100%;
   margin-top: 20px;
   line-height: 2;
-  display: flex;
-  align-items: center;
 }
 
 .userUserandPass h4 {
@@ -105,12 +110,14 @@
   border: none;
   color: #fff;
   font-size: 1rem;
+  text-align: center;
   background-color: #6a7c94;
   cursor: pointer;
 }
 
-.pbookhist {
+.userProfileInfo a {
   display: flex;
+  justify-content: center;
   gap: 5px;
   align-items: center;
   font-size: 1.6rem;
@@ -120,6 +127,63 @@
   cursor: pointer;
 }
 
-.pbookhist:hover {
+.userProfileInfo a:hover {
   background-color: goldenrod;
+}
+
+@media (max-width: 26.875rem) {
+  .profileContainer {
+    min-height: max-content;
+    width: 100%;
+    margin-bottom: 9rem;
+  }
+  .desktop {
+    display: none;
+  }
+  .mobile {
+    display: block;
+  }
+
+  .uPbanner img {
+    width: 100%;
+    height: 230px;
+  }
+  .uPbanner h2 {
+    width: 100%;
+    font-size: 2rem;
+    padding-left: 2.5rem;
+  }
+  .upMainPage {
+    width: 90%;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .userProfileInfo {
+    display: block;
+    width: 100%;
+    min-height: max-content;
+    margin: 0;
+    padding: 0;
+  }
+
+  .userProfileInfo img {
+    width: 33%;
+    height: 33%;
+  }
+  .userProfileDetails {
+    line-height: 2;
+    padding-top: 20px;
+  }
+  .pSignout {
+    padding: 0.75rem;
+  }
+  .userUserandPass .pPass {
+    padding: 0.75rem;
+    font-size: 1.2rem;
+  }
+  .pSignout p {
+    text-align: center;
+    font-size: 1.2rem;
+  }
 }

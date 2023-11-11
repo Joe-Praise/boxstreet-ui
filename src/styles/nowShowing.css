@@ -17,6 +17,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: -40px;
 }
 
 .nowShowingHeader h2 {
@@ -25,10 +26,12 @@
   opacity: 1;
 }
 
-.showVenueDates {
+.showVenueDates.homepage {
+  flex-basis: 50%;
   display: flex;
   gap: 1.25rem;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .landingselect {
@@ -40,4 +43,23 @@
   border: 1px solid #ffffff;
   padding: 8px 15px;
   border-radius: 5px;
+}
+
+@media (max-width: 26.875rem) {
+  .nowShowingHeader {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+  }
+  .nowShowingH2Container {
+    flex-basis: 100%;
+    order: 2;
+    margin: 1rem 0;
+  }
+
+  .showVenueDates.homepage {
+    margin-top: 0.7rem;
+    flex-basis: 100%;
+    order: 1;
+  }
 }

@@ -3,8 +3,8 @@
   background-size: cover;
   width: 80%;
   height: auto;
-  margin: 120px auto;
-  padding: 25px 50px;
+  margin: 7.5rem auto;
+  padding: 1.5625rem 3.125rem;
 }
 
 .ccPassform h2 {
@@ -14,37 +14,37 @@
 .ccPassform section {
   font-size: 10px;
   color: #999;
-  margin-top: -15px;
+  margin-top: -0.9375rem;
 }
 
 .ccPassform-group {
   width: 100%;
-  margin: 20px 0px;
+  margin: 1.25rem 0rem;
   text-decoration: none;
 }
 
 .ccPassform-group label {
   color: #fff;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .ccPassform-group input,
 .select {
   width: 50%;
   display: block;
-  margin-top: 5px;
-  padding: 8px 10px;
-  font-size: 16px;
+  margin-top: 0.3125rem;
+  padding: 0.5rem 0.625rem;
+  font-size: 1rem;
   outline: none;
   color: #fff;
   background-color: black;
-  border: 0.5px solid #333;
-  border-radius: 5px;
+  border: 0.0313rem solid #333;
+  border-radius: 0.3125rem;
 }
 
 .ccPassform-group span {
-  font-size: 10px;
-  margin-left: 10px;
+  font-size: 0.625rem;
+  margin-left: 0.625rem;
   color: red;
 }
 
@@ -53,10 +53,49 @@
   color: #fff;
   border: none;
   text-decoration: none;
-  padding: 10px 30px;
-  font-size: 18px;
+  padding: 0.625rem 1.875rem;
+  font-size: 1.125rem;
   outline: none;
   cursor: pointer;
   display: block;
-  border-radius: 10px;
+  border-radius: 0.625rem;
+}
+.ccPassform-group button:is(:hover) {
+  background: rgba(218, 165, 32, 0.751);
+  color: #fff;
+}
+
+.ccPassform-group button:is(:active) {
+  background: rgba(241, 186, 46, 0.992);
+  color: #fff;
+}
+
+@media (max-width: 430px) {
+  .ccPassform {
+    width: 100%;
+  }
+  .ccPassform-group input,
+  .select {
+    width: 100%;
+    margin-top: 0.3125rem;
+    padding: 0.9375rem 0.9375rem;
+  }
+
+  .ccPassform section {
+    font-size: 14px;
+    color: #999;
+    margin-top: 0;
+  }
+
+  .ccPassform-group button {
+    border: none;
+    width: 100%;
+    text-decoration: none;
+    padding: 0.955rem 1.875rem;
+    font-size: 1.125rem;
+    outline: none;
+    cursor: pointer;
+    display: block;
+    border-radius: 0.625rem;
+  }
 }

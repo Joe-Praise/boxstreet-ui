@@ -6,8 +6,10 @@ import { GoCheckCircleFill } from "react-icons/go";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import axios from "../../utils/axios";
 import Loading from "../Loading";
+import ScrollToTop from "../../utils/ScrollToTop";
 
 function BookingHistory() {
+  ScrollToTop();
   const navigate = useNavigate();
   const [history, setHistory] = useState([]);
 
@@ -115,8 +117,8 @@ function BookingHistory() {
         ) : (
           history?.map((movie, i) => {
             return (
-              <div key={i}>
-                <div className="bh" key={movie.id}>
+              <div key={movie._id}>
+                <div className="bh">
                   <Link to="/history">
                     <div className="bhCards">
                       <div className="bhdate">
@@ -131,7 +133,7 @@ function BookingHistory() {
                         </p>
                         <div className="bhMovietext">
                           <h3>{movie?.movie_id?.name}</h3>
-                          <span>{movie?.movie_id?.genre}</span>
+                          {/* <span>{movie?.movie_id?.genre}</span> */}
                           <p>
                             {movie?.movie_id?.description?.length > 250
                               ? movie?.movie_id?.description?.slice(0, 250) +

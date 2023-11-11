@@ -1,4 +1,4 @@
-.csslider {
+/* .csslider {
   position: relative;
   width: 100%;
   overflow: hidden;
@@ -75,4 +75,191 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+} */
+
+/* Paginate Styles */
+
+.displayMovieContainer {
+  margin: 1.5rem 0;
+}
+
+.pagination {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 0.125rem;
+  margin-top: 2rem;
+}
+
+.pagination.moblie {
+  display: none;
+}
+
+.pagination > :is(button, span) {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: #283445;
+  color: #f9f9f9;
+  font-size: 0.75rem;
+  cursor: default;
+}
+
+.pagination > button:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.pagination > button:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.pagination > button:not(span) {
+  cursor: pointer;
+}
+
+.pagination > button.active {
+  background: #1f6ff1;
+}
+
+.pagination > button:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.movie_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2%;
+}
+
+.csslider {
+  position: relative;
+  height: 28.75rem;
+  overflow: hidden;
+  padding: 1rem 0;
+}
+
+.csslider a {
+  display: block;
+  height: 100%;
+  border: none;
+}
+
+.csslider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.625rem;
+  transition: transform 0.5s ease-in-out;
+  z-index: -5;
+}
+
+.csCards {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.csmovieInfo {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: -100%;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  border-radius: 10px;
+  background: #05080938;
+  backdrop-filter: blur(5px);
+  display: flex;
+  border-radius: 10px;
+  flex-direction: column;
+  justify-content: center;
+  transition: all ease-in-out 1s;
+}
+
+.csCards:hover .csmovieInfo {
+  right: 0;
+}
+
+.csslider:hover .csslider img {
+  object-fit: cover;
+  transform: scale(1);
+}
+
+.csslider:hover .csmovieInfo {
+  opacity: 1;
+  bottom: 0;
+}
+
+.csmovieInfo h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.csmovieInfo span {
+  /* display: block; */
+  font-size: 0.75rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.csmovieInfo p {
+  font-size: 0.9rem;
+  color: #fff;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 26.875rem) {
+  .movie_container {
+    display: block;
+    margin: 2rem 0;
+    gap: 3%;
+  }
+
+  .pagination.moblie {
+    display: flex;
+  }
+
+  .csslider {
+    height: 30.5rem;
+    overflow: visible;
+  }
+
+  .csslider img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .csmovieInfo {
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    top: 60%;
+    right: 0%;
+    padding: 5px;
+    z-index: 1;
+    border-radius: 10px;
+    background: #05080938;
+    backdrop-filter: blur(5px);
+    display: block;
+  }
+
+  .csmovieInfo div {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+  }
 }

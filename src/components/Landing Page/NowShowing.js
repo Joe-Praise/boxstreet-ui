@@ -51,10 +51,10 @@ function NowShowing() {
     <div className="nowShowing">
       <div className="nowShowingWidth">
         <div className="nowShowingHeader">
-          <div>
+          <div className="nowShowingH2Container">
             <h2>Now Showing</h2>
           </div>
-          <div className="showVenueDates">
+          <div className="showVenueDates homepage">
             <Select
               items={initData.cinemas}
               onGetHandler={onGetCinemaHandler}

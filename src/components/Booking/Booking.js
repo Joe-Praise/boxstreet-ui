@@ -2,7 +2,7 @@ import React, { useContext, useRef } from "react";
 import "../../styles/booking.css";
 import {
   IoStar,
-  IoTimerOutline,
+  // IoTimerOutline,
   IoLocationOutline,
   IoCalendarOutline,
   IoArrowForwardOutline,
@@ -14,11 +14,15 @@ import Footer from "../Footer";
 import axios from "axios";
 import "./style.css";
 import { AppContext } from "../../utils/UserContext";
+import useCategoryColors from "../../utils/CategoryColors";
+import Loading from "../Loading";
 import { useNavigate } from "react-router-dom";
+import ScrollToTop from "../../utils/ScrollToTop";
 
 function Booking() {
+  ScrollToTop();
   const navigate = useNavigate();
-  let MODE = "PROD";
+  let MODE = "LOCAL";
   let LOCAL = "http://localhost:5000";
   let ONLINE = "https://boxstreet.onrender.com";
 
@@ -34,15 +38,16 @@ function Booking() {
     [{}, {}],
   ]);
 
-  const ctx = useContext(AppContext);
-
-  const [loginDetails] = ctx.getLoginDetails;
-
+  const getUserInfo = JSON.parse(localStorage.getItem("UserData"));
+  const [loginDetails] = useState(getUserInfo);
+  const movie_price = useRef();
   const getSchedule = JSON.parse(localStorage.getItem("movieSchedule"));
-
+  const [summary, setSummary] = useState({
+    categories: [],
+    totalPrice: 0,
+  });
   const [seats, setSeat] = useState([]);
   const [scheduleInfo] = useState(getSchedule);
-
   const [category, setCategory] = useState([]);
   const [booking, setBooking] = useState({
     full_name: "",
@@ -64,11 +69,12 @@ function Booking() {
   let [amount, setAmount] = useState(0);
   const [, setFormErrorMessage] = useState("");
   const [schedule, setSchedule] = useState("");
+  const colors = useCategoryColors();
+  const [loading, setLoading] = useState(false);
 
   const setActive = (row, col, pos) => {
     let d;
     let _seats = [...seats];
-
     if (pos === "left") {
       let col_1_new = [...col_matrix_1];
       d = col_1_new[row][col];
@@ -78,7 +84,6 @@ function Booking() {
 
         if (d.is_booked) {
           amount += Number(d.category_id.price);
-          console.log(amount);
           _seats.push({
             no: d.seat_number,
             type: d.category_id.name,
@@ -115,15 +120,45 @@ function Booking() {
         setColMatrix2(col_2_new);
       }
     }
-
+    handleSummary(_seats);
     setSeat(_seats);
     setAmount(amount);
   };
 
+  const handleSummary = (seats) => {
+    let seatsArr = seats;
+    let holdSummary = {};
+    let total = 0;
+    const sum = seatsArr.reduce((cur, el, i) => {
+      const type = el.type;
+      if (!holdSummary[type]) {
+        holdSummary[type] = {
+          type: el.type,
+          price: el.price,
+          color: colors[i],
+        };
+        cur.push(holdSummary[type]);
+      } else {
+        holdSummary[type].price += el.price;
+      }
+      return cur;
+    }, []);
+
+    for (const [, value] of Object.entries(holdSummary)) {
+      total += value.price;
+    }
+
+    setSummary({
+      categories: sum,
+      totalPrice: total,
+    });
+  };
+
   const handlePayment = async (e) => {
+    setLoading(true);
     e.preventDefault();
-    // console.log(boookingseats)
     if (!seats.length) {
+      setLoading(false);
       return alert("Seat is required for payment!");
     }
 
@@ -141,19 +176,26 @@ function Booking() {
       const response = await axios.post(payment_url, data);
 
       if (response?.data.data.paymentLink) {
+        setLoading(false);
+
         booking.seats = seats;
         booking.reference = response?.data.data.paymentLink.data.reference;
-
-        await axios.post(booking_url, booking);
-
+        const value = await axios.post(booking_url, booking);
+        console.log(value.data);
+        if (value.data.msg === "Seat has already been booked") {
+          return alert("Seat has already been booked!");
+        }
         window.open(
           response?.data.data.paymentLink.data.authorization_url,
           "_blank"
         );
         localStorage.removeItem("movieSchedule");
+        navigate("/");
       }
+      setLoading(false);
     } catch (error) {
       setFormErrorMessage("An error occurred in payment transaction.");
+      setLoading(false);
     }
   };
 
@@ -171,6 +213,22 @@ function Booking() {
     return price[0]?.toLocaleString();
   };
 
+  const TransformCategory = (arr, colors) => {
+    const arrCopy = arr;
+    arrCopy.forEach((el, i) => {
+      el.color = colors[i];
+    });
+    setCategory(arrCopy);
+  };
+
+  const confirmSeatCategory = (seat, categories) => {
+    const updatedSeat = seat;
+    categories?.forEach((el) => {
+      if (el.name === updatedSeat?.category_id?.name)
+        updatedSeat.category_id.color = el.color;
+    });
+    return updatedSeat;
+  };
   useEffect(() => {
     // if (!loginDetails?.user_id?.length > 0) {
     //   navigate("/");
@@ -190,6 +248,7 @@ function Booking() {
 
         setSchedule(data);
         setAmount(data.price);
+        movie_price.current = data.price;
         setBooking((prevState) => {
           return {
             ...prevState,
@@ -210,7 +269,7 @@ function Booking() {
       .get(category_url)
       .then((res) => {
         let data = res.data;
-        setCategory(data);
+        TransformCategory(data, colors);
       })
       .catch((err) => {
         console.log(err.message);
@@ -266,7 +325,8 @@ function Booking() {
     // }
   }, []);
 
-  console.log(category);
+  // console.log(col_matrix_1);
+
   return (
     <div className="bookingContainer">
       <Navigation />
@@ -293,52 +353,51 @@ function Booking() {
               </div>
 
               <p className="booking-choose-seat-text">Choose Seats</p>
-              <div className="booking-seat-side">
-                <span className="booking-seat-vvip"></span>
-                <p>
-                  VVIP -{" "}
-                  {category.length > 0 &&
-                    `₦${InitTransformData(category, "VVIP")}`}
-                </p>
-              </div>
-              <div className="booking-seat-side">
-                <span className="booking-seat-vip"></span>
-                <p>
-                  VIP -{" "}
-                  {category.length > 0 &&
-                    `₦${InitTransformData(category, "VIP")}`}
-                </p>
-              </div>
-              <div className="booking-seat-side">
-                <span className="booking-seat-regular"></span>
-                <p>
-                  Regular -{" "}
-                  {category.length > 0 &&
-                    `₦${InitTransformData(category, "REGULAR")}`}
-                </p>
-              </div>
+              {category?.map((el, i) => (
+                <div className="booking-seat-side" key={el._id}>
+                  <span
+                    className="booking-seat-vvip"
+                    style={{ background: `${el.color}` }}
+                  ></span>
+                  <p>
+                    {el.name.toUpperCase()} -{" "}
+                    {category.length > 0 &&
+                      `₦${InitTransformData(category, el.name.toUpperCase())}`}
+                  </p>
+                </div>
+              ))}
             </div>
             <div className="booking-container-col1">
-              <div className="booking-container-top">
+              <div className="">
                 <div className="box-line">
                   <div className="line"></div>
                 </div>
               </div>
-              <div className="box-container">
+              <div className="">
                 <div className="main-boxx">
                   <div className="box1">
-                    {col_matrix_1.map((arr, i1) => {
+                    {col_matrix_1?.map((arr, i1) => {
                       return (
                         <div className="box1-col1" key={i1}>
-                          {arr.map((c, i2) => {
+                          {arr?.map((c, i2) => {
+                            // checks for the category name of the current obj and adds the respective color
+                            const color = confirmSeatCategory(c, category);
                             return (
                               <p
+                                style={{
+                                  border: `0.0625rem solid ${color?.category_id?.color}`,
+                                  background: `${
+                                    c.is_booked && c.is_active
+                                      ? color.category_id.color
+                                      : ""
+                                  }`,
+                                }}
                                 className={
                                   c.is_booked && c.is_active
-                                    ? `${c?.category_id?.name} col1p booked-seat`
+                                    ? `col1p`
                                     : c.is_booked && !c.is_active
-                                    ? `${c?.category_id?.name} col1p selected-seat`
-                                    : `${c?.category_id?.name} col1p`
+                                    ? `col1p selected-seat`
+                                    : `col1p`
                                 }
                                 key={i2}
                                 onClick={(e) => setActive(i1, i2, "left")}
@@ -353,18 +412,28 @@ function Booking() {
                   </div>
 
                   <div className="box2">
-                    {col_matrix_2.map((arr, i1) => {
+                    {col_matrix_2?.map((arr, i1) => {
                       return (
                         <div className="box1-col1" key={i1}>
-                          {arr.map((c, i2) => {
+                          {arr?.map((c, i2) => {
+                            // checks for the category name of the current obj and adds the respective color
+                            const color = confirmSeatCategory(c, category);
                             return (
                               <p
+                                style={{
+                                  border: `0.0625rem solid ${color?.category_id?.color}`,
+                                  background: `${
+                                    c.is_booked && c.is_active
+                                      ? color.category_id.color
+                                      : ""
+                                  }`,
+                                }}
                                 className={
                                   c.is_booked && c.is_active
-                                    ? `${c?.category_id?.name} col1p booked-seat`
+                                    ? ` col1p`
                                     : c.is_booked && !c.is_active
-                                    ? `${c?.category_id?.name} col1p selected-seat`
-                                    : `${c?.category_id?.name} col1p`
+                                    ? ` col1p selected-seat`
+                                    : ` col1p`
                                 }
                                 key={i2}
                                 onClick={(e) => setActive(i1, i2, "right")}
@@ -397,13 +466,33 @@ function Booking() {
                   </span>
                 </div>
               </div>
+
+              {summary.categories?.length && (
+                <div className="priceSuammryContainer">
+                  <summary>Selected seat info</summary>
+                  {summary.categories?.map((el, i) => (
+                    <div key={i} className="priceSuammry">
+                      <p>{el.type}</p>
+                      <p>₦{el.price.toLocaleString()}</p>
+                    </div>
+                  ))}
+                  <div className="priceSuammry moviePrice">
+                    <p>Movie Price</p>
+                    <p>₦{movie_price.current.toLocaleString()}</p>
+                  </div>
+                </div>
+              )}
+
               <div className="booking-total">
                 <h3 className="booking-totalh">Total</h3>
                 <p className="booking-totalp">
-                  N{seats.length > 0 ? `${amount.toLocaleString()}` : "0"}
+                  ₦{seats.length > 0 ? `${amount.toLocaleString()}` : "0"}
                 </p>
-                <button onClick={handlePayment}>Pay</button>
+                <button onClick={handlePayment}>
+                  {loading ? <Loading /> : "Pay"}
+                </button>
               </div>
+
               <div className="booking-container-col-bottom">
                 <div className="booking-container-col-bottom-row1">
                   <div className="b-col">
@@ -437,8 +526,21 @@ function Booking() {
                       {booking?.show_time.getFullYear()}
                     </p>
                   </div>
+                  <div className="b-col">
+                    <a
+                      href={schedule?.movie_id?.trailer}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="b-col-text1"
+                    >
+                      watch Trailer
+                      <p className="booking-icon4">
+                        <IoArrowForwardOutline />
+                      </p>
+                    </a>
+                  </div>
                 </div>
-                <div className="booking-container-col-bottom-row2">
+                {/* <div className="booking-container-col-bottom-row2">
                   <div className="b-col">
                     <a
                       href={schedule?.movie_id?.trailer}
@@ -452,21 +554,21 @@ function Booking() {
                       <IoArrowForwardOutline />
                     </p>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="booking-container-col2">
               <div className="box-container-top-items">
                 <h2 className="booking-header-text">Date & Time</h2>
                 <div className="box-container-top-item1">
-                  <span className="item1-date">Choose Date</span>
+                  <span className="item1-date">Date</span>
                   <p className="item1-text">
                     {booking?.show_time.getDate()}{" "}
                     {booking?.show_time.toDateString()?.slice(3, 7)}
                   </p>
                 </div>
                 <div className="box-container-top-item2">
-                  <span className="item2-date">Choose Time</span>
+                  <span className="item2-date">Time</span>
                   <p className="item2-text">
                     {booking?.show_time.toString()?.slice(15, 25)}
                   </p>

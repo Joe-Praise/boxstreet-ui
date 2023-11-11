@@ -1,10 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import "../../styles/singlemovie.css";
-// import banner from "../uploads/the-exorcist-film-poster-f69rptkyultqrtnr.webp";
-// import johnsnow from "../uploads/johnsnow.jpeg";
-// import denareesa from "../uploads/denareesa-.jpeg";
-// import pedropascal from "../uploads/pedro pascal.jpeg";
-// import { GoDotFill } from "react-icons/go";
 import { CiPlay1 } from "react-icons/ci";
 import { useNavigate, useParams } from "react-router-dom";
 import MovieCarousel from "../Landing Page/MovieCarousel";
@@ -12,8 +7,10 @@ import Footer from "../Footer";
 import { AppContext } from "../../utils/UserContext";
 import axios from "../../utils/axios";
 import Select from "../Landing Page/Select";
+import ScrollToTop from "../../utils/ScrollToTop";
 
 function SingleMovie() {
+  ScrollToTop();
   const ctx = useContext(AppContext);
   const [initData] = ctx.getInitData;
   const [filterId] = ctx.getFilterId;
@@ -37,7 +34,7 @@ function SingleMovie() {
 
   const InitTransformData = (movieSchedule) => {
     let singleMovieSchedule = movieSchedule;
-    console.log("Schedule", singleMovieSchedule);
+    // console.log("Schedule", singleMovieSchedule);
     const data = [];
     for (const key of singleMovieSchedule) {
       if (key.coming_soon !== true) {
@@ -91,7 +88,7 @@ function SingleMovie() {
       };
     });
 
-    console.log("SingleMovie", data);
+    // console.log("SingleMovie", data);
   };
 
   const getFilterIdFromMovieSchedule = (arr) => {
@@ -263,7 +260,7 @@ function SingleMovie() {
                         })}
                       </ul>
 
-                      <div className="">
+                      <div className="theaterContainer">
                         <div className="alsoshowingflex">
                           <Select
                             items={theater}
