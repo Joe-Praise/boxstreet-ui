@@ -292,3 +292,98 @@ a {
     transform: rotate(360deg);
   }
 }
+
+
+@media only screen and (max-width: 600px) {
+  .reg-text{
+    font-size: 14px;
+  }
+.social-container{
+  /* width: 50%; */
+  display: flex;
+}
+.reg-title{
+  font-size: 9px;
+}
+
+.reg-action{
+  display: flex;
+  justify-content: left;
+  margin-left: 60px;
+}
+
+form{
+  width: 90%;
+  height: 100vh;
+}
+
+  .form-container form {
+    padding: 0 15px;
+    width: 90%;
+  }
+
+  .forget{
+    font: 6px sans-serif;
+  }
+
+  .reg-button {
+    width: 100%;
+    margin-bottom: 50px;
+  }
+
+  .reg-sub-text{
+    font-size: 12px;
+  }
+
+  .reg-button.ghost {
+    width: 100%;
+  }
+
+  .reg-term-condition{
+    font-size: 10px;
+  }
+}
+
+
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  .form-container form {
+    width: 100%;
+  }
+
+  .reg-button {
+    width: 90%;
+    margin-top: 60px;
+  }
+
+  .reg-text{
+    padding-left: 50px;
+    font-size: 28px;
+  }
+
+  .reg-sub-text{
+    margin-left: 50px;
+  }
+
+  .reg-action{
+    display: flex;
+    justify-content: left;
+    font-size: 26px;
+    margin-left: 160px;
+    padding-top: 40px;
+  }
+
+  .reg-term-condition{
+    font-size: 10px;
+  }
+}
+
+
+@media only screen and (min-width: 1025px) {
+  .form-container form {
+    width: 60%;
+  }
+
+  .reg-button {
+    width: 30%;
+  }
+}
