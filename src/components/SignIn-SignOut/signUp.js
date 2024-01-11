@@ -121,7 +121,7 @@ function SignUp() {
 				// );
 			}
 		} catch (error) {
-			console.error('Error signing up:', error);
+			// console.error('Error signing up:', error);
 			dispatchNotification({
 				message: error,
 				type: 'error',
@@ -376,6 +376,7 @@ function SignInForm({
 }) {
 	const ctx = useContext(AppContext);
 	const dispatchNotification = ctx.dispatchNotification;
+	const [, setLoginDetails] = ctx.getLoginDetails;
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -410,20 +411,20 @@ function SignInForm({
 
 	const setUserInfoInLocalStorage = function (userData) {
 		localStorage.setItem('UserData', JSON.stringify(userData));
+		setLoginDetails(userData);
 	};
 
 	const handleSignIn = async (e) => {
 		e.preventDefault();
 
 		try {
-			console.log('form data', formData);
 			setIsLoading((prevState) => !prevState);
 			const getSchedule = JSON.parse(localStorage.getItem('movieSchedule'));
 			const response = await axios.post(
 				config.AUTH_REQUEST_URL + '/login',
 				formData
 			);
-			console.log('Response:', response.data);
+			// console.log('Response:', response.data);
 			if (response?.data.status === 'success') {
 				const data = response.data.data;
 				// console.log(data);
@@ -451,7 +452,7 @@ function SignInForm({
 				}
 				setIsLoading((prevState) => !prevState);
 			} else {
-				console.log('Sign-in failed. Server response:', response);
+				// console.log('Sign-in failed. Server response:', response);
 				setFormErrorMessage('Sign-in failed. Please try again.');
 				setIsLoading((prevState) => !prevState);
 			}
@@ -463,7 +464,7 @@ function SignInForm({
 				branch_id: '',
 			});
 		} catch (error) {
-			console.error('Error signing in:', error);
+			// console.error('Error signing in:', error);
 			dispatchNotification({
 				message: 'Wrong Email or password.',
 				type: 'error',

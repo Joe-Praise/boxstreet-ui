@@ -182,7 +182,6 @@ function Booking() {
 
 			if (response?.data.data.paymentLink) {
 				setLoading(false);
-
 				booking.seats = seats;
 				booking.reference = response?.data.data.paymentLink.data.reference;
 				const value = await axios.post(booking_url, booking);
