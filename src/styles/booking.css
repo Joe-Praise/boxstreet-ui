@@ -5,7 +5,6 @@
   width: 100%;
   height: 100%;
   background: transparent;
-  /* background-image: url("../components/uploads/booking-movie5.jpg"); */
   background-repeat: no-repeat;
   background-position: top;
   background-size: cover;
@@ -20,12 +19,11 @@
   justify-content: center;
 }
 .movie-title {
-  margin: 1rem 0 2rem 0;
+  margin: 0rem 0 2rem 0;
 }
 .booking-container-seat {
-  /* flex: 3; */
   flex-basis: 20%;
-  margin-top: 9.375rem;
+  margin-top: 6.25rem;
   padding: 6.25rem 0;
   color: #ffff;
   padding: 0 3.125rem;
@@ -33,32 +31,29 @@
 .booking-seat-side {
   display: flex;
   gap: 0.625rem;
-  margin-top: 3.125rem;
+  margin-top: 2.125rem;
 }
 .booking-seat-side p {
-  font-size: 1.25rem;
+  font-size: 0.9rem;
   font-weight: 400;
 }
 .booking-seat-vvip {
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 50%;
-  /* background-color: #ffff00; */
 }
 .booking-seat-vip {
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 50%;
-  /* background-color: #00d0ff; */
 }
 .booking-seat-regular {
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 50%;
-  /* background-color: #fff; */
 }
 .booking-container-col1 {
-  margin-top: 11.25rem;
+  margin-top: 2.55rem;
   flex-basis: 60%;
   display: flex;
   flex-flow: column nowrap;
@@ -73,14 +68,14 @@
   color: #747272;
 }
 .booking-header-text {
-  margin-bottom: 1.875rem;
+  margin-bottom: 1.55rem;
   color: #fff;
   line-height: 1.25rem;
 }
 
 .booking-choose-seat-text {
   color: #fff;
-  font-size: 1.875rem;
+  font-size: 1.55rem;
   font-weight: 600;
 }
 
@@ -121,7 +116,6 @@
 
 .main-boxx {
   display: flex;
-  /* background-color: red; */
   gap: 9.375rem;
 }
 .box1 {
@@ -313,15 +307,15 @@
 
 .booking-container-top-col {
   width: 12.5rem;
-  height: 18.75rem;
-  margin-top: 6.25rem;
+  height: 23.75rem;
+  margin-top: 3.25rem;
   border-radius: 0.625rem;
 }
 
 .booking-img1 {
   width: 100%;
   object-fit: cover;
-  height: 18.75rem;
+  height: 15.75rem;
   border-radius: 0.625rem;
 }
 .booking-container-top-text {
@@ -455,7 +449,6 @@
     margin: 1rem 0;
   }
   .booking-container-col1-input {
-    /* background-color: blue; */
     padding: 0;
     margin: 0;
     flex-basis: 30%;

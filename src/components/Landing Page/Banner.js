@@ -1,10 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import "../../styles/banner.css";
 import Navigation from "../Navigation/Navigation";
 import { GoDotFill } from "react-icons/go";
-// import ban1 from "../uploads/expendables.webp";
-// import ban2 from "../uploads/the-exorcist-film-poster-f69rptkyultqrtnr.webp";
-// import ban3 from "../uploads/promo2.jpg";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { AppContext } from "../../utils/UserContext";
@@ -65,12 +62,13 @@ function Banner() {
                       })}
                     </ul>
                     <h1>{banner?.name}</h1>
-                    <p>{banner?.description}</p>
+                    <p>
+                      {banner?.description?.length > 250
+                        ? banner?.description?.slice(0, 250) + "..."
+                        : banner?.description}
+                    </p>
                   </div>
                   <div className="landingbannerBtns">
-                    {/* <button className="landingbtnBuyTickets">
-                      Buy Tickets
-                    </button> */}
                     <a
                       href={`${banner?.trailer}`}
                       rel="noreferrer"

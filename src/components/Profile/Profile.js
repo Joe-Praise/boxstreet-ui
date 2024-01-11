@@ -3,9 +3,6 @@ import Navigation from "../Navigation/Navigation";
 import "../../styles/profile.css";
 import dp from "../uploads/african-american-business-woman.jpg";
 import banPic from "../uploads/rows-red-seats-theater_53876-64710.avif";
-// import { BsBookFill, BsBookmarkCheckFill, BsBookshelf } from "react-icons/bs";
-// import { MdOutlineBook } from "react-icons/md";
-// import { FaHistory } from "react-icons/fa";
 import { RiHistoryFill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../../utils/UserContext";
@@ -26,7 +23,6 @@ function Profile() {
         const response = await axios.get(`/users/${loginDetails?.user_id}`);
         const user = response.data.data;
         setUserInfo(user);
-        console.log(user);
       } else return;
     } catch (error) {
       if (error.response) {
@@ -105,7 +101,6 @@ function Profile() {
               <p onClick={logout}>Sign Out</p>
             </Link>
           </div>
-          {/* </div> */}
         </div>
       </div>
     </div>
